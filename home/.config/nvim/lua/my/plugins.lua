@@ -1,10 +1,8 @@
-local plugins = {
+return function(use)
   -- Packer manages itself
-  { "wbthomason/packer.nvim" },
+  use "wbthomason/packer.nvim"
   -- An implementation of the Popup API from Vim in NeoVim
-  { "nvim-lua/popup.nvim" },
+  use "nvim-lua/popup.nvim"
   -- Useful Lua functions used by many plugins
-  { "nvim-lua/plenary.nvim" },
-}
-
-return plugins
+  use "nvim-lua/plenary.nvim"
+end

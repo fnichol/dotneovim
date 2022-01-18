@@ -43,11 +43,7 @@ function M.load(plugins)
   end
 
   local status_ok, _ = xpcall(function()
-    packer.startup(function(use)
-      for _, plugin in ipairs(plugins) do
-        use(plugin)
-      end
-    end)
+    packer.startup(plugins)
   end, debug.traceback)
   if not status_ok then
     vim.cmd("echohl WarnMsg")
