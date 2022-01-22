@@ -5,4 +5,11 @@ return function(use)
   use "nvim-lua/popup.nvim"
   -- Useful Lua functions used by many plugins
   use "nvim-lua/plenary.nvim"
+
+  --
+  -- ## Color schemes
+  --
+  -- Neovim plugin for building base16 colorschemes with support for Neovim's
+  -- builtin LSP and Treesitter
+  use "RRethy/nvim-base16"
 end

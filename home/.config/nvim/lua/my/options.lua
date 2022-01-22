@@ -42,7 +42,7 @@ local options = {
   -- Don't create a swapfile for buffers [default: true]
   swapfile = false,
   -- Enables 24-bit RGB color in the TUI [default: false]
-  termguicolors = false,
+  termguicolors = true,
   -- Sets timeout in milliseconds for a key code sequence to complete
   -- [default: 50]
   timeoutlen = 100,
