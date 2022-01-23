@@ -20,7 +20,7 @@ function M:init()
 
   local ok, packer = pcall(require, "packer")
   if not ok then
-    vim.notify("[my.packer] failed to require 'packer'", WARN)
+    vim.notify("[my.packer] failed to require 'packer'", vim.log.levels.WARN)
     return
   end
   packer.init({
@@ -37,7 +37,10 @@ end
 function M.load(plugins)
   local packer_available, packer = pcall(require, "packer")
   if not packer_available then
-    vim.notify("[my.packer] skipping loading plugins until packer is installed", ERROR)
+    vim.notify(
+      "[my.packer] skipping loading plugins until packer is installed",
+      vim.log.levels.ERROR
+    )
     return
   end
 
@@ -45,7 +48,7 @@ function M.load(plugins)
     packer.startup(plugins)
   end, debug.traceback)
   if not status_ok then
-    vim.notify("[my.packer] problems detected while loading plugins", ERROR)
+    vim.notify("[my.packer] problems detected while loading plugins", vim.log.levels.ERROR)
   end
 
   if PACKER_INSTALLED then

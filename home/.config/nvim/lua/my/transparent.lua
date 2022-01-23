@@ -1,6 +1,6 @@
 local ok, transparent = pcall(require, "transparent")
 if not ok then
-  vim.notify("[my.transparent] failed to require 'transparent'", WARN)
+  vim.notify("[my.transparent] failed to require 'transparent'", vim.log.levels.WARN)
   return
 end
 

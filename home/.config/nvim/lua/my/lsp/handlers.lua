@@ -2,7 +2,7 @@ local M = {}
 
 local ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
 if not ok then
-  vim.notify("[my.lsp.handlers] failed to require 'cmp_nvim_lsp'", WARN)
+  vim.notify("[my.lsp.handlers] failed to require 'cmp_nvim_lsp'", vim.log.levels.WARN)
   return
 end
 

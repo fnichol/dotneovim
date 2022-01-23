@@ -18,19 +18,19 @@ local menu_source_names = {
 
 local ok, cmp = pcall(require, "cmp")
 if not ok then
-  vim.notify("[my.cmp] failed to require 'cmp'", WARN)
+  vim.notify("[my.cmp] failed to require 'cmp'", vim.log.levels.WARN)
   return
 end
 
-local ok, luasnip = pcall(require, "luasnip")
-if not ok then
-  vim.notify("[my.cmp] failed to require 'luasnip'", WARN)
+local luasnip_ok, luasnip = pcall(require, "luasnip")
+if not luasnip_ok then
+  vim.notify("[my.cmp] failed to require 'luasnip'", vim.log.levels.WARN)
   return
 end
 
-local ok, lspkind = pcall(require, "lspkind")
-if not ok then
-  vim.notify("[my.cmp] failed to require 'lspkind'", WARN)
+local lspkind_ok, lspkind = pcall(require, "lspkind")
+if not lspkind_ok then
+  vim.notify("[my.cmp] failed to require 'lspkind'", vim.log.levels.WARN)
   return
 end
 

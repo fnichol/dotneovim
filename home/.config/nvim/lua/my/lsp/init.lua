@@ -1,6 +1,6 @@
 local ok, _ = pcall(require, "lspconfig")
 if not ok then
-  vim.notify("[my.lsp] failed to require 'lspconfig'", WARN)
+  vim.notify("[my.lsp] failed to require 'lspconfig'", vim.log.levels.WARN)
   return
 end
 
