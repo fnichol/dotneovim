@@ -20,6 +20,8 @@ return function(use)
   --
   -- A completion plugin for NeoVim coded in Lua.
   use({ "hrsh7th/nvim-cmp", requires = { "L3MON4D3/LuaSnip", "rafamadriz/friendly-snippets" } })
+  -- nvim-cmp source for NeoVim builtin LSP client
+  use("hrsh7th/cmp-nvim-lsp")
   -- nvim-cmp source for buffer words
   use("hrsh7th/cmp-buffer")
   -- nvim-cmp source for path
@@ -40,4 +42,16 @@ return function(use)
   use("L3MON4D3/LuaSnip")
   -- Set of preconfigured snippets for different languages
   use("rafamadriz/friendly-snippets")
+
+  --
+  -- ## Langugage Server Protocol (LSP)
+  --
+  -- A collection of common configurations for Neovim's built-in LSP client
+  use("neovim/nvim-lspconfig")
+  -- Configures Neovim LSP using JSON files like `coc-settings.json`
+  use("tamago324/nlsp-settings.nvim")
+  -- Companion nvim-lspconfig which installs LSP servers locally
+  use({ "williamboman/nvim-lsp-installer", requires = { "neovim/nvim-lspconfig" } })
+  -- Use NeoVim as a language server to inject LSP diagnostics, code actions, and more
+  use("jose-elias-alvarez/null-ls.nvim")
 end
