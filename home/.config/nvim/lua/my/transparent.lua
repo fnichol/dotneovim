@@ -1,5 +1,6 @@
-local status_ok, transparent = pcall(require, "transparent")
-if not status_ok then
+local ok, transparent = pcall(require, "transparent")
+if not ok then
+  vim.notify("[my.transparent] failed to require 'transparent'", WARN)
   return
 end
 
