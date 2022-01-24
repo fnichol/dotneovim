@@ -72,4 +72,7 @@ return function(use)
   use({ "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" })
   -- NeoVim Treesitter plugin which sets the commentstring based on the cursor location
   use("JoosepAlviste/nvim-ts-context-commentstring")
+
+  -- Autopair plugin for NeoVim that supports multiple characters
+  use("windwp/nvim-autopairs")
 end
