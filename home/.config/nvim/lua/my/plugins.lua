@@ -64,4 +64,12 @@ return function(use)
   use("nvim-telescope/telescope-ui-select.nvim")
   -- FZF sorter for telescope written in C
   use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
+
+  --
+  -- ## Treesitter
+  --
+  -- NeoVim Treesitter configurations and abstraction layer
+  use({ "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" })
+  -- NeoVim Treesitter plugin which sets the commentstring based on the cursor location
+  use("JoosepAlviste/nvim-ts-context-commentstring")
 end
