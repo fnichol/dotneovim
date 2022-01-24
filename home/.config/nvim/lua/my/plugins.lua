@@ -75,4 +75,6 @@ return function(use)
 
   -- Autopair plugin for NeoVim that supports multiple characters
   use("windwp/nvim-autopairs")
+  -- Smart and Powerful commenting plugin for NeoVim
+  use("numToStr/Comment.nvim")
 end
