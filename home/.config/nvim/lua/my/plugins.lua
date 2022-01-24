@@ -54,4 +54,14 @@ return function(use)
   use({ "williamboman/nvim-lsp-installer", requires = { "neovim/nvim-lspconfig" } })
   -- Use NeoVim as a language server to inject LSP diagnostics, code actions, and more
   use("jose-elias-alvarez/null-ls.nvim")
+
+  --
+  -- ## Fuzzy Finding
+  --
+  -- A highly extendable fuzzy finder over lists
+  use("nvim-telescope/telescope.nvim")
+  -- It sets vim.ui.select to telescope
+  use("nvim-telescope/telescope-ui-select.nvim")
+  -- FZF sorter for telescope written in C
+  use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
 end
