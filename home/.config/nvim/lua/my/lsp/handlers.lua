@@ -23,9 +23,9 @@ local keymaps = {
     ["gs"] = "<cmd>lua vim.lsp.buf.signature_help()<CR>",
 
     -- Goto next diagnostic
-    ["[g"] = "<cmd>lua vim.diagnostic.goto_prev({ border = 'rounded' })<CR>",
+    ["[d"] = "<cmd>lua vim.diagnostic.goto_prev({ border = 'rounded' })<CR>",
     -- Goto previous diagnostic
-    ["]g"] = "<cmd>lua vim.diagnostic.goto_next({ border = 'rounded' })<CR>",
+    ["]d"] = "<cmd>lua vim.diagnostic.goto_next({ border = 'rounded' })<CR>",
     -- Add buffer diagnostics to the location list
     ["<leader>q"] = "<cmd>lua vim.diagnostic.setloclist()<CR>",
   },

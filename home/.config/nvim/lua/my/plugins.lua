@@ -77,4 +77,6 @@ return function(use)
   use("windwp/nvim-autopairs")
   -- Smart and Powerful commenting plugin for NeoVim
   use("numToStr/Comment.nvim")
+  -- Create key bindings that stick
+  use("folke/which-key.nvim")
 end
