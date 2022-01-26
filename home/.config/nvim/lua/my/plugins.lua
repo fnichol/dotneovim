@@ -73,6 +73,8 @@ return function(use)
   -- NeoVim Treesitter plugin which sets the commentstring based on the cursor location
   use("JoosepAlviste/nvim-ts-context-commentstring")
 
+  -- Speeds up loading Lua modules in Neovim to improve startup time
+  use("lewis6991/impatient.nvim")
   -- A fast and fully customizable greeter for NeoVim
   use({ "goolord/alpha-nvim", requires = { "kyazdani42/nvim-web-devicons" } })
   -- Autopair plugin for NeoVim that supports multiple characters
