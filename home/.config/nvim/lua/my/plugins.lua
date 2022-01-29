@@ -83,4 +83,8 @@ return function(use)
   use("numToStr/Comment.nvim")
   -- Create key bindings that stick
   use("folke/which-key.nvim")
+  -- Indent guides for Neovim
+  use("lukas-reineke/indent-blankline.nvim")
+  -- Highlights trailing whitespace in red
+  use("bronson/vim-trailing-whitespace")
 end
