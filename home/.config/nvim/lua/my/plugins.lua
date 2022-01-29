@@ -77,12 +77,20 @@ return function(use)
   use("lewis6991/impatient.nvim")
   -- A fast and fully customizable greeter for NeoVim
   use({ "goolord/alpha-nvim", requires = { "kyazdani42/nvim-web-devicons" } })
+
+  --
+  -- ## Key Bindings and Documentation
+  --
+  -- Create key bindings that stick
+  use("folke/which-key.nvim")
+
+  --
+  -- ## Formatting and Display
+  --
   -- Autopair plugin for NeoVim that supports multiple characters
   use("windwp/nvim-autopairs")
   -- Smart and Powerful commenting plugin for NeoVim
   use("numToStr/Comment.nvim")
-  -- Create key bindings that stick
-  use("folke/which-key.nvim")
   -- Indent guides for Neovim
   use("lukas-reineke/indent-blankline.nvim")
   -- Highlights trailing whitespace in red
