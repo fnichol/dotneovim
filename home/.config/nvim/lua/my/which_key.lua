@@ -7,6 +7,7 @@ end
 -- Usage: https://github.com/folke/which-key.nvim
 
 local mappings = {
+  ["e"] = { "<cmd>NvimTreeToggle<CR>", "Explorer" },
   ["f"] = { "<cmd>Telescope find_files<CR>", "Find Files" },
   ["r"] = { "<cmd>Telescope oldfiles<CR>", "Open Recent File" },
   ["h"] = { "<cmd>nohlsearch<CR>", "No Highlight" },

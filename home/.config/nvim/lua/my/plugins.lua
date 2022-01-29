@@ -56,7 +56,7 @@ return function(use)
   use("jose-elias-alvarez/null-ls.nvim")
 
   --
-  -- ## Fuzzy Finding
+  -- ## Fuzzy Finding, File Exploration, and Project Management
   --
   -- A highly extendable fuzzy finder over lists
   use("nvim-telescope/telescope.nvim")
@@ -64,6 +64,8 @@ return function(use)
   use("nvim-telescope/telescope-ui-select.nvim")
   -- FZF sorter for telescope written in C
   use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
+  -- A file explorer tree for NeoVim written in Lua
+  use({ "kyazdani42/nvim-tree.lua", requires = { "kyazdani42/nvim-web-devicons" } })
 
   --
   -- ## Treesitter
