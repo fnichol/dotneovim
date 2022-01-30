@@ -13,6 +13,26 @@ local mappings = {
   ["h"] = { "<cmd>nohlsearch<CR>", "No Highlight" },
 
   --
+  -- ## Git
+  --
+  g = {
+    name = "Git",
+    g = { "<cmd>lua _LAZYGIT_TOGGLE()<CR>", "Lazygit" },
+    j = { "<cmd>lua require('gitsigns').next_hunk()<CR>", "Next Hunk" },
+    k = { "<cmd>lua require('gitsigns').prev_hunk()<CR>", "Prev Hunk" },
+    l = { "<cmd>lua require('gitsigns').blame_line()<CR>", "Blame" },
+    p = { "<cmd>lua require('gitsigns').preview_hunk()<CR>", "Preview Hunk" },
+    r = { "<cmd>lua require('gitsigns').reset_hunk()<CR>", "Reset Hunk" },
+    R = { "<cmd>lua require('gitsigns').reset_buffer()<CR>", "Reset Buffer" },
+    s = { "<cmd>lua require('gitsigns').stage_hunk()<CR>", "Stage Hunk" },
+    u = { "<cmd>lua require('gitsigns').undo_stage_hunk()<CR>", "Undo Stage Hunk" },
+    o = { "<cmd>Telescope git_status<CR>", "Open Changed File" },
+    b = { "<cmd>Telescope git_branches<CR>", "Checkout Branch" },
+    c = { "<cmd>Telescope git_commits<CR>", "Checkout Commit" },
+    d = { "<cmd>Gitsigns diffthis HEAD<CR>", "Diff" },
+  },
+
+  --
   -- ## LSP
   --
   l = {

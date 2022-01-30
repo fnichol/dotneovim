@@ -97,4 +97,6 @@ return function(use)
   use("lukas-reineke/indent-blankline.nvim")
   -- Highlights trailing whitespace in red
   use("bronson/vim-trailing-whitespace")
+  -- Git integration for buffers
+  use("lewis6991/gitsigns.nvim")
 end
