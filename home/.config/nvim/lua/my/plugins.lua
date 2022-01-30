@@ -99,4 +99,6 @@ return function(use)
   use("bronson/vim-trailing-whitespace")
   -- Git integration for buffers
   use("lewis6991/gitsigns.nvim")
+  -- A snazzy bufferline for NeoVim
+  use({ "akinsho/bufferline.nvim", requires = { "kyazdani42/nvim-web-devicons" } })
 end
