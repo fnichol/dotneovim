@@ -17,6 +17,7 @@ local mappings = {
   --
   g = {
     name = "Git",
+    f = { "<cmd>G<CR>", "Fugitive" },
     g = { "<cmd>lua _GITUI_TOGGLE()<CR>", "GitUI" },
     j = { "<cmd>lua require('gitsigns').next_hunk()<CR>", "Next Hunk" },
     k = { "<cmd>lua require('gitsigns').prev_hunk()<CR>", "Prev Hunk" },

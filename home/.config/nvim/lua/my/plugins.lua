@@ -107,4 +107,6 @@ return function(use)
   --
   -- Persists and toggles multiple terminals during an editing session
   use("akinsho/toggleterm.nvim")
+  -- Fugitive is the premier Vim plugin for Git
+  use("tpope/vim-fugitive")
 end
