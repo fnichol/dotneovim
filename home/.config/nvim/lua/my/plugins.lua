@@ -101,4 +101,10 @@ return function(use)
   use("lewis6991/gitsigns.nvim")
   -- A snazzy bufferline for NeoVim
   use({ "akinsho/bufferline.nvim", requires = { "kyazdani42/nvim-web-devicons" } })
+
+  --
+  -- ## System Integrations
+  --
+  -- Persists and toggles multiple terminals during an editing session
+  use("akinsho/toggleterm.nvim")
 end

@@ -17,7 +17,7 @@ local mappings = {
   --
   g = {
     name = "Git",
-    g = { "<cmd>lua _LAZYGIT_TOGGLE()<CR>", "Lazygit" },
+    g = { "<cmd>lua _GITUI_TOGGLE()<CR>", "GitUI" },
     j = { "<cmd>lua require('gitsigns').next_hunk()<CR>", "Next Hunk" },
     k = { "<cmd>lua require('gitsigns').prev_hunk()<CR>", "Prev Hunk" },
     l = { "<cmd>lua require('gitsigns').blame_line()<CR>", "Blame" },
@@ -97,6 +97,17 @@ local mappings = {
   T = {
     name = "Treesitter",
     i = { ":TSConfigInfo<CR>", "Info" },
+  },
+
+  --
+  -- ## Terminal
+  --
+  t = {
+    name = "Terminal",
+    b = { "<cmd>lua _HTOP_TOGGLE()<CR>", "Htop" },
+    f = { "<cmd>ToggleTerm direction=float<CR>", "Float" },
+    h = { "<cmd>ToggleTerm size=10 direction=horizontal<CR>", "Horizontal" },
+    v = { "<cmd>ToggleTerm size=80 direction=vertical<CR>", "Veritcal" },
   },
 }
 
