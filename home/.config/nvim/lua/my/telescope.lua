@@ -118,3 +118,13 @@ end
 telescope.setup(config)
 telescope.load_extension("ui-select")
 telescope.load_extension("fzf")
+
+local M = {}
+
+M.list_buffers = function()
+  require("telescope.builtin").buffers(
+    require("telescope.themes").get_dropdown({ previewer = false })
+  )
+end
+
+return M

@@ -7,10 +7,12 @@ end
 -- Usage: https://github.com/folke/which-key.nvim
 
 local mappings = {
+  ["a"] = { "<cmd>Alpha<CR>", "Alpha" },
+  ["b"] = { "<cmd>lua require('my.telescope').list_buffers()<CR>", "Buffers" },
   ["e"] = { "<cmd>NvimTreeToggle<CR>", "Explorer" },
   ["f"] = { "<cmd>Telescope find_files<CR>", "Find Files" },
-  ["r"] = { "<cmd>Telescope oldfiles<CR>", "Open Recent File" },
   ["h"] = { "<cmd>nohlsearch<CR>", "No Highlight" },
+  ["r"] = { "<cmd>Telescope oldfiles<CR>", "Open Recent File" },
 
   --
   -- ## Git
@@ -60,6 +62,17 @@ local mappings = {
   },
 
   --
+  -- ## Terminal
+  --
+  m = {
+    name = "Terminal",
+    b = { "<cmd>lua _HTOP_TOGGLE()<CR>", "Htop" },
+    f = { "<cmd>ToggleTerm direction=float<CR>", "Float" },
+    h = { "<cmd>ToggleTerm size=10 direction=horizontal<CR>", "Horizontal" },
+    v = { "<cmd>ToggleTerm size=80 direction=vertical<CR>", "Veritcal" },
+  },
+
+  --
   -- ## Packer
   --
   p = {
@@ -93,22 +106,19 @@ local mappings = {
   },
 
   --
+  -- ## Toggle
+  --
+  --
+  t = {
+    name = "Toggle",
+    t = { "<cmd>TransparentToggle<CR>", "Transparent" },
+  },
+
   -- ## Treesitter
   --
   T = {
     name = "Treesitter",
     i = { ":TSConfigInfo<CR>", "Info" },
-  },
-
-  --
-  -- ## Terminal
-  --
-  t = {
-    name = "Terminal",
-    b = { "<cmd>lua _HTOP_TOGGLE()<CR>", "Htop" },
-    f = { "<cmd>ToggleTerm direction=float<CR>", "Float" },
-    h = { "<cmd>ToggleTerm size=10 direction=horizontal<CR>", "Horizontal" },
-    v = { "<cmd>ToggleTerm size=80 direction=vertical<CR>", "Veritcal" },
   },
 }
 
