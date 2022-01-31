@@ -101,6 +101,9 @@ return function(use)
   use("lewis6991/gitsigns.nvim")
   -- A snazzy bufferline for NeoVim
   use({ "akinsho/bufferline.nvim", requires = { "kyazdani42/nvim-web-devicons" } })
+  -- Allows you to do delete buffers (close files) without closing your windows
+  -- or messing up your layout
+  use("moll/vim-bbye")
 
   --
   -- ## System Integrations

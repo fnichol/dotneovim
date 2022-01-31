@@ -9,6 +9,7 @@ end
 local mappings = {
   ["a"] = { "<cmd>Alpha<CR>", "Alpha" },
   ["b"] = { "<cmd>lua require('my.telescope').list_buffers()<CR>", "Buffers" },
+  ["c"] = { "<cmd>Bdelete!<CR>", "Close Buffer" },
   ["e"] = { "<cmd>NvimTreeToggle<CR>", "Explorer" },
   ["f"] = { "<cmd>Telescope find_files<CR>", "Find Files" },
   ["h"] = { "<cmd>nohlsearch<CR>", "No Highlight" },
