@@ -103,6 +103,9 @@ return function(use)
   use("lewis6991/gitsigns.nvim")
   -- VSCode lightbulb for NeoVim's builtin LSP
   use("kosayoda/nvim-lightbulb")
+  -- A pretty diagnostics, references, telescope results, quickfix and location
+  -- list to help you solve all the trouble your code is causing
+  use({ "folke/trouble.nvim", requires = { "kyazdani42/nvim-web-devicons" } })
   -- A snazzy bufferline for NeoVim
   use({ "akinsho/bufferline.nvim", requires = { "kyazdani42/nvim-web-devicons" } })
   -- Allows you to do delete buffers (close files) without closing your windows

@@ -106,20 +106,34 @@ local mappings = {
     },
   },
 
+  -- ## Treesitter
+  --
+  S = {
+    name = "Treesitter",
+    i = { ":TSConfigInfo<CR>", "Info" },
+  },
+
+  --
+  -- ## Trouble
+  --
+  t = {
+    name = "Trouble",
+    d = { "<cmd>Trouble document_diagnostics<CR>", "Toggle Document Diagnostics" },
+    D = { "<cmd>Trouble lsp_definitions<CR>", "LSP Definitions" },
+    l = { "<cmd>Trouble loclist<CR>", "Location List" },
+    q = { "<cmd>Trouble quickfix<CR>", "QuickFix" },
+    r = { "<cmd>TroubleRefresh<CR>", "Refresh Diagnostics" },
+    R = { "<cmd>Trouble lsp_references<CR>", "LSP References" },
+    w = { "<cmd>Trouble workspace_diagnostics<CR>", "Toggle Workspace Diagnostics" },
+  },
+
   --
   -- ## Toggle
   --
-  --
-  t = {
+  T = {
     name = "Toggle",
     t = { "<cmd>TransparentToggle<CR>", "Transparent" },
-  },
-
-  -- ## Treesitter
-  --
-  T = {
-    name = "Treesitter",
-    i = { ":TSConfigInfo<CR>", "Info" },
+    T = { "<cmd>TroubleToggle<CR>", "Trouble" },
   },
 }
 
