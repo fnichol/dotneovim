@@ -15,7 +15,12 @@ vim.g.indent_blankline_filetype_exclude = {
   "neogitstatus",
   "NvimTree",
   "Trouble",
+  "alpha",
+  "TelescopePrompt",
 }
+-- Set same list of filetype excludes for `vim-trailing-whitespace` plugin
+vim.g.extra_whitespace_ignored_filetypes = vim.g.indent_blankline_filetype_exclude
+
 vim.g.indentLine_enabled = 1
 vim.g.indent_blankline_char = "│"
 --vim.g.indent_blankline_char = "▏"
