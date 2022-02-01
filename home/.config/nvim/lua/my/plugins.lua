@@ -99,6 +99,8 @@ return function(use)
   use("lukas-reineke/indent-blankline.nvim")
   -- Highlights trailing whitespace in red
   use("bronson/vim-trailing-whitespace")
+  -- NeoVim plugin to improve the default vim.ui interfaces
+  use("stevearc/dressing.nvim")
   -- Git integration for buffers
   use("lewis6991/gitsigns.nvim")
   -- VSCode lightbulb for NeoVim's builtin LSP
