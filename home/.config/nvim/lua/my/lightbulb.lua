@@ -1,4 +1,4 @@
-local ok, lightbulb = pcall(require, "nvim-lightbulb")
+local ok, _ = pcall(require, "nvim-lightbulb")
 if not ok then
   vim.notify("[my.lightbulb] failed to require 'nvim-lightbulb'", vim.log.levels.WARN)
   return
