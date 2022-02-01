@@ -101,6 +101,8 @@ return function(use)
   use("bronson/vim-trailing-whitespace")
   -- NeoVim plugin to improve the default vim.ui interfaces
   use("stevearc/dressing.nvim")
+  -- A fancy, configurable, notification manager for NeoVim
+  use("rcarriga/nvim-notify")
   -- Git integration for buffers
   use("lewis6991/gitsigns.nvim")
   -- VSCode lightbulb for NeoVim's builtin LSP
