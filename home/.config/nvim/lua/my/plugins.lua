@@ -101,6 +101,8 @@ return function(use)
   use("bronson/vim-trailing-whitespace")
   -- Git integration for buffers
   use("lewis6991/gitsigns.nvim")
+  -- VSCode lightbulb for NeoVim's builtin LSP
+  use("kosayoda/nvim-lightbulb")
   -- A snazzy bufferline for NeoVim
   use({ "akinsho/bufferline.nvim", requires = { "kyazdani42/nvim-web-devicons" } })
   -- Allows you to do delete buffers (close files) without closing your windows
