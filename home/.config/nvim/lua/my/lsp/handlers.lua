@@ -6,6 +6,12 @@ if not ok then
   return
 end
 
+local lsp_signature_ok, lsp_signature = pcall(require, "lsp_signature")
+if not lsp_signature_ok then
+  vim.notify("[my.lsp.handlers] failed to require 'lsp_signature'", vim.log.levels.WARN)
+  return
+end
+
 local keymaps = {
   normal_mode = {
     -- Goto definition
@@ -128,6 +134,7 @@ M.on_attach = function(client, bufnr)
   lsp_key_mappings(bufnr)
   lsp_commands()
   lsp_document_highlight(client)
+  lsp_signature.on_attach()
 end
 
 M.capabilities = cmp_nvim_lsp.update_capabilities(capabilities)

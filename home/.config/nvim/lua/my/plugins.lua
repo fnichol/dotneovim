@@ -54,6 +54,8 @@ return function(use)
   use({ "williamboman/nvim-lsp-installer", requires = { "neovim/nvim-lspconfig" } })
   -- Use NeoVim as a language server to inject LSP diagnostics, code actions, and more
   use("jose-elias-alvarez/null-ls.nvim")
+  -- LSP signature hint as you type
+  use("ray-x/lsp_signature.nvim")
   -- Fixes CursorHold Performance (This is needed to fix LSP doc highlight)
   use("antoinemadec/FixCursorHold.nvim")
 
