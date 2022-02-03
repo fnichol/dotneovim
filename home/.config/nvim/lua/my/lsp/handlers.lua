@@ -131,6 +131,15 @@ M.setup = function()
 end
 
 M.on_attach = function(client, bufnr)
+  -- disable tsserver formatting
+  if client.name == "tsserver" then
+    client.resolved_capabilities.document_formatting = false
+  end
+  -- disable volar formatting
+  if client.name == "volar" then
+    client.resolved_capabilities.document_formatting = false
+  end
+
   lsp_key_mappings(bufnr)
   lsp_commands()
   lsp_document_highlight(client)
