@@ -30,7 +30,7 @@ null_ls.setup({
         -- If an EditorConfig config is set for the project, use this,
         -- otherwise fall back to the Google shell style conventions
         -- (https://google.github.io/styleguide/shell.xml)
-        if root_has_file({".editorconfig"}) then
+        if root_has_file({ ".editorconfig" }) then
           return {}
         else
           return { "-i", "2", "-bn", "-ci" }
