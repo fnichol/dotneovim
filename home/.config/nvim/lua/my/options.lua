@@ -35,7 +35,7 @@ local options = {
   smartindent = true,
   -- When splitting a window horizontally, new window is below of current one
   -- [default: false]
-  splitbelow = true,
+  splitbelow = false,
   -- When splitting a window veritcally, new window is to the right of
   -- current one [default: false]
   splitright = true,
