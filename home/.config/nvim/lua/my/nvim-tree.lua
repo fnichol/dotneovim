@@ -102,7 +102,7 @@ nvim_tree.setup({
     require_confirm = true,
   },
   -- Closes the tree when you open a file
-  quit_on_open = 0,
+  quit_on_open = 1,
   -- Enables file highlight for Git attributes
   git_hl = 1,
   disable_window_picker = 0,
