@@ -93,6 +93,8 @@ return function(use)
   --
   -- ## Formatting and Display
   --
+  -- EditorConfig plugin for Vim
+  use("editorconfig/editorconfig-vim")
   -- Autopair plugin for NeoVim that supports multiple characters
   use("windwp/nvim-autopairs")
   -- Smart and Powerful commenting plugin for NeoVim
