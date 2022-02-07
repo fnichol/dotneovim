@@ -44,6 +44,7 @@ null_ls.setup({
     diagnostics.eslint,
     diagnostics.hadolint,
     diagnostics.shellcheck,
+    diagnostics.yamllint,
 
     --
     -- ## Code Actions
