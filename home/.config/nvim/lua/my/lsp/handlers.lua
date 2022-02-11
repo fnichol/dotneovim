@@ -131,6 +131,10 @@ M.setup = function()
 end
 
 M.on_attach = function(client, bufnr)
+  -- disable jsonls formatting
+  if client.name == "jsonls" then
+    client.resolved_capabilities.document_formatting = false
+  end
   -- disable tsserver formatting
   if client.name == "tsserver" then
     client.resolved_capabilities.document_formatting = false

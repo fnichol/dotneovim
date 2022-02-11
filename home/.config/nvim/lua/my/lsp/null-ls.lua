@@ -43,6 +43,7 @@ null_ls.setup({
     --
     diagnostics.eslint,
     diagnostics.hadolint,
+    diagnostics.jsonlint,
     diagnostics.shellcheck,
     diagnostics.yamllint,
 
