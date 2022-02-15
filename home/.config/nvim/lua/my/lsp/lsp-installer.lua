@@ -19,6 +19,28 @@ lsp_installer.on_server_ready(function(server)
     opts = vim.tbl_deep_extend("force", opts, jsonls_opts)
   end
 
+  if server.name == "rust_analyzer" then
+    -- Configuration references:
+    -- * https://github.com/simrat39/rust-tools.nvim/issues/114
+    -- * https://github.com/williamboman/nvim-lsp-installer/wiki/Rust
+    local rust_analyzer_opts = require("my.lsp.settings.rust_analyzer")
+    local server_opts = vim.tbl_deep_extend(
+      "force",
+      server:get_default_options(),
+      opts,
+      rust_analyzer_opts
+    )
+
+    local rust_tools_ok, rust_tools = require_or_warn("rust-tools")
+    if not rust_tools_ok then
+      return
+    end
+
+    rust_tools.setup({ server = server_opts })
+    server:attach_buffers()
+    return
+  end
+
   if server.name == "sumneko_lua" then
     local sumneko_opts = require("my.lsp.settings.sumneko_lua")
     opts = vim.tbl_deep_extend("force", opts, sumneko_opts)

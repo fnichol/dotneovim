@@ -58,6 +58,8 @@ return function(use)
   use("ray-x/lsp_signature.nvim")
   -- Fixes CursorHold Performance (This is needed to fix LSP doc highlight)
   use("antoinemadec/FixCursorHold.nvim")
+  -- Extra Rust tools for writing applications in NeoVim using the native LSP
+  use({ "simrat39/rust-tools.nvim", requires = { "neovim/nvim-lspconfig" } })
 
   --
   -- ## Fuzzy Finding, File Exploration, and Project Management
