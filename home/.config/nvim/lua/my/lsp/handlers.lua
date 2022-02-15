@@ -1,14 +1,15 @@
+local utils = require("my.utils")
+local require_or_warn = utils.require_or_warn
+
 local M = {}
 
-local ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+local ok, cmp_nvim_lsp = require_or_warn("cmp_nvim_lsp")
 if not ok then
-  vim.notify("[my.lsp.handlers] failed to require 'cmp_nvim_lsp'", vim.log.levels.WARN)
   return
 end
 
-local lsp_signature_ok, lsp_signature = pcall(require, "lsp_signature")
+local lsp_signature_ok, lsp_signature = require_or_warn("lsp_signature")
 if not lsp_signature_ok then
-  vim.notify("[my.lsp.handlers] failed to require 'lsp_signature'", vim.log.levels.WARN)
   return
 end
 
