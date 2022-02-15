@@ -17,7 +17,7 @@ vim.g.indent_blankline_filetype_exclude = {
   "Trouble",
   "alpha",
   "TelescopePrompt",
-  "gitcommit"
+  "gitcommit",
 }
 -- Set same list of filetype excludes for `vim-trailing-whitespace` plugin
 vim.g.extra_whitespace_ignored_filetypes = vim.g.indent_blankline_filetype_exclude
