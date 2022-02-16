@@ -31,13 +31,23 @@ M.setup = function(server, opts)
   -- Use and connfigure the CodeLLDB VSCode extension if it is installed
   -- See: https://github.com/simrat39/rust-tools.nvim#a-better-debugging-experience
   if vim.tbl_contains(di.get_installed_debuggers(), "codelldb") then
+    local sysname = vim.loop.os_uname().sysname
+    local liblldb
+    if sysname == "Linux" then
+      liblldb = "liblldb.so"
+    elseif sysname == "Darwin" then
+      liblldb = "liblldb.dylib"
+    else
+      notify.error("unsupported codelldb platform: %s", sysname)
+      return
+    end
     local debugger_path_prefix = path.join(
       string.gsub(require("dap-install.config.settings").options["installation_path"], "/$", ""),
       "codelldb",
       "extension"
     )
     local codelldb_path = path.join(debugger_path_prefix, "adapter", "codelldb")
-    local liblldb_path = path.join(debugger_path_prefix, "lldb", "lib", "liblldb.so")
+    local liblldb_path = path.join(debugger_path_prefix, "lldb", "lib", liblldb)
 
     if not path.is_file(codelldb_path) then
       notify.error("codelldb is installed, but program cannot be found: %s", codelldb_path)
