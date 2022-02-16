@@ -62,6 +62,14 @@ return function(use)
   use({ "simrat39/rust-tools.nvim", requires = { "neovim/nvim-lspconfig" } })
 
   --
+  -- ## Debugging and Debuggers
+  --
+  -- A NeoVim plugin for managing several debuggers for nvim-dap
+  use("Pocco81/DAPInstall.nvim")
+  -- A UI for nvim-dap which provides a good out of the box configuration
+  use { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"} }
+
+  --
   -- ## Fuzzy Finding, File Exploration, and Project Management
   --
   -- A highly extendable fuzzy finder over lists

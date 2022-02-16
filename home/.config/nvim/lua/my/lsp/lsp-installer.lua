@@ -1,5 +1,4 @@
-local utils = require("my.utils")
-local require_or_warn = utils.require_or_warn
+local require_or_warn = require("my.utils").require_or_warn
 
 local ok, lsp_installer = require_or_warn("nvim-lsp-installer")
 if not ok then
@@ -20,24 +19,10 @@ lsp_installer.on_server_ready(function(server)
   end
 
   if server.name == "rust_analyzer" then
-    -- Configuration references:
-    -- * https://github.com/simrat39/rust-tools.nvim/issues/114
-    -- * https://github.com/williamboman/nvim-lsp-installer/wiki/Rust
     local rust_analyzer_opts = require("my.lsp.settings.rust_analyzer")
-    local server_opts = vim.tbl_deep_extend(
-      "force",
-      server:get_default_options(),
-      opts,
-      rust_analyzer_opts
-    )
+    opts = vim.tbl_deep_extend("force", opts, rust_analyzer_opts)
 
-    local rust_tools_ok, rust_tools = require_or_warn("rust-tools")
-    if not rust_tools_ok then
-      return
-    end
-
-    rust_tools.setup({ server = server_opts })
-    server:attach_buffers()
+    require("my.lsp.rust-tools").setup(server, opts)
     return
   end
 

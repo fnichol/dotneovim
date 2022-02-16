@@ -16,6 +16,31 @@ local mappings = {
   ["r"] = { "<cmd>Telescope oldfiles<CR>", "Open Recent File" },
 
   --
+  -- ## Debugging
+  --
+  d = {
+    name = "Debugging",
+    t = { "<cmd>lua require('dapui').toggle()<CR>", "Toggle DAP UI" },
+    b = { "<cmd>lua require('dap').toggle_breakpoint()<CR>", "Toggle Breakpoint" },
+    B = {
+      "<cmd>lua require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>",
+      "Breakpoint Condition",
+    },
+    L = {
+      "<cmd>lua require('dap').set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>",
+      "Set Log Point",
+    },
+
+    c = { "<cmd>lua require('dap').continue()<CR>", "Continue" },
+    o = { "<cmd>lua require('dap').step_over()<CR>", "Step Over" },
+    i = { "<cmd>lua require('dap').step_into()<CR>", "Step Into" },
+    O = { "<cmd>lua require('dap').step_into()<CR>", "Step Out" },
+
+    l = { "<cmd>lua require('dap').run_last()<CR>", "Run Last" },
+    r = { "<cmd>lua require('dap').repl.open()<CR>", "Open REPL" },
+  },
+
+  --
   -- ## Git
   --
   g = {
@@ -132,6 +157,7 @@ local mappings = {
   --
   T = {
     name = "Toggle",
+    d = { "<cmd>lua require('dapui').toggle()<CR>", "DAP UI" },
     t = { "<cmd>TransparentToggle<CR>", "Transparent" },
     T = { "<cmd>TroubleToggle<CR>", "Trouble" },
   },
