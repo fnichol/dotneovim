@@ -13,33 +13,66 @@ if not lsp_signature_ok then
   return
 end
 
-local keymaps = {
-  normal_mode = {
-    -- Goto definition
-    ["gd"] = "<cmd>lua vim.lsp.buf.definition()<CR>",
-    -- Goto declaration
-    ["gD"] = "<cmd>lua vim.lsp.buf.declaration()<CR>",
-    -- Goto implementation
-    ["gI"] = "<cmd>lua vim.lsp.buf.implementation()<CR>",
-    -- Goto references
-    ["gr"] = "<cmd>lua vim.lsp.buf.references()<CR>",
+local wk_ok, which_key = require_or_warn("which-key")
+if not wk_ok then
+  return
+end
 
-    -- Show hover documentation in a float window
-    ["K"] = "<cmd>lua vim.lsp.buf.hover()<CR>",
-    -- Show signature help in a float window
-    ["gs"] = "<cmd>lua vim.lsp.buf.signature_help()<CR>",
-
-    -- Goto next diagnostic
-    ["[d"] = "<cmd>lua vim.diagnostic.goto_prev({ border = 'rounded' })<CR>",
-    -- Goto previous diagnostic
-    ["]d"] = "<cmd>lua vim.diagnostic.goto_next({ border = 'rounded' })<CR>",
-    -- Add buffer diagnostics to the location list
-    ["<leader>q"] = "<cmd>lua vim.diagnostic.setloclist()<CR>",
+local mappings = {
+  [""] = {
+    K = { "<cmd>lua vim.lsp.buf.hover()<CR>", "Show Hover Documentation (LSP)" },
   },
-}
+  ["<leader>"] = {
+    F = { "<cmd>lua vim.lsp.buf.formatting()<CR>", "Format (LSP)" },
+    l = {
+      name = "LSP",
+      a = { "<cmd>lua vim.lsp.buf.code_action()<CR>", "Code Action" },
+      l = { "<cmd>lua vim.lsp.codelens.run()<CR>", "CodeLens Action" },
 
-local mode_adapters = {
-  normal_mode = "n",
+      d = { "<cmd>Telescope diagnostics bufnr=0 theme=get_ivy<CR>", "Buffer Diagnostics" },
+      w = { "<cmd>Telescope diagnostics<CR>", "Diagnostics" },
+
+      j = {
+        "<cmd>lua vim.diagnostic.goto_next({ border = 'rounded' })<CR>",
+        "Goto Next Diagnostic",
+      },
+      k = {
+        "<cmd>lua vim.diagnostic.goto_prev({ border = 'rounded' })<CR>",
+        "Goto Prev Diagnostic",
+      },
+
+      q = {
+        "<cmd>lua vim.diagnostic.setloclist()<CR>",
+        "Add Buffer Diagnostics to Location List",
+      },
+
+      r = { "<cmd>lua vim.lsp.buf.rename()<CR>", "Rename" },
+      f = { "<cmd>lua vim.lsp.buf.formatting()<CR>", "Format" },
+
+      s = { "<cmd>Telescope lsp_document_symbols<CR>", "Document Symbols" },
+      S = { "<cmd>Telescope lsp_dynamic_workspace_symbols<CR>", "Workspace Symbols" },
+    },
+  },
+  ["g"] = {
+    d = { "<cmd>lua vim.lsp.buf.definition()<CR>", "Goto Definition (LSP)" },
+    D = { "<cmd>lua vim.lsp.buf.declaration()<CR>", "Goto Declaration (LSP)" },
+    I = { "<cmd>lua vim.lsp.buf.implementation()<CR>", "Goto Implementation (LSP)" },
+    r = { "<cmd>lua vim.lsp.buf.references()<CR>", "Goto References (LSP)" },
+
+    s = { "<cmd>lua vim.lsp.buf.signature_help()<CR>", "Show Signature Help (LSP)" },
+  },
+  ["["] = {
+    d = {
+      "<cmd>lua vim.diagnostic.goto_prev({ border = 'rounded' })<CR>",
+      "Goto Previous Diagnostic",
+    },
+  },
+  ["]"] = {
+    d = {
+      "<cmd>lua vim.diagnostic.goto_next({ border = 'rounded' })<CR>",
+      "Goto Next Diagnostic",
+    },
+  },
 }
 
 local diagnostic_signs = {
@@ -101,13 +134,8 @@ local function lsp_commands()
 end
 
 local function lsp_key_mappings(bufnr)
-  local opts = { noremap = true, silent = true }
-
-  for mode, mode_keymaps in pairs(keymaps) do
-    mode = mode_adapters[mode]
-    for key, val in pairs(mode_keymaps) do
-      vim.api.nvim_buf_set_keymap(bufnr, mode, key, val, opts)
-    end
+  for prefix, buffer_mappings in pairs(mappings) do
+    which_key.register(buffer_mappings, { prefix = prefix, buffer = bufnr })
   end
 end
 

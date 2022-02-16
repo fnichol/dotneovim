@@ -66,25 +66,9 @@ local mappings = {
   --
   l = {
     name = "LSP",
-    a = { "<cmd>lua vim.lsp.buf.code_action()<CR>", "Code Action" },
-    l = { "<cmd>lua vim.lsp.codelens.run()<CR>", "CodeLens Action" },
-
-    d = { "<cmd>Telescope diagnostics bufnr=0 theme=get_ivy<CR>", "Buffer Diagnostics" },
-    w = { "<cmd>Telescope diagnostics<CR>", "Diagnostics" },
-
     i = { "<cmd>LspInfo<CR>", "Info" },
     I = { "<cmd>LspInstallInfo<CR>", "Installer Info" },
-
-    j = { "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", "Next Diagnostic" },
-    k = { "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", "Prev Diagnostic" },
-
-    q = { "<cmd>lua vim.diagnostic.setloclist()<CR>", "Quickfix" },
-
-    r = { "<cmd>lua vim.lsp.buf.rename()<CR>", "Rename" },
-    f = { "<cmd>lua vim.lsp.buf.formatting()<CR>", "Format" },
-
-    s = { "<cmd>Telescope lsp_document_symbols<CR>", "Document Symbols" },
-    S = { "<cmd>Telescope lsp_dynamic_workspace_symbols<CR>", "Workspace Symbols" },
+    -- For activated buffer-local mappings, see `lua/my/lsp/handlers.lua`
   },
 
   --
