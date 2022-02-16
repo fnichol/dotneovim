@@ -146,6 +146,25 @@ local mappings = {
     },
 
     --
+    -- ## Testing
+    --
+    t = {
+      name = "Testing",
+      t = { "<Plug>(ultest-run-nearest)<CR>", "Run Nearest Test" },
+      T = { "<Plug>(ultest-run-file)<CR>", "Run All Tests In File" },
+      l = { "<Plug>(ultest-run-last)<CR>", "Run Last Test(s)" },
+
+      j = { "<Plug>(ultest-next-fail)<CR>", "Goto Next Failed Test" },
+      k = { "<Plug>(ultest-prev-fail)<CR>", "Goto Previous Failed Test" },
+
+      o = { "<Plug>(ultest-output-show)<CR>", "Show Nearest Test Error Output" },
+      u = { "<Plug>(ultest-summary-toggle)<CR>", "Toggle Summary Window" },
+
+      s = { "<Plug>(ultest-stop-nearest)<CR>", "Stop Any Running Jobs For Nearest Test" },
+      S = { "<Plug>(ultest-stop-file)<CR>", "Stop All Running Jobs For File" },
+    },
+
+    --
     -- ## Toggle
     --
     T = {
@@ -154,6 +173,12 @@ local mappings = {
       t = { "<cmd>TransparentToggle<CR>", "Transparent" },
       T = { "<cmd>TroubleToggle<CR>", "Trouble" },
     },
+  },
+  ["]"] = {
+    t = { "<Plug>(ultest-next-fail)<CR>", "Goto Next Failed Test" },
+  },
+  ["["] = {
+    t = { "<Plug>(ultest-prev-fail)<CR>", "Goto Previous Failed Test" },
   },
 }
 

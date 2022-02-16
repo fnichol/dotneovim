@@ -70,6 +70,12 @@ return function(use)
   use({ "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap" } })
 
   --
+  -- ## Debugging and Debuggers
+  --
+  -- The ultimate testing plugin for (Neo)Vim
+  use({ "rcarriga/vim-ultest", requires = { "vim-test/vim-test" }, run = ":UpdateRemotePlugins" })
+
+  --
   -- ## Fuzzy Finding, File Exploration, and Project Management
   --
   -- A highly extendable fuzzy finder over lists
