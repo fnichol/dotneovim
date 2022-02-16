@@ -67,7 +67,7 @@ return function(use)
   -- A NeoVim plugin for managing several debuggers for nvim-dap
   use("Pocco81/DAPInstall.nvim")
   -- A UI for nvim-dap which provides a good out of the box configuration
-  use { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"} }
+  use({ "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap" } })
 
   --
   -- ## Fuzzy Finding, File Exploration, and Project Management
