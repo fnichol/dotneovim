@@ -21,6 +21,7 @@ local mappings = {
   d = {
     name = "Debugging",
     t = { "<cmd>lua require('dapui').toggle()<CR>", "Toggle DAP UI" },
+
     b = { "<cmd>lua require('dap').toggle_breakpoint()<CR>", "Toggle Breakpoint" },
     B = {
       "<cmd>lua require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>",
@@ -30,14 +31,21 @@ local mappings = {
       "<cmd>lua require('dap').set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>",
       "Set Log Point",
     },
+    T = { "<cmd>lua require('dap').list_breakpoints()<CR>", "Lists All Breakpoints" },
+    x = { "<cmd>lua require('dap').clear_breakpoints()<CR>", "Clears All Breakpoints" },
 
     c = { "<cmd>lua require('dap').continue()<CR>", "Continue" },
+    C = { "<cmd>lua require('dap').run_to_cursor()<CR>", "Run To Cursor" },
+
     o = { "<cmd>lua require('dap').step_over()<CR>", "Step Over" },
     i = { "<cmd>lua require('dap').step_into()<CR>", "Step Into" },
     O = { "<cmd>lua require('dap').step_into()<CR>", "Step Out" },
 
+    j = { "<cmd>lua require('dap').down()<CR>", "Go Down Stacktrace" },
+    k = { "<cmd>lua require('dap').up()<CR>", "Go Up Stacktrace" },
+
     l = { "<cmd>lua require('dap').run_last()<CR>", "Run Last" },
-    r = { "<cmd>lua require('dap').repl.open()<CR>", "Open REPL" },
+    r = { "<cmd>lua require('dap').repl.toggle()<CR>", "Toggle REPL" },
   },
 
   --
