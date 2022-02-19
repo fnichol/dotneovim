@@ -144,6 +144,10 @@ return function(use)
   -- Allows you to do delete buffers (close files) without closing your windows
   -- or messing up your layout
   use("moll/vim-bbye")
+  -- An asynchronous markdown preview plugin for Vim and Neovim
+  if vim.fn.executable("cargo") == 1 then
+    use({ "euclio/vim-markdown-composer", run = "cargo build --release --locked" })
+  end
 
   --
   -- ## System Integrations
