@@ -85,7 +85,13 @@ return function(use)
   -- FZF sorter for telescope written in C
   use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
   -- A file explorer tree for NeoVim written in Lua
-  use({ "kyazdani42/nvim-tree.lua", requires = { "kyazdani42/nvim-web-devicons" } })
+  use({
+    "kyazdani42/nvim-tree.lua",
+    requires = { "kyazdani42/nvim-web-devicons" },
+    -- Pin until `https://github.com/kyazdani42/nvim-tree.lua/issues/1004` is
+    -- resolved
+    commit = "070a57a1953e5ab3abf6803ed795dc184d4bad4d",
+  })
   -- GitHub in NeoVim
   use({
     "pwntester/octo.nvim",
