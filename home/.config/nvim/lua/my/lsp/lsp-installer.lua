@@ -36,6 +36,11 @@ lsp_installer.on_server_ready(function(server)
     opts = vim.tbl_deep_extend("force", opts, sumneko_opts)
   end
 
+  if server.name == "vimls" then
+    local vimls_opts = require("my.lsp.settings.vimls")
+    opts = vim.tbl_deep_extend("force", opts, vimls_opts)
+  end
+
   if server.name == "volar" then
     local volar_opts = require("my.lsp.settings.volar")
     opts = vim.tbl_deep_extend("force", opts, volar_opts)
