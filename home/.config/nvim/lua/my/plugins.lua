@@ -130,6 +130,8 @@ return function(use)
   use("windwp/nvim-autopairs")
   -- Smart and Powerful commenting plugin for NeoVim
   use("numToStr/Comment.nvim")
+  -- Delete/change/add parentheses/quotes/XML-tags/much more with ease
+  use("tpope/vim-surround")
   -- Indent guides for Neovim
   use("lukas-reineke/indent-blankline.nvim")
   -- Highlights trailing whitespace in red
