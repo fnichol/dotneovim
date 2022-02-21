@@ -13,6 +13,7 @@ local root_has_file = require("null-ls.utils").make_conditional_utils().root_has
 
 null_ls.setup({
   debug = false,
+  on_attach = require("my.lsp.handlers").on_attach,
   diagnostics_format = "[#{c}] #{m}",
   sources = {
     --
