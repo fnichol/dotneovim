@@ -1,0 +1,7 @@
+---
+container:
+  image: fnichol/stylua:latest
+
+check_task:
+  setup_script: apk add make
+  check_script: make check
