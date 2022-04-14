@@ -158,4 +158,10 @@ return function(use)
   use("akinsho/toggleterm.nvim")
   -- Fugitive is the premier Vim plugin for Git
   use("tpope/vim-fugitive")
+  -- Modern database interface for Vim
+  use("tpope/vim-dadbod")
+  -- Simple UI for vim-dadbod
+  use("kristijanhusak/vim-dadbod-ui")
+  -- Database autocompletion powered by vim-dadbod
+  use("kristijanhusak/vim-dadbod-completion")
 end
