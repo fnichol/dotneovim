@@ -1,3 +1,44 @@
+local parsers = {
+  "bash",
+  "c",
+  "cmake",
+  "comment",
+  "cpp",
+  "css",
+  "dockerfile",
+  "dot",
+  "go",
+  "gomod",
+  "graphql",
+  "hcl",
+  "help",
+  "hjson",
+  "html",
+  "http",
+  "java",
+  "javascript",
+  "jsdoc",
+  "json",
+  "json5",
+  "lua",
+  "make",
+  "nix",
+  "perl",
+  "php",
+  "python",
+  "regex",
+  "rst",
+  "ruby",
+  "rust",
+  "scss",
+  "toml",
+  "typescript",
+  "vim",
+  "vue",
+  "yaml",
+  "zig",
+}
+
 local ok, configs = pcall(require, "nvim-treesitter.configs")
 if not ok then
   vim.notify("[my.treesitter] failed to require 'nvim-treesitter.configs'", vim.log.levels.WARN)
@@ -8,11 +49,11 @@ end
 
 configs.setup({
   -- One of "all", "maintained" (parsers with maintainers), or a list of languages
-  ensure_installed = "maintained",
+  ensure_installed = parsers,
   -- Install languages synchronously (only applied to `ensure_installed`)
   sync_install = false,
   -- List of parsers to ignore installing
-  ignore_install = { "" },
+  ignore_install = {},
   autopairs = {
     enable = true,
   },
