@@ -78,7 +78,7 @@ cmp.setup({
       luasnip.lsp_expand(args.body)
     end,
   },
-  mapping = {
+  mapping = cmp.mapping.preset.insert({
     -- Use C+up/down motion keys to navigate the previous and next items
     ["<C-k>"] = cmp.mapping.select_prev_item(),
     ["<C-j>"] = cmp.mapping.select_next_item(),
@@ -99,7 +99,7 @@ cmp.setup({
     ["<Tab>"] = cmp.mapping(tab_mapping, { "i", "s" }),
     -- Setup a reverse "Super-Tab" like mapping
     ["<S-Tab>"] = cmp.mapping(shift_tab_mapping, { "i", "s" }),
-  },
+  }),
   formatting = {
     fields = { "kind", "abbr", "menu" },
     format = lspkind.cmp_format({
