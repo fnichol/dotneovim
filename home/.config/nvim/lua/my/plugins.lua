@@ -65,7 +65,13 @@ return function(use)
   -- ## Debugging and Debuggers
   --
   -- A NeoVim plugin for managing several debuggers for nvim-dap
-  use("Pocco81/DAPInstall.nvim")
+  --
+  -- TODO: It appears that the author of DAPInstall.nvim is rewriting this
+  -- plugin, but using the same repository on the main branch. As a result,
+  -- we'll pin to the last commit of `DAPInstall` as we wait for `dap-buddy` to
+  -- mature.
+  --
+  use({ "Pocco81/DAPInstall.nvim", commit = "24923c3819a450a772bb8f675926d530e829665f" })
   -- A UI for nvim-dap which provides a good out of the box configuration
   use({ "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap" } })
 
