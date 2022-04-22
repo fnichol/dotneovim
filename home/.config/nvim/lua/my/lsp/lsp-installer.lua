@@ -36,6 +36,11 @@ lsp_installer.on_server_ready(function(server)
     opts = vim.tbl_deep_extend("force", opts, sumneko_opts)
   end
 
+  if server.name == "sqlls" then
+    local sqlls_opts = require("my.lsp.settings.sqlls")
+    opts = vim.tbl_deep_extend("force", opts, sqlls_opts)
+  end
+
   if server.name == "vimls" then
     local vimls_opts = require("my.lsp.settings.vimls")
     opts = vim.tbl_deep_extend("force", opts, vimls_opts)
