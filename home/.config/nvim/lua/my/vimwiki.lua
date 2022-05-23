@@ -69,4 +69,4 @@ which_key.register({
     d = { "<cmd>VimwikiIndex<CR>", "Delete current wiki file" },
     r = { "<cmd>VimwikiIndex<CR>", "Rename current wiki file" },
   },
-}, { buffer = 0, prefix = "<leader>" })
+}, { buffer = nil, prefix = "<leader>" })
