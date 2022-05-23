@@ -173,4 +173,6 @@ return function(use)
   use("kristijanhusak/vim-dadbod-ui")
   -- Database autocompletion powered by vim-dadbod
   use("kristijanhusak/vim-dadbod-completion")
+  -- Personal wiki for Vim
+  use({ "vimwiki/vimwiki", branch = "dev" })
 end
