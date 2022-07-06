@@ -1,6 +1,10 @@
-local require_or_warn = require("my.utils").require_or_warn
-
 -- Usage: https://github.com/rcarriga/vim-ultest
+
+-- Set a reminder to check the state of https://github.com/nvim-neotest/neotest
+-- for Rust/Cargo compatibility.
+if os.time() < os.time({ year = 2022, month = 8, day = 1 }) then
+  vim.g.ultest_deprecation_notice = 0
+end
 
 vim.api.nvim_exec([[let test#rust#cargotest#options = "--color=always"]], false)
 vim.api.nvim_exec([[let test#strategy = "neovim"]], false)
