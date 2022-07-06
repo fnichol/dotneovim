@@ -1,9 +1,12 @@
 -- Usage: https://github.com/kyazdani42/nvim-tree.lua
---
--- Each of these are documented in `:help nvim-tree.OPTION_NAME`
-vim.g.nvim_tree_icons = {
+
+-- Configuration options for icon glyphs (see: `:help nvim-tree.renderer.icons.glyphs`)
+local renderer_icons_glyphs = {
+  -- Glyph for files
   default = "",
+  -- Glyph for symlink to files
   symlink = "",
+  -- Glyphs for Git status
   git = {
     unstaged = "",
     staged = "S",
@@ -13,6 +16,7 @@ vim.g.nvim_tree_icons = {
     untracked = "U",
     ignored = "◌",
   },
+  -- Glyphs for directories
   folder = {
     default = "",
     open = "",
@@ -20,26 +24,6 @@ vim.g.nvim_tree_icons = {
     empty_open = "",
     symlink = "",
   },
-}
-
--- There is some kind of refactoring/migration going on in the upstream
--- project, so these Vim global settings are likely temporary and may return to
--- the `setup(...)` configuration at some point in the future. Maybe?
---
--- https://github.com/kyazdani42/nvim-tree.lua/issues/674
--- https://github.com/LunarVim/Neovim-from-scratch/issues/124
-
--- Enables file highlight for Git attributes
-vim.g["nvim_tree_git_hl"] = 1
--- In what format to show root folder
-vim.g["nvim_tree_root_folder_modifier"] = ":t"
--- Icons to render
-vim.g["nvim_tree_show_icons"] = {
-  git = 1,
-  folders = 1,
-  files = 1,
-  folder_arrows = 1,
-  tree_width = 30,
 }
 
 local ok, nvim_tree = pcall(require, "nvim-tree")
@@ -110,6 +94,22 @@ nvim_tree.setup({
     },
     number = false,
     relativenumber = false,
+  },
+  renderer = {
+    -- Enables file highlight for Git attributes
+    highlight_git = true,
+    -- In what format to show root folder
+    root_folder_modifier = ":t",
+    icons = {
+      -- Icons to render
+      show = {
+        git = true,
+        file = true,
+        folder = true,
+        folder_arrow = true,
+      },
+      glyphs = renderer_icons_glyphs,
+    },
   },
   trash = {
     cmd = "trash",
