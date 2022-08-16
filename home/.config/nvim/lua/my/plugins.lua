@@ -151,7 +151,7 @@ return function(use)
   -- list to help you solve all the trouble your code is causing
   use({ "folke/trouble.nvim", requires = { "kyazdani42/nvim-web-devicons" } })
   -- A snazzy bufferline for NeoVim
-  use({ "akinsho/bufferline.nvim", requires = { "kyazdani42/nvim-web-devicons" } })
+  use({ "akinsho/bufferline.nvim", tag = "v2.*", requires = { "kyazdani42/nvim-web-devicons" } })
   -- Allows you to do delete buffers (close files) without closing your windows
   -- or messing up your layout
   use("moll/vim-bbye")
