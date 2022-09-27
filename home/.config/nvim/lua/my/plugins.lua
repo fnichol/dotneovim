@@ -92,7 +92,11 @@ return function(use)
   -- It sets vim.ui.select to telescope
   use("nvim-telescope/telescope-ui-select.nvim")
   -- FZF sorter for telescope written in C
-  use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
+  local telescope_fzf_native_build = "make"
+  if vim.loop.os_uname().sysname == "OpenBSD" then
+    telescope_fzf_native_build = "gmake"
+  end
+  use({ "nvim-telescope/telescope-fzf-native.nvim", run = telescope_fzf_native_build })
   -- A file explorer tree for NeoVim written in Lua
   use({ "kyazdani42/nvim-tree.lua", requires = { "kyazdani42/nvim-web-devicons" } })
   -- GitHub in NeoVim
