@@ -8,6 +8,9 @@ end
 
 dressing.setup({
   input = {
-    winblend = 0,
+    win_options = {
+      -- Window transparency (0-100)
+      winblend = 0,
+    },
   },
 })
