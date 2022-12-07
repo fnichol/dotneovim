@@ -50,8 +50,10 @@ return function(use)
   use("neovim/nvim-lspconfig")
   -- Configures Neovim LSP using JSON files like `coc-settings.json`
   use("tamago324/nlsp-settings.nvim")
-  -- Companion nvim-lspconfig which installs LSP servers locally
-  use({ "williamboman/nvim-lsp-installer", requires = { "neovim/nvim-lspconfig" } })
+  -- Easily install and manage LSP servers, DAP servers, linters, and formatters
+  use({ "williamboman/mason.nvim" })
+  -- Extension to mason.nvim that makes it easier to use lspconfig with mason.nvim
+  use({ "williamboman/mason-lspconfig.nvim", requires = { "neovim/nvim-lspconfig" } })
   -- Use NeoVim as a language server to inject LSP diagnostics, code actions, and more
   use("jose-elias-alvarez/null-ls.nvim")
   -- LSP signature hint as you type
@@ -159,6 +161,9 @@ return function(use)
   -- Allows you to do delete buffers (close files) without closing your windows
   -- or messing up your layout
   use("moll/vim-bbye")
+  -- Plugin for automatically highlighting other uses of the word under the
+  -- cursor using either LSP, Tree-sitter, or regex matching
+  use("RRethy/vim-illuminate")
   -- An asynchronous markdown preview plugin for Vim and Neovim
   if vim.fn.executable("cargo") == 1 then
     use({ "euclio/vim-markdown-composer", run = "cargo build --release --locked" })

@@ -71,12 +71,36 @@ local mappings = {
     },
 
     --
+    -- ## Installer Tooling
+    --
+    i = {
+      name = "Installers",
+      --
+      -- ## Packer
+      --
+      m = {
+        name = "Mason",
+        s = { "<cmd>Mason<CR>", "Sync and Status" },
+      },
+      --
+      -- ## Packer
+      --
+      p = {
+        name = "Packer",
+        c = { "<cmd>PackerCompile<CR>", "Compile" },
+        i = { "<cmd>PackerInstall<CR>", "Install" },
+        s = { "<cmd>PackerSync<CR>", "Sync" },
+        S = { "<cmd>PackerStatus<CR>", "Status" },
+        u = { "<cmd>PackerUpdate<CR>", "Update" },
+      },
+    },
+
+    --
     -- ## LSP
     --
     l = {
       name = "LSP",
       i = { "<cmd>LspInfo<CR>", "Info" },
-      I = { "<cmd>LspInstallInfo<CR>", "Installer Info" },
       -- For activated buffer-local mappings, see `lua/my/lsp/handlers.lua`
     },
 
@@ -89,18 +113,6 @@ local mappings = {
       f = { "<cmd>ToggleTerm direction=float<CR>", "Float" },
       h = { "<cmd>ToggleTerm size=10 direction=horizontal<CR>", "Horizontal" },
       v = { "<cmd>ToggleTerm size=80 direction=vertical<CR>", "Veritcal" },
-    },
-
-    --
-    -- ## Packer
-    --
-    p = {
-      name = "Packer",
-      c = { "<cmd>PackerCompile<CR>", "Compile" },
-      i = { "<cmd>PackerInstall<CR>", "Install" },
-      s = { "<cmd>PackerSync<CR>", "Sync" },
-      S = { "<cmd>PackerStatus<CR>", "Status" },
-      u = { "<cmd>PackerUpdate<CR>", "Update" },
     },
 
     --

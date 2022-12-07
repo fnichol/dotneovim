@@ -18,12 +18,17 @@ if not wk_ok then
   return
 end
 
+local ill_ok, illuminate = require_or_warn("illuminate")
+if not ill_ok then
+  return
+end
+
 local mappings = {
   [""] = {
     K = { "<cmd>lua vim.lsp.buf.hover()<CR>", "Show Hover Documentation (LSP)" },
   },
   ["<leader>"] = {
-    F = { "<cmd>lua vim.lsp.buf.formatting()<CR>", "Format (LSP)" },
+    F = { "<cmd>lua vim.lsp.buf.format{ async = true }<CR>", "Format (LSP)" },
     l = {
       name = "LSP",
       a = { "<cmd>lua vim.lsp.buf.code_action()<CR>", "Code Action" },
@@ -110,25 +115,8 @@ local diagnostic_config = {
   virtual_text = true,
 }
 
--- Sends request to LSP server to resolve document highlights for the current
--- text document position, if the capabilities are enabled
-local function lsp_document_highlight(client)
-  if client.resolved_capabilities.document_highlight then
-    vim.api.nvim_exec(
-      [[
-        augroup lsp_document_highlight
-          autocmd! * <buffer>
-          autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-          autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-        augroup END
-      ]],
-      false
-    )
-  end
-end
-
 local function lsp_commands()
-  vim.cmd([[command! Format execute 'lua vim.lsp.buf.formatting()']])
+  vim.cmd([[command! Format execute 'lua vim.lsp.buf.format{ async = true }']])
 end
 
 local function lsp_key_mappings(bufnr)
@@ -156,25 +144,25 @@ end
 M.on_attach = function(client, bufnr)
   -- disable jsonls formatting
   if client.name == "jsonls" then
-    client.resolved_capabilities.document_formatting = false
+    client.server_capabilities.documentFormattingProvider = false
   end
   -- disable sumneko_lua formatting
   if client.name == "sumneko_lua" then
-    client.resolved_capabilities.document_formatting = false
+    client.server_capabilities.documentFormattingProvider = false
   end
   -- disable tsserver formatting
   if client.name == "tsserver" then
-    client.resolved_capabilities.document_formatting = false
+    client.server_capabilities.documentFormattingProvider = false
   end
   -- disable volar formatting
   if client.name == "volar" then
-    client.resolved_capabilities.document_formatting = false
+    client.server_capabilities.documentFormattingProvider = false
   end
 
   lsp_key_mappings(bufnr)
   lsp_commands()
-  lsp_document_highlight(client)
   lsp_signature.on_attach()
+  illuminate.on_attach(client)
 end
 
 M.capabilities = cmp_nvim_lsp.default_capabilities()

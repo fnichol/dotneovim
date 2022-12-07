@@ -1,9 +1,10 @@
-local ok, _ = pcall(require, "lspconfig")
-if not ok then
-  vim.notify("[my.lsp] failed to require 'lspconfig'", vim.log.levels.WARN)
+local require_or_warn = require("my.utils").require_or_warn
+
+local status_ok, _ = require_or_warn("lspconfig")
+if not status_ok then
   return
 end
 
-require("my.lsp.lsp-installer")
+require("my.lsp.mason")
 require("my.lsp.handlers").setup()
 require("my.lsp.null-ls")
