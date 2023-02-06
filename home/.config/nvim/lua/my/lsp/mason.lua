@@ -55,7 +55,7 @@ local mason_settings = {
       package_pending = "◍",
       -- The list icon to use for packages that are not installed.
       package_uninstalled = "◍",
-    }
+    },
   },
   -- Controls to which degree logs are written to the log file. It's useful to
   -- set this to vim.log.levels.DEBUG when debugging issues with package
@@ -75,7 +75,6 @@ mason_lspconfig.setup({
 })
 
 local opts = {}
-
 
 for _, server in pairs(servers) do
   opts = {
