@@ -81,10 +81,19 @@ return function(use)
   use({ "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap" } })
 
   --
-  -- ## Debugging and Debuggers
+  -- ## Testing
   --
-  -- The ultimate testing plugin for (Neo)Vim
-  use({ "rcarriga/vim-ultest", requires = { "vim-test/vim-test" }, run = ":UpdateRemotePlugins" })
+  -- An extensible framework for interacting with tests within NeoVim
+  use({
+    "nvim-neotest/neotest",
+    requires = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "antoinemadec/FixCursorHold.nvim",
+    },
+  })
+  -- Neotest adapter for Rust, using cargo-nextest
+  use({ "rouge8/neotest-rust", requires = { "nvim-neotest/neotest" } })
 
   --
   -- ## Fuzzy Finding, File Exploration, and Project Management
