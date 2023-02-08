@@ -74,20 +74,26 @@ mason_lspconfig.setup({
   automatic_installation = true,
 })
 
-local opts = {}
-
 for _, server in pairs(servers) do
-  opts = {
+  server = vim.split(server, "@")[1]
+
+  local _, conf_opts = require_or_warn("my.lsp.settings." .. server)
+
+  local default_opts = {
     on_attach = require("my.lsp.handlers").on_attach,
     capabilities = require("my.lsp.handlers").capabilities,
   }
+  local opts = vim.tbl_deep_extend("force", {}, default_opts, conf_opts or {})
 
-  server = vim.split(server, "@")[1]
+  if server == "rust_analyzer" then
+    -- Load and configure `rust-tools` which in turn sets up `rust_analyzer`
+    local rust_tools_ok, rust_tools = require_or_warn("my.lsp.rust-tools")
+    if not rust_tools_ok then
+      return
+    end
 
-  local require_ok, conf_opts = require_or_warn("my.lsp.settings." .. server)
-  if require_ok then
-    opts = vim.tbl_deep_extend("force", conf_opts, opts)
+    rust_tools.setup(opts)
+  else
+    lspconfig[server].setup(opts)
   end
-
-  lspconfig[server].setup(opts)
 end
