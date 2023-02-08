@@ -24,58 +24,68 @@ if not ill_ok then
 end
 
 local mappings = {
-  [""] = {
-    K = { "<cmd>lua vim.lsp.buf.hover()<CR>", "Show Hover Documentation (LSP)" },
-  },
-  ["<leader>"] = {
-    F = { "<cmd>lua vim.lsp.buf.format{ async = true }<CR>", "Format (LSP)" },
-    l = {
-      name = "LSP",
-      a = { "<cmd>lua vim.lsp.buf.code_action()<CR>", "Code Action" },
-      l = { "<cmd>lua vim.lsp.codelens.run()<CR>", "CodeLens Action" },
+  ["n"] = {
+    [""] = {
+      K = { "<cmd>lua vim.lsp.buf.hover()<CR>", "Show Hover Documentation (LSP)" },
+    },
+    ["<leader>"] = {
+      F = { "<cmd>lua vim.lsp.buf.format{ async = true }<CR>", "Format (LSP)" },
+      l = {
+        name = "LSP",
+        a = { "<cmd>lua vim.lsp.buf.code_action()<CR>", "Code Action" },
+        l = { "<cmd>lua vim.lsp.codelens.run()<CR>", "CodeLens Action" },
 
-      d = { "<cmd>Telescope diagnostics bufnr=0 theme=get_ivy<CR>", "Buffer Diagnostics" },
-      w = { "<cmd>Telescope diagnostics<CR>", "Diagnostics" },
+        d = { "<cmd>Telescope diagnostics bufnr=0 theme=get_ivy<CR>", "Buffer Diagnostics" },
+        w = { "<cmd>Telescope diagnostics<CR>", "Diagnostics" },
 
-      j = {
+        j = {
+          "<cmd>lua vim.diagnostic.goto_next({ border = 'rounded' })<CR>",
+          "Goto Next Diagnostic",
+        },
+        k = {
+          "<cmd>lua vim.diagnostic.goto_prev({ border = 'rounded' })<CR>",
+          "Goto Prev Diagnostic",
+        },
+
+        q = {
+          "<cmd>lua vim.diagnostic.setloclist()<CR>",
+          "Add Buffer Diagnostics to Location List",
+        },
+
+        r = { "<cmd>lua vim.lsp.buf.rename()<CR>", "Rename" },
+        f = { "<cmd>lua vim.lsp.buf.formatting()<CR>", "Format" },
+
+        s = { "<cmd>Telescope lsp_document_symbols<CR>", "Document Symbols" },
+        S = { "<cmd>Telescope lsp_dynamic_workspace_symbols<CR>", "Workspace Symbols" },
+      },
+    },
+    ["g"] = {
+      d = { "<cmd>lua vim.lsp.buf.definition()<CR>", "Goto Definition (LSP)" },
+      D = { "<cmd>lua vim.lsp.buf.declaration()<CR>", "Goto Declaration (LSP)" },
+      I = { "<cmd>lua vim.lsp.buf.implementation()<CR>", "Goto Implementation (LSP)" },
+      r = { "<cmd>lua vim.lsp.buf.references()<CR>", "Goto References (LSP)" },
+
+      s = { "<cmd>lua vim.lsp.buf.signature_help()<CR>", "Show Signature Help (LSP)" },
+    },
+    ["["] = {
+      d = {
+        "<cmd>lua vim.diagnostic.goto_prev({ border = 'rounded' })<CR>",
+        "Goto Previous Diagnostic",
+      },
+    },
+    ["]"] = {
+      d = {
         "<cmd>lua vim.diagnostic.goto_next({ border = 'rounded' })<CR>",
         "Goto Next Diagnostic",
       },
-      k = {
-        "<cmd>lua vim.diagnostic.goto_prev({ border = 'rounded' })<CR>",
-        "Goto Prev Diagnostic",
-      },
-
-      q = {
-        "<cmd>lua vim.diagnostic.setloclist()<CR>",
-        "Add Buffer Diagnostics to Location List",
-      },
-
-      r = { "<cmd>lua vim.lsp.buf.rename()<CR>", "Rename" },
-      f = { "<cmd>lua vim.lsp.buf.formatting()<CR>", "Format" },
-
-      s = { "<cmd>Telescope lsp_document_symbols<CR>", "Document Symbols" },
-      S = { "<cmd>Telescope lsp_dynamic_workspace_symbols<CR>", "Workspace Symbols" },
     },
   },
-  ["g"] = {
-    d = { "<cmd>lua vim.lsp.buf.definition()<CR>", "Goto Definition (LSP)" },
-    D = { "<cmd>lua vim.lsp.buf.declaration()<CR>", "Goto Declaration (LSP)" },
-    I = { "<cmd>lua vim.lsp.buf.implementation()<CR>", "Goto Implementation (LSP)" },
-    r = { "<cmd>lua vim.lsp.buf.references()<CR>", "Goto References (LSP)" },
-
-    s = { "<cmd>lua vim.lsp.buf.signature_help()<CR>", "Show Signature Help (LSP)" },
-  },
-  ["["] = {
-    d = {
-      "<cmd>lua vim.diagnostic.goto_prev({ border = 'rounded' })<CR>",
-      "Goto Previous Diagnostic",
-    },
-  },
-  ["]"] = {
-    d = {
-      "<cmd>lua vim.diagnostic.goto_next({ border = 'rounded' })<CR>",
-      "Goto Next Diagnostic",
+  ["v"] = {
+    ["<leader>"] = {
+      l = {
+        name = "LSP",
+        a = { "<cmd>lua vim.lsp.buf.code_action()<CR>", "Code Action" },
+      },
     },
   },
 }
@@ -120,8 +130,10 @@ local function lsp_commands()
 end
 
 local function lsp_key_mappings(bufnr)
-  for prefix, buffer_mappings in pairs(mappings) do
-    which_key.register(buffer_mappings, { prefix = prefix, buffer = bufnr })
+  for mode, mode_mappings in pairs(mappings) do
+    for prefix, buffer_mappings in pairs(mode_mappings) do
+      which_key.register(buffer_mappings, { mode = mode, prefix = prefix, buffer = bufnr })
+    end
   end
 end
 
