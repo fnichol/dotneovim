@@ -56,6 +56,8 @@ return function(use)
   use({ "williamboman/mason-lspconfig.nvim", requires = { "neovim/nvim-lspconfig" } })
   -- Use NeoVim as a language server to inject LSP diagnostics, code actions, and more
   use("jose-elias-alvarez/null-ls.nvim")
+  -- Bridges mason.nvim with the null-ls plugin
+  use("jay-babu/mason-null-ls.nvim")
   -- LSP signature hint as you type
   use("ray-x/lsp_signature.nvim")
   -- Fixes CursorHold Performance (This is needed to fix LSP doc highlight)

@@ -1,10 +1,17 @@
-local ok, null_ls = pcall(require, "null-ls")
-if not ok then
-  vim.notify("[my.null-ls] failed to require 'null-ls'", vim.log.levels.WARN)
+local require_or_warn = require("my.utils").require_or_warn
+
+local null_ls_ok, null_ls = require_or_warn("null-ls")
+if not null_ls_ok then
+  return
+end
+
+local mason_null_ls_ok, mason_null_ls = require_or_warn("mason-null-ls")
+if not mason_null_ls_ok then
   return
 end
 
 -- Usage: https://github.com/jose-elias-alvarez/null-ls.nvim
+-- Usage: https://github.com/jay-babu/mason-null-ls.nvim
 
 local formatting = null_ls.builtins.formatting
 local diagnostics = null_ls.builtins.diagnostics
@@ -19,7 +26,10 @@ null_ls.setup({
     --
     -- ## Formatting
     --
-    formatting.prettier,
+    formatting.prettier.with({
+      -- Prefer a project-installed version of Prettier if available
+      prefer_local = "node_modules/.bin"
+    }),
     formatting.stylua.with({
       condition = function(utils)
         -- Only format Lua code that have a StyLua configuration
@@ -55,4 +65,10 @@ null_ls.setup({
     actions.eslint,
     actions.shellcheck,
   },
+})
+
+mason_null_ls.setup({
+  ensure_installed = nil,
+  automatic_installation = true,
+  automatic_setup = false,
 })
