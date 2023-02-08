@@ -56,6 +56,7 @@ null_ls.setup({
     diagnostics.hadolint,
     diagnostics.jsonlint,
     diagnostics.shellcheck,
+    diagnostics.trail_space,
     diagnostics.vint,
     diagnostics.yamllint,
 

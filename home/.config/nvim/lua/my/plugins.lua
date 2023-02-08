@@ -147,8 +147,6 @@ return function(use)
   use("tpope/vim-surround")
   -- Indent guides for Neovim
   use("lukas-reineke/indent-blankline.nvim")
-  -- Highlights trailing whitespace in red
-  use("bronson/vim-trailing-whitespace")
   -- NeoVim plugin to improve the default vim.ui interfaces
   use("stevearc/dressing.nvim")
   -- A fancy, configurable, notification manager for NeoVim
