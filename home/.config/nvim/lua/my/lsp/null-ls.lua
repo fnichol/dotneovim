@@ -52,6 +52,7 @@ null_ls.setup({
     --
     -- ## Diagnostics
     --
+    diagnostics.alex,
     diagnostics.eslint,
     diagnostics.hadolint,
     diagnostics.jsonlint,
