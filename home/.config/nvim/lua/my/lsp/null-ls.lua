@@ -28,7 +28,7 @@ null_ls.setup({
     --
     formatting.prettier.with({
       -- Prefer a project-installed version of Prettier if available
-      prefer_local = "node_modules/.bin"
+      prefer_local = "node_modules/.bin",
     }),
     formatting.stylua.with({
       condition = function(utils)
