@@ -73,14 +73,10 @@ return function(use)
   --
   -- ## Debugging and Debuggers
   --
-  -- A NeoVim plugin for managing several debuggers for nvim-dap
-  --
-  -- TODO: It appears that the author of DAPInstall.nvim is rewriting this
-  -- plugin, but using the same repository on the main branch. As a result,
-  -- we'll pin to the last commit of `DAPInstall` as we wait for `dap-buddy` to
-  -- mature.
-  --
-  use({ "Pocco81/DAPInstall.nvim", commit = "24923c3819a450a772bb8f675926d530e829665f" })
+  -- Debug Adapter Protocol client implementation for Neovim
+  use({ "mfussenegger/nvim-dap" })
+  -- Bridges mason.nvim with the nvim-dap plugin
+  use({ "jay-babu/mason-nvim-dap.nvim", requires = { "mfussenegger/nvim-dap" } })
   -- A UI for nvim-dap which provides a good out of the box configuration
   use({ "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap" } })
 
