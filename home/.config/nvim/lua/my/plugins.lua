@@ -1,4 +1,6 @@
-return function(use)
+local packer = nil
+
+local plugins = function(use)
   -- Packer manages itself
   use("wbthomason/packer.nvim")
   -- An implementation of the Popup API from Vim in NeoVim
@@ -124,7 +126,16 @@ return function(use)
   -- ## Treesitter
   --
   -- NeoVim Treesitter configurations and abstraction layer
-  use({ "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" })
+  use({
+    "nvim-treesitter/nvim-treesitter",
+    -- Thanks to:
+    -- https://github.com/wbthomason/packer.nvim/issues/1050#issuecomment-1237863967
+    run = function()
+      if vim.fn.exists(":TSUpdate") == 2 then
+        vim.cmd(":TSUpdate")
+      end
+    end,
+  })
   -- NeoVim Treesitter plugin which sets the commentstring based on the cursor location
   use("JoosepAlviste/nvim-ts-context-commentstring")
 
@@ -192,3 +203,36 @@ return function(use)
   -- Personal wiki for Vim
   use({ "vimwiki/vimwiki", branch = "dev" })
 end
+
+local init = function()
+  if packer == nil then
+    -- Load Packer
+    packer = require("packer")
+
+    -- Initialize packer so it's ready to process plugins
+    packer.init({
+      display = {
+        -- Custom function to open a window for Packer's display
+        open_fn = function()
+          return require("packer.util").float({ border = "rounded" })
+        end,
+      },
+    })
+  end
+
+  -- Empty the set of managed plugins--used if this module is reloaded
+  packer.reset()
+
+  -- Add plugins to the managed set
+  plugins(packer.use)
+end
+
+vim.cmd([[
+  augroup packer_user_config
+    autocmd!
+    autocmd BufWritePost plugins.lua source <afile> | PackerSync
+  augroup end
+]])
+
+init()
+return packer
