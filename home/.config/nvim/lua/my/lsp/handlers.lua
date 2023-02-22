@@ -158,8 +158,8 @@ M.on_attach = function(client, bufnr)
   if client.name == "jsonls" then
     client.server_capabilities.documentFormattingProvider = false
   end
-  -- disable sumneko_lua formatting
-  if client.name == "sumneko_lua" then
+  -- disable lua_ls formatting
+  if client.name == "lua_ls" then
     client.server_capabilities.documentFormattingProvider = false
   end
   -- disable tsserver formatting
