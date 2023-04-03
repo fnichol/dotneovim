@@ -6,6 +6,4 @@ end
 
 -- Usage: https://github.com/xiyaowong/nvim-transparent
 
-transparent.setup({
-  enable = true,
-})
+transparent.setup({})
