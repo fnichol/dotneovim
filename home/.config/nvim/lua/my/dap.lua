@@ -30,8 +30,6 @@ mason_nvim_dap.setup({
   automatic_setup = true,
 })
 
-mason_nvim_dap.setup_handlers()
-
 dapui.setup()
 
 -- Use nvim-dap events to open and close the windows automatically
