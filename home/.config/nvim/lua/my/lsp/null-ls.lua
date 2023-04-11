@@ -82,7 +82,7 @@ if vim.loop.os_uname().sysname == "OpenBSD" then
       "shellcheck",
       "shfmt",
       "stylua",
-    }
+    },
   }
 end
 
