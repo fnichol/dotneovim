@@ -22,6 +22,17 @@ local servers = {
   "yamlls",
 }
 
+local utils = require("my.utils")
+local require_or_warn = utils.require_or_warn
+
+if vim.loop.os_uname().sysname == "OpenBSD" then
+  local remove_value = utils.table.remove_value
+
+  remove_value(servers, "lua_ls")
+  remove_value(servers, "rust_analyzer")
+  remove_value(servers, "taplo")
+end
+
 local require_or_warn = require("my.utils").require_or_warn
 
 local lspconfig_ok, lspconfig = require_or_warn("lspconfig")

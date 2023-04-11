@@ -69,8 +69,21 @@ null_ls.setup({
   },
 })
 
-mason_null_ls.setup({
+local mason_null_ls_config = {
   ensure_installed = nil,
   automatic_installation = true,
   automatic_setup = false,
-})
+}
+
+if vim.loop.os_uname().sysname == "OpenBSD" then
+  mason_null_ls_config.automatic_installation = {
+    exclude = {
+      "hadolint",
+      "shellcheck",
+      "shfmt",
+      "stylua",
+    }
+  }
+end
+
+mason_null_ls.setup(mason_null_ls_config)

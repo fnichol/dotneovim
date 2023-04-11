@@ -1,4 +1,5 @@
-local require_or_warn = require("my.utils").require_or_warn
+local utils = require("my.utils")
+local require_or_warn = utils.require_or_warn
 
 local dap_ok, dap = require_or_warn("dap")
 if not dap_ok then
@@ -23,6 +24,12 @@ local sources = {
   "bash",
   "codelldb",
 }
+
+if vim.loop.os_uname().sysname == "OpenBSD" then
+  local remove_value = utils.table.remove_value
+
+  remove_value(sources, "codelldb")
+end
 
 mason_nvim_dap.setup({
   ensure_installed = sources,
