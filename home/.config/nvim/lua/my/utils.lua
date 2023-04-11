@@ -42,6 +42,32 @@ M._notify = function(log_level, stack_level, msg, ...)
   )
 end
 
+M.table = {
+  ---Returns the index of the value in the table or -1 if it does not exist.
+  ---
+  ---@param tbl table the table to search
+  ---@return val any the value to find
+  ---@return number the index of the value, or -1 if not found
+  find_value = function(tbl, val)
+    for idx = 1, #tbl do
+      if tbl[idx] == val then
+        return idx
+      end
+    end
+    return -1
+  end,
+
+  remove_value = function(tbl, val)
+    local idx = require("my.utils").table.find_value(tbl, val)
+
+    if idx > 0 then
+      table.remove(tbl, idx)
+    else
+      require("my.utils").notify.warn("failed to remove value '%s' from table", val)
+    end
+  end,
+}
+
 M.notify = {
   ---Notifies a message at the `DEBUG` level
   ---
