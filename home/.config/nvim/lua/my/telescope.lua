@@ -18,7 +18,7 @@ local config = {
   defaults = {
     prompt_prefix = " ",
     selection_caret = " ",
-    path_display = { "smart" },
+    path_display = { "truncate" },
     set_env = { ["COLORTERM"] = "truecolor" },
     mappings = {
       -- Insert mode key mappings
