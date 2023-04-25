@@ -40,6 +40,7 @@ local parsers = {
   "rust",
   "scss",
   "sql",
+  "starlark",
   "toml",
   "typescript",
   "vim",
