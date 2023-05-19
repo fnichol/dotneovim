@@ -18,11 +18,6 @@ if not wk_ok then
   return
 end
 
-local ill_ok, illuminate = require_or_warn("illuminate")
-if not ill_ok then
-  return
-end
-
 local mappings = {
   ["n"] = {
     [""] = {
@@ -174,7 +169,6 @@ M.on_attach = function(client, bufnr)
   lsp_key_mappings(bufnr)
   lsp_commands()
   lsp_signature.on_attach()
-  illuminate.on_attach(client)
 end
 
 M.capabilities = cmp_nvim_lsp.default_capabilities()
