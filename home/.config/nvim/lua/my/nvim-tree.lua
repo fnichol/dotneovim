@@ -26,21 +26,37 @@ local renderer_icons_glyphs = {
   },
 }
 
-local ok, nvim_tree = pcall(require, "nvim-tree")
-if not ok then
-  vim.notify("[my.nvim-tree] failed to require 'nvim-tree'", vim.log.levels.WARN)
+local require_or_warn = require("my.utils").require_or_warn
+
+local nvim_tree_ok, nvim_tree = require_or_warn("nvim-tree")
+if not nvim_tree_ok then
   return
 end
 
-local config_ok, nvim_tree_config = pcall(require, "nvim-tree.config")
-if not config_ok then
-  vim.notify("[my.nvim-tree] failed to require 'nvim-tree.config'", vim.log.levels.WARN)
-  return
-end
+local function on_attach(bufnr)
+  local api = require('nvim-tree.api')
 
-local tree_cb = nvim_tree_config.nvim_tree_callback
+  local function opts(desc)
+    return {
+      desc = "nvim-tree: " .. desc,
+      buffer = bufnr,
+      noremap = true,
+      silent = true,
+      nowait = true,
+    }
+  end
+
+  api.config.mappings.default_on_attach(bufnr)
+
+  vim.keymap.set("n", "l", api.node.open.edit, opts("Open"))
+  vim.keymap.set("n", "<CR>", api.node.open.edit, opts("Open"))
+  vim.keymap.set("n", "o", api.node.open.edit, opts("Open"))
+  vim.keymap.set("n", "h", api.node.navigate.parent_close, opts("Close Directory"))
+  vim.keymap.set("n", "v", api.node.open.vertical, opts("Open: Vertical Split"))
+end
 
 nvim_tree.setup({
+  on_attach = on_attach,
   disable_netrw = true,
   hijack_netrw = true,
   open_on_tab = false,
@@ -79,11 +95,6 @@ nvim_tree.setup({
     side = "left",
     mappings = {
       custom_only = false,
-      list = {
-        { key = { "l", "<CR>", "o" }, action = "edit" },
-        { key = "h", action = "close_node" },
-        { key = "v", action = "vsplit" },
-      },
     },
     number = false,
     relativenumber = false,
