@@ -1,4 +1,4 @@
-local servers = {
+local mason_servers = {
   "awk_ls",
   "bashls",
   "cssls",
@@ -22,15 +22,23 @@ local servers = {
   "yamlls",
 }
 
+local manual_servers = {
+  "buck2",
+}
+
 local utils = require("my.utils")
 local require_or_warn = utils.require_or_warn
+local remove_value = utils.table.remove_value
 
 if vim.loop.os_uname().sysname == "OpenBSD" then
-  local remove_value = utils.table.remove_value
+  remove_value(mason_servers, "lua_ls")
+  remove_value(mason_servers, "rust_analyzer")
+  remove_value(mason_servers, "taplo")
+end
 
-  remove_value(servers, "lua_ls")
-  remove_value(servers, "rust_analyzer")
-  remove_value(servers, "taplo")
+-- If `buck2` is not present, prevent the LSP from activating
+if vim.fn.executable("buck2") ~= 1 then
+  remove_value(manual_servers, "buck2")
 end
 
 local lspconfig_ok, lspconfig = require_or_warn("lspconfig")
@@ -79,30 +87,34 @@ local mason_settings = {
 mason.setup(mason_settings)
 
 mason_lspconfig.setup({
-  ensure_installed = servers,
+  ensure_installed = mason_servers,
   automatic_installation = true,
 })
 
-for _, server in pairs(servers) do
-  server = vim.split(server, "@")[1]
+for _, servers in pairs({ mason_servers, manual_servers }) do
+  for _, server in pairs(servers) do
+    server = vim.split(server, "@")[1]
 
-  local _, conf_opts = require_or_warn("my.lsp.settings." .. server)
+    local conf_opts_ok, conf_opts = require_or_warn("my.lsp.settings." .. server)
 
-  local default_opts = {
-    on_attach = require("my.lsp.handlers").on_attach,
-    capabilities = require("my.lsp.handlers").capabilities,
-  }
-  local opts = vim.tbl_deep_extend("force", {}, default_opts, conf_opts or {})
+    if conf_opts_ok then
+      local default_opts = {
+        on_attach = require("my.lsp.handlers").on_attach,
+        capabilities = require("my.lsp.handlers").capabilities,
+      }
+      local opts = vim.tbl_deep_extend("force", {}, default_opts, conf_opts or {})
 
-  if server == "rust_analyzer" then
-    -- Load and configure `rust-tools` which in turn sets up `rust_analyzer`
-    local rust_tools_ok, rust_tools = require_or_warn("my.lsp.rust-tools")
-    if not rust_tools_ok then
-      return
+      if server == "rust_analyzer" then
+        -- Load and configure `rust-tools` which in turn sets up `rust_analyzer`
+        local rust_tools_ok, rust_tools = require_or_warn("my.lsp.rust-tools")
+        if not rust_tools_ok then
+          return
+        end
+
+        rust_tools.setup(opts)
+      else
+        lspconfig[server].setup(opts)
+      end
     end
-
-    rust_tools.setup(opts)
-  else
-    lspconfig[server].setup(opts)
   end
 end
