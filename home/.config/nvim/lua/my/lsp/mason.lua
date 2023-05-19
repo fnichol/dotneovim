@@ -33,8 +33,6 @@ if vim.loop.os_uname().sysname == "OpenBSD" then
   remove_value(servers, "taplo")
 end
 
-local require_or_warn = require("my.utils").require_or_warn
-
 local lspconfig_ok, lspconfig = require_or_warn("lspconfig")
 if not lspconfig_ok then
   return
