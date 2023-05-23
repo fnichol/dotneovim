@@ -8,6 +8,15 @@ local default_opts = {
         -- Favor `cargo clippy` to `cargo check` for diagnostics
         command = "clippy",
       },
+      cargo = {
+        extraEnv = {
+          ["CARGO_PROFILE_RUST_ANALYZER_INHERITS"] = "dev",
+        },
+        extraArgs = {
+          "--profile",
+          "rust-analyzer",
+        },
+      },
     },
   },
 }
