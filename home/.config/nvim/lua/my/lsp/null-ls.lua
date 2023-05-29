@@ -48,6 +48,7 @@ null_ls.setup({
         end
       end,
     }),
+    formatting.yapf.with({}),
 
     --
     -- ## Diagnostics
