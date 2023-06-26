@@ -16,7 +16,6 @@ local parsers = {
   "gomod",
   "graphql",
   "hcl",
-  "help",
   "hjson",
   "html",
   "http",
