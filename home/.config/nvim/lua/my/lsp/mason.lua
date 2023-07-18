@@ -10,6 +10,7 @@ local mason_servers = {
   "html",
   "jsonls",
   "lua_ls",
+  "nil_ls",
   "rust_analyzer",
   "powershell_es",
   "pyright",

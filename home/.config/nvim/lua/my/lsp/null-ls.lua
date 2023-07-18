@@ -26,6 +26,7 @@ null_ls.setup({
     --
     -- ## Formatting
     --
+    formatting.alejandra.with({}),
     formatting.prettier.with({
       -- Prefer a project-installed version of Prettier if available
       prefer_local = "node_modules/.bin",
