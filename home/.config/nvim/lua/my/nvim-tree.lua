@@ -93,9 +93,6 @@ nvim_tree.setup({
     width = 30,
     hide_root_folder = false,
     side = "left",
-    mappings = {
-      custom_only = false,
-    },
     number = false,
     relativenumber = false,
   },
