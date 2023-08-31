@@ -34,7 +34,7 @@ if not nvim_tree_ok then
 end
 
 local function on_attach(bufnr)
-  local api = require('nvim-tree.api')
+  local api = require("nvim-tree.api")
 
   local function opts(desc)
     return {
