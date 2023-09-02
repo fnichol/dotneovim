@@ -33,7 +33,7 @@ local remove_value = utils.table.remove_value
 
 if vim.loop.os_uname().sysname == "OpenBSD" then
   remove_value(mason_servers, "lua_ls")
-  remove_value(mason_servers, "nil")
+  remove_value(mason_servers, "nil_ls")
   remove_value(mason_servers, "rust_analyzer")
   remove_value(mason_servers, "taplo")
 end
