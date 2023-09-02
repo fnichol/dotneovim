@@ -85,6 +85,7 @@ local mason_null_ls_config = {
 if vim.loop.os_uname().sysname == "OpenBSD" then
   mason_null_ls_config.automatic_installation = {
     exclude = {
+      "buildifier",
       "hadolint",
       "shellcheck",
       "shfmt",
