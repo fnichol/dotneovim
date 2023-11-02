@@ -91,7 +91,6 @@ nvim_tree.setup({
   },
   view = {
     width = 30,
-    hide_root_folder = false,
     side = "left",
     number = false,
     relativenumber = false,
@@ -101,6 +100,7 @@ nvim_tree.setup({
     highlight_git = true,
     -- In what format to show root folder
     root_folder_modifier = ":t",
+    root_folder_label = false,
     icons = {
       -- Icons to render
       show = {
