@@ -48,13 +48,25 @@ local parsers = {
   "zig",
 }
 
-local ok, configs = pcall(require, "nvim-treesitter.configs")
-if not ok then
-  vim.notify("[my.treesitter] failed to require 'nvim-treesitter.configs'", vim.log.levels.WARN)
+local utils = require("my.utils")
+local require_or_warn = utils.require_or_warn
+
+local configs_ok, configs = require_or_warn("nvim-treesitter.configs")
+if not configs_ok then
+  return
+end
+
+local tscc_ok, tscc = require_or_warn("ts_context_commentstring")
+if not tscc_ok then
   return
 end
 
 -- Usage: https://github.com/nvim-treesitter/nvim-treesitter
+-- Usage: https://github.com/JoosepAlviste/nvim-ts-context-commentstring
+
+tscc.setup({
+  enable_autocmd = false,
+})
 
 configs.setup({
   -- One of "all", "maintained" (parsers with maintainers), or a list of languages
@@ -74,8 +86,4 @@ configs.setup({
     additional_vim_regex_highlighting = true,
   },
   indent = { enable = true, disable = { "yaml" } },
-  context_commentstring = {
-    enable = true,
-    enable_autocmd = false,
-  },
 })
