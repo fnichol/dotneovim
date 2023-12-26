@@ -32,6 +32,11 @@ null_ls.setup({
         return { "-type=default" }
       end,
     }),
+    formatting.packer.with({
+      condition = function()
+        return vim.fn.executable("packer") == 1
+      end,
+    }),
     formatting.prettier.with({
       -- Prefer a project-installed version of Prettier if available
       prefer_local = "node_modules/.bin",
