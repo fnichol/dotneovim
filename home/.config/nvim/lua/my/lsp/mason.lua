@@ -43,6 +43,11 @@ if vim.fn.executable("buck2") ~= 1 then
   remove_value(manual_servers, "buck2")
 end
 
+-- If `nix` is not present, don't install & activate the nil LSP
+if vim.fn.executable("nix") ~= 1 then
+  remove_value(mason_servers, "nil_ls")
+end
+
 local lspconfig_ok, lspconfig = require_or_warn("lspconfig")
 if not lspconfig_ok then
   return
