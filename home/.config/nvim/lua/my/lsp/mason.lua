@@ -31,13 +31,6 @@ local utils = require("my.utils")
 local require_or_warn = utils.require_or_warn
 local remove_value = utils.table.remove_value
 
-if vim.loop.os_uname().sysname == "OpenBSD" then
-  remove_value(mason_servers, "lua_ls")
-  remove_value(mason_servers, "nil_ls")
-  remove_value(mason_servers, "rust_analyzer")
-  remove_value(mason_servers, "taplo")
-end
-
 -- If `buck2` is not present, prevent the LSP from activating
 if vim.fn.executable("buck2") ~= 1 then
   remove_value(manual_servers, "buck2")
@@ -46,6 +39,13 @@ end
 -- If `nix` is not present, don't install & activate the nil LSP
 if vim.fn.executable("nix") ~= 1 then
   remove_value(mason_servers, "nil_ls")
+end
+
+-- If running on OpenBSD, remove language servers that aren't yet supported
+if vim.loop.os_uname().sysname == "OpenBSD" then
+  remove_value(mason_servers, "lua_ls")
+  remove_value(mason_servers, "rust_analyzer")
+  remove_value(mason_servers, "taplo")
 end
 
 local lspconfig_ok, lspconfig = require_or_warn("lspconfig")
