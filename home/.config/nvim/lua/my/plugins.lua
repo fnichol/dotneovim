@@ -112,15 +112,6 @@ local plugins = function(use)
   use({ "nvim-telescope/telescope-fzf-native.nvim", run = telescope_fzf_native_build })
   -- A file explorer tree for NeoVim written in Lua
   use({ "kyazdani42/nvim-tree.lua", requires = { "kyazdani42/nvim-web-devicons" } })
-  -- GitHub in NeoVim
-  use({
-    "pwntester/octo.nvim",
-    requires = {
-      "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope.nvim",
-      "kyazdani42/nvim-web-devicons",
-    },
-  })
 
   --
   -- ## Treesitter

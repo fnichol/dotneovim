@@ -25,7 +25,6 @@ else
   require("my.indentline")
   require("my.dressing")
   require("my.gitsigns")
-  require("my.octo")
   require("my.lightbulb")
   require("my.trouble")
   require("my.bufferline")
