@@ -80,7 +80,7 @@ local plugins = function(use)
   -- Bridges mason.nvim with the nvim-dap plugin
   use({ "jay-babu/mason-nvim-dap.nvim", requires = { "mfussenegger/nvim-dap" } })
   -- A UI for nvim-dap which provides a good out of the box configuration
-  use({ "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap" } })
+  use({ "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } })
 
   --
   -- ## Testing
@@ -92,6 +92,7 @@ local plugins = function(use)
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
       "antoinemadec/FixCursorHold.nvim",
+      "nvim-neotest/nvim-nio",
     },
   })
   -- Neotest adapter for Rust, using cargo-nextest
