@@ -9,34 +9,19 @@ end
 local config = {
   signs = {
     add = {
-      hl = "GitSignsAdd",
       text = "│",
-      numhl = "GitSignsAddNr",
-      linehl = "GitSignsAddLn",
     },
     change = {
-      hl = "GitSignsChange",
       text = "│",
-      numhl = "GitSignsChangeNr",
-      linehl = "GitSignsChangeLn",
     },
     delete = {
-      hl = "GitSignsDelete",
       text = "契",
-      numhl = "GitSignsDeleteNr",
-      linehl = "GitSignsDeleteLn",
     },
     topdelete = {
-      hl = "GitSignsDelete",
       text = "契",
-      numhl = "GitSignsDeleteNr",
-      linehl = "GitSignsDeleteLn",
     },
     changedelete = {
-      hl = "GitSignsChange",
       text = "│",
-      numhl = "GitSignsChangeNr",
-      linehl = "GitSignsChangeLn",
     },
   },
   -- Enables symbols in the sign column (toggle with `:Gitsigns toggle_signs`)
@@ -78,11 +63,6 @@ local config = {
     -- Ignores whitespace when running blame
     ignore_whitespace = false,
   },
-  -- Options for current_line_blame annotation formatter
-  current_line_blame_formatter_opts = {
-    -- Use relative time in annotation [default: false]
-    relative_time = false,
-  },
   -- Priority to use for signs [default: 6]
   sign_priority = 6,
   -- Debounce time in milliseconds for updates [default: 100]
@@ -99,10 +79,6 @@ local config = {
     relative = "cursor",
     row = 0,
     col = 1,
-  },
-  -- yadm configuration
-  yadm = {
-    enable = false,
   },
 }
 
