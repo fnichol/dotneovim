@@ -8,9 +8,9 @@ end
 
 local actions = require("telescope.actions")
 
-local trouble_ok, trouble = pcall(require, "trouble.providers.telescope")
+local trouble_ok, trouble = pcall(require, "trouble.sources.telescope")
 if not trouble_ok then
-  vim.notify("[my.telescope] failed to require 'trouble.providers.telescope'", vim.log.levels.WARN)
+  vim.notify("[my.telescope] failed to require 'trouble.sources.telescope'", vim.log.levels.WARN)
   return
 end
 
