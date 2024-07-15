@@ -237,10 +237,6 @@ local setup = {
       g = true,
     },
   },
-  -- Add operators that will trigger motions and text object completion to
-  -- enable all native operators, set the preset / operators plugin above
-  -- operators = { gc = "Comments" },
-  key_labels = {},
   icons = {
     -- Symbol used in the command line area that shows your active key combo
     breadcrumb = "»",
@@ -248,23 +244,6 @@ local setup = {
     separator = "➜",
     -- Symbol prepended to a group
     group = "+",
-  },
-  popup_mappings = {
-    -- Binding to scroll down inside the popup
-    scroll_down = "<c-d>",
-    -- Binding to scroll up inside the popup
-    scroll_up = "<c-u>",
-  },
-  window = {
-    -- [values: none, single, double, shadow]
-    border = "rounded",
-    -- [values: bottom, top]
-    position = "bottom",
-    -- Extra window margin [top, right, bottom, left]
-    margin = { 1, 0, 1, 0 },
-    -- Extra window padding [top, right, bottom, left]
-    padding = { 2, 2, 2, 2 },
-    winblend = 0,
   },
   layout = {
     -- Min and max height of the columns
@@ -276,23 +255,12 @@ local setup = {
     -- Align columns left, center or right
     align = "left",
   },
-  -- Enable this to hide mappings for which you didn't specify a label
-  ignore_missing = true,
-  -- Hide mapping boilerplate
-  hidden = { "<silent>", "<cmd>", "<Cmd>", "<CR>", "call", "lua", "^:", "^ " },
   -- Show help message on the command line when the popup is visible
   show_help = true,
   -- Automatically setup triggers
   triggers = "auto",
   -- Or specify a list manually
   -- triggers = {"<leader>"}
-  triggers_blacklist = {
-    -- List of mode / prefixes that should never be hooked by WhichKey
-    -- this is mostly relevant for key maps that start with a native binding
-    -- most people should not need to change this
-    i = { "j", "k" },
-    v = { "j", "k" },
-  },
 }
 
 local opts = {

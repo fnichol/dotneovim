@@ -134,13 +134,16 @@ local plugins = function(use)
   -- Speeds up loading Lua modules in Neovim to improve startup time
   use("lewis6991/impatient.nvim")
   -- A fast and fully customizable greeter for NeoVim
-  use({ "goolord/alpha-nvim", requires = { "kyazdani42/nvim-web-devicons" } })
+  use({ "goolord/alpha-nvim", requires = { "nvim-tree/nvim-web-devicons" } })
 
   --
   -- ## Key Bindings and Documentation
   --
   -- Create key bindings that stick
-  use("folke/which-key.nvim")
+  use({
+    "folke/which-key.nvim",
+    requires = { "nvim-tree/nvim-web-devicons", "echasnovski/mini.icons" },
+  })
 
   --
   -- ## Formatting and Display
@@ -165,7 +168,7 @@ local plugins = function(use)
   use("kosayoda/nvim-lightbulb")
   -- A pretty diagnostics, references, telescope results, quickfix and location
   -- list to help you solve all the trouble your code is causing
-  use({ "folke/trouble.nvim", requires = { "kyazdani42/nvim-web-devicons" } })
+  use({ "folke/trouble.nvim", requires = { "nvim-tree/nvim-web-devicons" } })
   -- A snazzy bufferline for NeoVim
   use({ "akinsho/bufferline.nvim", tag = "*", requires = { "nvim-tree/nvim-web-devicons" } })
   -- Allows you to do delete buffers (close files) without closing your windows
