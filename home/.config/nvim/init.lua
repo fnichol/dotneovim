@@ -1,33 +1,23 @@
-require("my.options")
-require("my.key_mappings")
+-- Set <space> as the leader key
+-- See `:help mapleader`
+--  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 
-local bootstrapped = require("my.packer").ensure_installed()
-local packer = require("my.plugins")
-if bootstrapped then
-  vim.cmd("autocmd User PackerComplete echo '[init] Plugins installed, restart nvim' | quitall")
-  packer.sync()
-else
-  require("my.colorscheme")
-  require("my.transparent")
-  require("my.impatient")
-  require("my.alpha")
-  require("my.nvim-tree")
-  require("my.cmp")
-  require("my.lsp")
-  require("my.dap")
-  require("my.neotest")
-  require("my.notify")
-  require("my.telescope")
-  require("my.treesitter")
-  require("my.autopairs")
-  require("my.comment")
-  require("my.which_key")
-  require("my.indentline")
-  require("my.dressing")
-  require("my.gitsigns")
-  require("my.lightbulb")
-  require("my.trouble")
-  require("my.bufferline")
-  require("my.toggleterm")
-  require("my.vimwiki")
-end
+-- Set to true if you have a Nerd Font installed and selected in the terminal
+vim.g.have_nerd_font = true
+
+-- [[ Setting options ]]
+require("my.options")
+
+-- [[ Basic Keymaps ]]
+require("my.keymaps")
+
+-- [[ Install `lazy.nvim` plugin manager ]]
+require("my.lazy")
+
+-- [[ Configure and install plugins ]]
+require("my.plugins")
+
+-- The line beneath this is called `modeline`. See `:help modeline`
+-- vim: ts=2 sts=2 sw=2 et
