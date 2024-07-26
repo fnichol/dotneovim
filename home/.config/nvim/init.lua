@@ -13,11 +13,8 @@ require("my.options")
 -- [[ Basic Keymaps ]]
 require("my.keymaps")
 
--- [[ Install `lazy.nvim` plugin manager ]]
+-- [[ Install `lazy.nvim` plugin manager, configure, and install plugins ]]
 require("my.lazy")
-
--- [[ Configure and install plugins ]]
-require("my.plugins")
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
