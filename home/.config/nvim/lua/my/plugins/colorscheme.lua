@@ -8,7 +8,7 @@ return {
     lazy = false,
     priority = 1000, -- Ensure this plugin loads before all other start plugins
     init = function()
-      vim.cmd.colorscheme "catppuccin-mocha"
+      vim.cmd.colorscheme("catppuccin-mocha")
     end,
   },
   -- Remove all background colors to make nvim transparent

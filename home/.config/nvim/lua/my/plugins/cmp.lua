@@ -13,15 +13,15 @@ return {
         "L3MON4D3/LuaSnip",
         dependencies = {
           -- Set of preconfigured snippets for different languages.
-	  --
-	  -- https://github.com/rafamadriz/friendly-snippets
+          --
+          -- https://github.com/rafamadriz/friendly-snippets
           {
             "rafamadriz/friendly-snippets",
-	    config = function()
+            config = function()
               require("luasnip.loaders.from_vscode").lazy_load()
-	    end,
+            end,
           },
-	},
+        },
       },
       -- LuaSnip completion source for nvim-cmp
       --
@@ -68,34 +68,34 @@ return {
         snippet = {
           expand = function(args)
             luasnip.lsp_expand(args.body)
-	  end,
-	},
-	completion = { completeopt = "menu,menuone,noinsert" },
-	mapping = cmp.mapping.preset.insert({
+          end,
+        },
+        completion = { completeopt = "menu,menuone,noinsert" },
+        mapping = cmp.mapping.preset.insert({
           -- Select the [p]revious and [n]ext item
           ["<C-p>"] = cmp.mapping.select_prev_item(),
           ["<C-n>"] = cmp.mapping.select_next_item(),
 
-	  -- Scroll the documentation window [b]ack and [f]orward
+          -- Scroll the documentation window [b]ack and [f]orward
           ["<C-b>"] = cmp.mapping.scroll_docs(-4),
           ["<C-f>"] = cmp.mapping.scroll_docs(4),
 
-	  -- Accept ([y]es) the completion
-	  -- This will auto-import if your LSP supports it
-	  -- This will expand snippets if the LSP sent a snippet
+          -- Accept ([y]es) the completion
+          -- This will auto-import if your LSP supports it
+          -- This will expand snippets if the LSP sent a snippet
           ["<C-y>"] = cmp.mapping.confirm({ select = true }),
 
           -- Exit the completion
           ["<C-e>"] = cmp.mapping({ i = cmp.mapping.abort(), c = cmp.mapping.close() }),
 
-	  -- Manually trigger a completion from nvim-cmp.
-	  -- Generally you don't need this because nvim-cmp will display
-	  -- completions whenever it has completion options available.
+          -- Manually trigger a completion from nvim-cmp.
+          -- Generally you don't need this because nvim-cmp will display
+          -- completions whenever it has completion options available.
           ["<C-Space>"] = cmp.mapping.complete({}),
 
-	  -- Think of <c-l> as moving to the right of your snippet expansion.
+          -- Think of <c-l> as moving to the right of your snippet expansion.
           -- So if you have a snippet that's like:
-	  --
+          --
           --   function $name($args)
           --     $body
           --   end
@@ -112,13 +112,13 @@ return {
               luasnip.expand_or_jump(-1)
             end
           end, { "i", "s" }),
-	}),
-	sources = {
+        }),
+        sources = {
           {
             name = "lazydev",
-	    -- set group index to 0 to skip loading LuaLS completions as
-	    -- lazydev recommends it
-	    group_index = 0,
+            -- set group index to 0 to skip loading LuaLS completions as
+            -- lazydev recommends it
+            group_index = 0,
           },
           { name = "nvim_lsp" },
           { name = "nvim_lua" },
@@ -126,15 +126,15 @@ return {
           { name = "luasnip" },
           { name = "buffer" },
           { name = "path" },
-	},
-	formatting = {
+        },
+        formatting = {
           format = lspkind.cmp_format({
             mode = "symbol_text",
-	    maxwidth = function()
+            maxwidth = function()
               return math.min(80, math.floor(0.45 * vim.o.columns))
-	    end,
-	  }),
-	},
+            end,
+          }),
+        },
       })
     end,
   },

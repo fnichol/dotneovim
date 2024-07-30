@@ -13,10 +13,10 @@ return {
     keys = {
       {
         "<leader>?",
-	function()
+        function()
           require("which-key").show({ global = false })
-	end,
-	desc = "Buffer Local Keymaps (which-key)",
+        end,
+        desc = "Buffer Local Keymaps (which-key)",
       },
     },
     config = function()

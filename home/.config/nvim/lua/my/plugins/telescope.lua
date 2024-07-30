@@ -22,21 +22,21 @@ return {
       -- https://github.com/nvim-telescope/telescope-fzf-native.nvim
       {
         "nvim-telescope/telescope-fzf-native.nvim",
-	build = telescope_fzf_native_build,
-	cond = function()
+        build = telescope_fzf_native_build,
+        cond = function()
           return vim.fn.executable(telescope_fzf_native_build) == 1
-	end,
+        end,
       },
       -- It sets vim.ui.select to telescope.
       --
       -- https://github.com/nvim-telescope/telescope-ui-select.nvim
-      { 'nvim-telescope/telescope-ui-select.nvim' },
+      { "nvim-telescope/telescope-ui-select.nvim" },
       -- Lua fork of vim-web-devicons for NeoVim
       --
       -- https://github.com/nvim-tree/nvim-web-devicons
       {
         "nvim-tree/nvim-web-devicons",
-	enabled = vim.g.have_nerd_font,
+        enabled = vim.g.have_nerd_font,
       },
     },
     config = function()
@@ -100,19 +100,12 @@ return {
       vim.keymap.set("n", "<leader>sr", builtin.oldfiles, { desc = "Recent File" })
       vim.keymap.set("n", "<leader>st", builtin.live_grep, { desc = "Text" })
 
-      vim.keymap.set(
-        "n",
-        "<leader>/",
-        function()
-          builtin.current_buffer_fuzzy_find(
-            require("telescope.themes").get_dropdown({
-              winblend = 10,
-              previewer = false,
-            })
-          )
-        end,
-        { desc = "Fuzzily search in current buffer" }
-      )
+      vim.keymap.set("n", "<leader>/", function()
+        builtin.current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
+          winblend = 10,
+          previewer = false,
+        }))
+      end, { desc = "Fuzzily search in current buffer" })
     end,
   },
 }

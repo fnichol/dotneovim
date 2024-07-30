@@ -23,7 +23,13 @@ return {
       local function footer()
         local datetime = os.date(" %Y-%m-%d   %H:%M:%S")
         local version = vim.version()
-        return string.format("%s   v%s.%s.%s", datetime, version.major, version.minor, version.patch)
+        return string.format(
+          "%s   v%s.%s.%s",
+          datetime,
+          version.major,
+          version.minor,
+          version.patch
+        )
       end
 
       dashboard.section.header.opts.hl = "Keyword"
