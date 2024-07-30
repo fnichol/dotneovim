@@ -36,7 +36,7 @@ vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower win
 vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
 
 -- Tab switch buffer
-vim.keymap.set("n", "<S-h>", ":bnext<CR>", { desc = "Go to the previous buffer" })
+vim.keymap.set("n", "<S-h>", ":bprevious<CR>", { desc = "Go to the previous buffer" })
 vim.keymap.set("n", "<S-l>", ":bnext<CR>", { desc = "Go to the next buffer" })
 
 -- [[ Basic Autocommands ]]
