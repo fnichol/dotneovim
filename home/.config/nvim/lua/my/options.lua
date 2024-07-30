@@ -10,6 +10,12 @@ local options = {
   cursorline = true,
   -- Ignores case in search patterns [default: false]
   ignorecase = true,
+  -- List mode: display certain whitespace characters. [default: false]
+  -- See: `:help 'list'`
+  list = true,
+  -- Strings to use in `'list'` mode. [default: "tab:> ,trail:-,nbsp:+"]
+  -- See: `:help 'listchars'`
+  listchars = { tab = "» ", trail = "·", nbsp = "␣" },
   -- Enables mouse support for all modes [default: ""]
   mouse = "a",
   -- Prints the line number in front of each line [default: false]
@@ -46,12 +52,6 @@ local options = {
 --
 -- -- Enable break indent
 -- vim.opt.breakindent = true
---
--- -- Sets how neovim will display certain whitespace characters in the editor.
--- --  See `:help 'list'`
--- --  and `:help 'listchars'`
--- vim.opt.list = true
--- vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 --
 -- -- Preview substitutions live, as you type!
 -- vim.opt.inccommand = "split"
