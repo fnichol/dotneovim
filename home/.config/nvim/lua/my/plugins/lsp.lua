@@ -205,7 +205,11 @@ local manual_lsp_servers = {
 }
 
 local tools = {
+  "buildifier",
+  "prettier",
+  "shfmt",
   "stylua",
+  "yapf",
 }
 
 -- If `buck2` is not present, prevent the LSP from activating
@@ -223,11 +227,16 @@ if vim.fn.executable("nix") ~= 1 then
   manual_lsp_servers["nil_ls"] = nil
 end
 
--- If running on OpenBSD, remove language servers that aren't yet supported
+-- If running on OpenBSD, remove language servers and tools that aren't yet
+-- supported
 if vim.uv.os_uname().sysname == "OpenBSD" then
-  manual_lsp_servers["lua_ls"] = nil
-  manual_lsp_servers["rust-analyzer"] = nil
-  manual_lsp_servers["taplo"] = nil
+  lsp_servers["lua_ls"] = nil
+  lsp_servers["rust-analyzer"] = nil
+  lsp_servers["taplo"] = nil
+
+  tools["buildifier"] = nil
+  tools["shfmt"] = nil
+  tools["stylua"] = nil
 end
 
 return {
