@@ -457,4 +457,21 @@ return {
       })
     end,
   },
+  -- VSCode 💡 for neovim's built-in LSP.
+  --
+  -- https://github.com/kosayoda/nvim-lightbulb
+  { "kosayoda/nvim-lightbulb" },
+  -- (Neo)Vim plugin for automatically highlighting other uses of the word
+  -- under the cursor using either LSP, Tree-sitter, or regex matching.
+  --
+  -- https://github.com/RRethy/vim-illuminate
+  {
+    "RRethy/vim-illuminate",
+    config = function()
+      require("illuminate").configure({
+        -- Disable plugin if the file is very large (number of lines)
+        large_file_cutoff = 10000,
+      })
+    end,
+  },
 }
