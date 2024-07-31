@@ -204,12 +204,27 @@ local manual_lsp_servers = {
   },
 }
 
-local tools = {
+local formatter_tools = {
   "buildifier",
   "prettier",
   "shfmt",
   "stylua",
   "yapf",
+}
+
+local linter_tools = {
+  "alex",
+  "buf",
+  "commitlint",
+  "eslint",
+  "flake8",
+  "hadolint",
+  "jsonlint",
+  "luacheck",
+  "markdownlint",
+  "shellcheck",
+  "vint",
+  "yamllint",
 }
 
 -- If `buck2` is not present, prevent the LSP from activating
@@ -234,9 +249,9 @@ if vim.uv.os_uname().sysname == "OpenBSD" then
   lsp_servers["rust-analyzer"] = nil
   lsp_servers["taplo"] = nil
 
-  tools["buildifier"] = nil
-  tools["shfmt"] = nil
-  tools["stylua"] = nil
+  formatter_tools["buildifier"] = nil
+  formatter_tools["shfmt"] = nil
+  formatter_tools["stylua"] = nil
 end
 
 return {
@@ -435,7 +450,8 @@ return {
       -- You can add other tools here that you want Mason to install for you,
       -- so that they are available from within Neovim.
       local ensure_installed = vim.tbl_keys(lsp_servers or {})
-      vim.list_extend(ensure_installed, tools)
+      vim.list_extend(ensure_installed, formatter_tools)
+      vim.list_extend(ensure_installed, linter_tools)
       require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
       -- Combine all LSP servers together and error if there's any overlap
