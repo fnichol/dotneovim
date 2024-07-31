@@ -30,6 +30,7 @@ return {
         { "<leader>l", group = "LSP" },
         { "<leader>il", group = "Lazy" },
         { "<leader>s", group = "Search" },
+        { "<leader>w", group = "VimWiki" },
       })
     end,
   },
