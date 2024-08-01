@@ -286,24 +286,6 @@ return {
       --
       -- https://github.com/hrsh7th/cmp-nvim-lsp
       { "hrsh7th/cmp-nvim-lsp" },
-      -- Faster LuaLS setup for Neovim
-      -- `lazydev` configures Lua LSP for your Neovim config, runtime and
-      -- plugins used for completion, annotations and signatures of Neovim apis
-      --
-      -- https://github.com/folke/lazydev.nvim
-      {
-        "folke/lazydev.nvim",
-        ft = "lua",
-        opts = {
-          library = {
-            { path = "luvit-meta/library", words = { "vim%.uv" } },
-          },
-        },
-      },
-      -- Meta type definitions for the Lua platform Luvit.
-      --
-      -- https://github.com/Bilal2453/luvit-meta
-      { "Bilal2453/luvit-meta", lazy = true },
     },
     config = function()
       -- LSP provides Neovim with features like:
@@ -477,6 +459,24 @@ return {
       })
     end,
   },
+  -- Faster LuaLS setup for Neovim
+  -- `lazydev` configures Lua LSP for your Neovim config, runtime and
+  -- plugins used for completion, annotations and signatures of Neovim apis
+  --
+  -- https://github.com/folke/lazydev.nvim
+  {
+    "folke/lazydev.nvim",
+    ft = "lua",
+    opts = {
+      library = {
+        { path = "luvit-meta/library", words = { "vim%.uv" } },
+      },
+    },
+  },
+  -- Meta type definitions for the Lua platform Luvit.
+  --
+  -- https://github.com/Bilal2453/luvit-meta
+  { "Bilal2453/luvit-meta", lazy = true },
   -- VSCode 💡 for neovim's built-in LSP.
   --
   -- https://github.com/kosayoda/nvim-lightbulb
