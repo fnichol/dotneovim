@@ -3,9 +3,6 @@
 --  For more options, you can see `:help option-list`
 
 local options = {
-  -- Allows NeoVim access to the system clipboard [default: ""]
-  --  See `:help 'clipboard'`
-  clipboard = "unnamedplus",
   -- Number of lines to use for the command-line [default: 1]
   cmdheight = 2,
   -- Options for insert mode completion, set mostly for cmp
@@ -86,3 +83,11 @@ local options = {
 for k, v in pairs(options) do
   vim.opt[k] = v
 end
+
+-- Schedule this option to be set after `UiEnter` as otherwise it can increase
+-- statup time.
+vim.schedule(function()
+  -- Allows NeoVim access to the system clipboard [default: ""]
+  --  See `:help 'clipboard'`
+  vim.opt.clipboard = "unnamedplus"
+end)
