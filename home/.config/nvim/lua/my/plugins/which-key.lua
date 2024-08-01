@@ -27,8 +27,9 @@ return {
       wk.add({
         { "<leader>g", group = "Git" },
         { "<leader>i", group = "Installers" },
-        { "<leader>l", group = "LSP" },
+        { "<leader>l", group = "LSP", mode = { "n", "x" } },
         { "<leader>il", group = "Lazy" },
+        { "<leader>r", group = "Trouble" },
         { "<leader>s", group = "Search" },
         { "<leader>w", group = "VimWiki" },
       })
