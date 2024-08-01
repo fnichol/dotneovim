@@ -10,6 +10,26 @@
 -- - settings (table): Override the default settings passed when initializing
 --   the server. For example, to see the options for `lua_ls`, you could go to:
 --   https://luals.github.io/wiki/settings/
+
+-- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#rust_analyzer
+local rust_analyzer_settings = {
+  ["rust-analyzer"] = {
+    checkOnSave = {
+      -- Favor `cargo clippy` to `cargo check` for diagnostics
+      command = "clippy",
+    },
+    cargo = {
+      extraEnv = {
+        ["CARGO_PROFILE_RUST_ANALYZER_INHERITS"] = "dev",
+      },
+      extraArgs = {
+        "--profile",
+        "rust-analyzer",
+      },
+    },
+  },
+}
+
 local lsp_servers = {
   -- Language Server for AWK and associated VSCode client extension
   --
@@ -112,27 +132,11 @@ local lsp_servers = {
   },
   -- A Rust compiler front-end for IDEs
   --
+  -- NOTE: this configuration only ensures that the binary is installed via
+  -- Mason. Configuration is provided via the `rustaceanvim` plugin.
+  --
   -- https://github.com/rust-lang/rust-analyzer
-  rust_analyzer = {
-    -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#rust_analyzer
-    settings = {
-      ["rust-analyzer"] = {
-        checkOnSave = {
-          -- Favor `cargo clippy` to `cargo check` for diagnostics
-          command = "clippy",
-        },
-        cargo = {
-          extraEnv = {
-            ["CARGO_PROFILE_RUST_ANALYZER_INHERITS"] = "dev",
-          },
-          extraArgs = {
-            "--profile",
-            "rust-analyzer",
-          },
-        },
-      },
-    },
-  },
+  rust_analyzer = {},
   -- SQL Language Server
   --
   -- https://github.com/joe-re/sql-language-server
@@ -318,6 +322,9 @@ return {
 
           local builtin = require("telescope.builtin")
 
+          local rust_ft = vim.bo[event.buf].filetype == "rust"
+          local cargo_toml = vim.fs.basename(vim.api.nvim_buf_get_name(0)) == "Cargo.toml"
+
           -- Jump to the definition of the word under your cursor.
           -- This is where a variable was first declared, or where a function
           -- is defined, etc.
@@ -349,11 +356,23 @@ return {
 
           keymap("n", "<leader>li", "<cmd>LspInfo<CR>", "LSP Info")
 
-          keymap("n", "K", vim.lsp.buf.hover, "Hover Documentation")
+          if cargo_toml then
+            keymap("n", "K", function()
+              require("crates").show_popup()
+            end, "Hover Crate Documentation")
+          else
+            keymap("n", "K", vim.lsp.buf.hover, "Hover Documentation")
+          end
 
           -- Execute a code action, usually your cursor needs to be on top of
           -- an error or a suggestion from your LSP for this to activate.
-          keymap({ "n", "v" }, "<leader>la", vim.lsp.buf.code_action, "Code Action")
+          if rust_ft then
+            keymap({ "n", "v" }, "<leader>la", function()
+              vim.cmd.RustLsp("codeAction")
+            end, "Code Action")
+          else
+            keymap({ "n", "v" }, "<leader>la", vim.lsp.buf.code_action, "Code Action")
+          end
 
           keymap({ "n", "v" }, "<leader>lc", vim.lsp.codelens.run, "Run CodeLens")
 
@@ -364,6 +383,43 @@ return {
           keymap("n", "<leader>ls", builtin.lsp_document_symbols, "Document Symbols")
 
           keymap("n", "<leader>lS", builtin.lsp_dynamic_workspace_symbols, "Workspace Symbols")
+
+          if rust_ft then
+            keymap("n", "gC", function()
+              vim.cmd.RustLsp("openCargo")
+            end, "Open Rust Cargo.toml")
+
+            keymap("n", "gP", function()
+              vim.cmd.RustLsp("parentModule")
+            end, "Goto Rust Parent Module")
+
+            keymap("n", "<leader>lD", function()
+              vim.cmd.RustLsp("openDocs")
+            end, "Open docs.rs Documentation")
+
+            keymap("n", "<leader>le", function()
+              vim.cmd.RustLsp("expandMacro")
+            end, "Expand Rust Macro")
+
+            keymap("n", "<leader>lE", function()
+              vim.cmd.RustLsp("rebuildProcMacros")
+            end, "Rebuild Rust Proc Macros")
+
+            keymap("n", "<leader>lh", function()
+              vim.cmd.RustLsp({ "hover", "actions" })
+            end, "Rust Hover Actions")
+            keymap("v", "<leader>lh", function()
+              vim.cmd.RustLsp({ "hover", "range" })
+            end, "Rust Range Actions")
+
+            keymap("n", "<leader>lR", function()
+              vim.cmd.RustLsp("runnables")
+            end, "Rust Runnables")
+
+            keymap("n", "<leader>lx", function()
+              vim.cmd.RustLsp({ "explainError", "current" })
+            end, "Explain Current Rust Error")
+          end
 
           -- The following two autocommands are used to highlight references of
           -- the word under your cursor when your cursor rests there for a
@@ -433,6 +489,31 @@ return {
       --  You can press `g?` for help in this menu.
       require("mason").setup()
 
+      -- Delete the bin symlink to the `rust-analyzer` Mason package binary when installed.
+      --
+      -- By default, Mason will add this "symlink bin" directory to the *front*
+      -- of the editor's `$PATH`, meaning that any Mason-installed program will
+      -- be found before a system equivalent.
+      --
+      -- In order to support defaulting to the Mason-installed Rust Analyzer
+      -- and then being able to fall back to the system, this Mason-found-first
+      -- path resolving logic needs to be overcome.
+      require("mason-registry"):on(
+        "package:install:success",
+        vim.schedule_wrap(function(pkg, _)
+          if pkg.name == "rust-analyzer" then
+            local bin_symlink = vim.fs.joinpath(
+              vim.fs.dirname(vim.fs.dirname(pkg:get_install_path())),
+              "bin",
+              "rust-analyzer"
+            )
+            if vim.fn.exists(bin_symlink) == 0 then
+              vim.uv.fs_unlink(bin_symlink)
+            end
+          end
+        end)
+      )
+
       -- You can add other tools here that you want Mason to install for you,
       -- so that they are available from within Neovim.
       local ensure_installed = vim.tbl_keys(lsp_servers or {})
@@ -453,10 +534,78 @@ return {
             -- tsserver)
             server.capabilities =
               vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
-            require("lspconfig")[server_name].setup(server)
+
+            -- Rust Analyzer is configured via `rustaceanvim` so the client's
+            -- `setup` function should not be called.
+            -- See `:help rustaceanvim.mason` for more details
+            if server_name ~= "rust_analyzer" then
+              require("lspconfig")[server_name].setup(server)
+            end
           end,
         },
       })
+    end,
+  },
+  -- Supercharge your Rust experience in Neovim!
+  --
+  -- https://github.com/mrcjkb/rustaceanvim
+  {
+    "mrcjkb/rustaceanvim",
+    version = "^5",
+    ft = { "rust" },
+    opts = {
+      server = {
+        default_settings = rust_analyzer_settings,
+        on_attach = function(_, bufnr) end,
+      },
+    },
+    config = function(_, opts)
+      local notify = require("my.util.notify")
+
+      if opts.server ~= nil and opts.server.cmd ~= nil then
+        notify.error("vim.g.rustaceanvim.server.cmd cannot be set via configuration")
+        return
+      end
+
+      -- Find the full path to the `rust-analyzer` program in the Mason package
+      local cmd_func = function()
+        local binary = "rust-analyzer"
+        local ra_path = binary
+
+        -- Use an environment variable to force using a system version and not
+        -- a Mason-installed version
+        local use_local = os.getenv("NVIM_RUST_ANALYZER_LOCAL") ~= nil
+
+        local has_mason, mason_registry = pcall(require, "mason-registry")
+        if not use_local and has_mason and mason_registry.is_installed(binary) then
+          local ra_package = mason_registry.get_package(binary)
+          local ra_bin_candidates = vim.split(
+            vim.fn.glob(vim.fs.joinpath(ra_package:get_install_path(), "rust-analyzer-*")),
+            "\n",
+            { trimempty = true }
+          )
+          if #ra_bin_candidates > 0 then
+            ra_path = ra_bin_candidates[1]
+          end
+        end
+
+        return { ra_path, "--log-file", vim.fn.tempname() .. "-rust-analyzer.log" }
+      end
+
+      vim.g.rustaceanvim = vim.tbl_deep_extend("keep", vim.g.rustaceanvim or {}, opts or {})
+      vim.g.rustaceanvim =
+        vim.tbl_deep_extend("error", vim.g.rustaceanvim, { server = { cmd = cmd_func } })
+
+      local cmd_path = cmd_func()[1]
+      if vim.fn.executable(cmd_path) == 1 then
+        require("my.util.notify").trace(
+          ("Found **rust-analyzer** binary: " .. vim.fn.exepath(cmd_path))
+        )
+      else
+        require("my.util.notify").error(
+          "**rust-analyzer** binary not found in PATH, please install it"
+        )
+      end
     end,
   },
   -- Faster LuaLS setup for Neovim
