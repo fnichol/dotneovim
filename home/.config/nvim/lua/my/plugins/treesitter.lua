@@ -87,9 +87,6 @@ return {
     config = function(_, opts)
       -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
 
-      -- Prefer Git instead of curl in order to improve connectivity in some
-      -- environments
-      require("nvim-treesitter").prefer_git = true
       ---@diagnostic disable-next-line: missing-fields
       require("nvim-treesitter.configs").setup(opts)
     end,
