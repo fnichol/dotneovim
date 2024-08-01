@@ -55,6 +55,18 @@ return {
       --
       -- https://github.com/onsails/lspkind.nvim
       { "onsails/lspkind-nvim" },
+      -- A Neovim plugin that helps managing crates.io dependencies
+      --
+      -- https://github.com/Saecki/crates.nvim
+{
+        "Saecki/crates.nvim",
+        event = { "BufRead Cargo.toml" },
+        opts = {
+          completion = {
+            cmp = { enabled = true },
+          },
+        },
+      },
     },
     config = function()
       -- See `:help cmp`
@@ -121,6 +133,7 @@ return {
             group_index = 0,
           },
           { name = "nvim_lsp" },
+          { name = "crates" },
           { name = "nvim_lua" },
           { name = "vim-dadbod-completion" },
           { name = "luasnip" },

@@ -43,6 +43,7 @@ local parsers = {
   "python",
   "regex",
   "rst",
+  "ron",
   "ruby",
   "rust",
   "scss",
