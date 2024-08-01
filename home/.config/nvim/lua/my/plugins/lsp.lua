@@ -282,6 +282,10 @@ return {
       --
       -- https://github.com/j-hui/fidget.nvim
       { "j-hui/fidget.nvim", opts = {} },
+      -- nvim-cmp source for neovim builtin LSP client
+      --
+      -- https://github.com/hrsh7th/cmp-nvim-lsp
+      { "hrsh7th/cmp-nvim-lsp" },
       -- Faster LuaLS setup for Neovim
       -- `lazydev` configures Lua LSP for your Neovim config, runtime and
       -- plugins used for completion, annotations and signatures of Neovim apis
