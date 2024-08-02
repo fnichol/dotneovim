@@ -258,6 +258,41 @@ if vim.uv.os_uname().sysname == "OpenBSD" then
   formatter_tools["stylua"] = nil
 end
 
+local diagnostic_signs = {
+  { name = "DiagnosticSignError", text = "" },
+  { name = "DiagnosticSignWarn", text = "" },
+  { name = "DiagnosticSignHint", text = "" },
+  { name = "DiagnosticSignInfo", text = "" },
+}
+
+local diagnostic_config = {
+  -- Options for floating diagnostic windows
+  float = {
+    -- Border window style
+    border = "rounded",
+    -- Don't make the floating window focusable
+    focusable = false,
+    -- String to use as the header for the floating window
+    header = "",
+    -- Prefix each diagnostic in the floating window
+    prefix = "",
+    -- Include the diagnostic source in the message
+    source = "always",
+    -- NeoVim will display the window with many UI options disabled
+    style = "minimal",
+  },
+  -- Use signs for diagnostics
+  signs = { active = diagnostic_signs },
+  -- Use underline for diagnostics [default: true]
+  underline = true,
+  -- Update diagnostics in Insert mode [default: false]
+  update_in_insert = true,
+  -- Sort diagnostics by severity [default: false]
+  severity_sort = true,
+  -- Use virtual text for diagnostics [default: true]
+  virtual_text = true,
+}
+
 return {
   -- Quickstart configs for Neovim LSP
   --
@@ -470,6 +505,17 @@ return {
         end,
       })
 
+      for _, sign in pairs(diagnostic_signs) do
+        vim.fn.sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = "" })
+      end
+      vim.diagnostic.config(diagnostic_config)
+      -- Set rounded corners on hover windows
+      vim.lsp.handlers["textDocument/hover"] =
+        vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
+      -- Set rounded corners on signature help windows
+      vim.lsp.handlers["textDocument/signatureHelp"] =
+        vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" })
+
       -- LSP servers and clients are able to communicate to each other what
       -- features they support.
       --
@@ -554,9 +600,13 @@ return {
     version = "^5",
     ft = { "rust" },
     opts = {
+      tools = {
+        float_win_config = {
+          border = "rounded",
+        },
+      },
       server = {
         default_settings = rust_analyzer_settings,
-        on_attach = function(_, bufnr) end,
       },
     },
     config = function(_, opts)
