@@ -38,6 +38,29 @@ vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper win
 vim.keymap.set("n", "<S-h>", ":bprevious<CR>", { desc = "Go to the previous buffer" })
 vim.keymap.set("n", "<S-l>", ":bnext<CR>", { desc = "Go to the next buffer" })
 
+-- Resize with arrows
+if vim.fn.has("mac") == 1 then
+  -- On macOS, map normal mode window resizing keys to (<A-<arrows>)
+  vim.keymap.set("n", "<A-Up>", ":resize -2<CR>", { desc = "Resize window up" })
+  vim.keymap.set("n", "<A-Down>", ":resize +2<CR>", { desc = "Resize window down" })
+  vim.keymap.set("n", "<A-Left>", ":vertical resize -2<CR>", { desc = "Resize window left" })
+  vim.keymap.set("n", "<A-Right>", ":vertical resize +2<CR>", { desc = "Resize window right" })
+else
+  -- All other systems, map normal mode window resizing keys to (<C-<arrows>)
+  vim.keymap.set("n", "<C-Up>", ":resize -2<CR>", { desc = "Resize window up" })
+  vim.keymap.set("n", "<C-Down>", ":resize +2<CR>", { desc = "Resize window down" })
+  vim.keymap.set("n", "<C-Left>", ":vertical resize -2<CR>", { desc = "Resize window left" })
+  vim.keymap.set("n", "<C-Right>", ":vertical resize +2<CR>", { desc = "Resize window right" })
+end
+
+-- Preserve selection after indentation
+vim.keymap.set("v", ">", ">gv")
+vim.keymap.set("v", "<", "<gv")
+
+-- Map tab/shift-tab to indent
+vim.keymap.set("v", "<Tab>", ">gv")
+vim.keymap.set("v", "<S-Tab>", "<gv")
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
