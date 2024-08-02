@@ -27,6 +27,7 @@ return {
         markdown = { "prettier" },
         nix = { "alejandra" },
         python = { "yapf" },
+        rust = { "rustfmt" },
         scss = { "prettier" },
         sh = { "shfmt" },
         typescript = { "prettier" },
@@ -68,6 +69,10 @@ return {
         --
         -- https://github.com/prettier/prettier
         prettier = {},
+        -- A tool for formatting rust code according to style guidelines.
+        --
+        -- https://github.com/rust-lang/rustfmt
+        rustfmt = {},
         -- A shell parser, formatter, and interpreter with `bash` support.
         --
         -- https://github.com/mvdan/sh
