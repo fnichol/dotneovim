@@ -9,81 +9,20 @@ return {
     opts = {
       -- Events to trigger linters
       events = { "BufWritePost", "BufReadPost", "InsertLeave" },
-      linters_by_ft = {
-        dockerfile = { "hadolint" },
-        gitcommit = { "commitlint" },
-        javascript = { "eslint" },
-        javascriptreact = { "eslint" },
-        json = { "jsonlint" },
-        lua = { "luacheck" },
-        markdown = { "alex", "markdownlint" },
-        proto = { "buf_lint" },
-        python = { "flake8" },
-        sh = { "shellcheck" },
-        typescript = { "eslint" },
-        typescriptreact = { "eslint" },
-        vim = { "vint" },
-        vue = { "eslint" },
-        yaml = { "yamllint" },
-      },
     },
     config = function(_, opts)
       local lint = require("lint")
 
-      ---@type table<string,table>
-      opts.linters = {
-        -- Catch insensitive, inconsiderate writing.
-        --
-        -- https://github.com/get-alex/alex
-        alex = {},
-        -- A new way of working with Protocol Buffers.
-        --
-        -- https://github.com/bufbuild/buf
-        buf_lint = {},
-        -- commitlint checks if your commit messages meet the conventional
-        -- commit format.
-        --
-        -- https://commitlint.js.org
-        commitlint = {},
-        -- A linter for the JavaScript ecosystem.
-        --
-        -- https://github.com/eslint/eslint
-        eslint = {},
-        -- A python tool that glues together pycodestyle, pyflakes, mccabe, and
-        -- third-party plugins to check the style and quality of Python code.
-        --
-        -- https://github.com/PyCQA/flake8
-        flake8 = {},
-        -- A smarter Dockerfile linter that helps you build best practice
-        -- Docker images.
-        --
-        -- https://github.com/hadolint/hadolint
-        hadolint = {},
-        -- A pure JavaScript version of the service provided at jsonlint.com.
-        --
-        -- https://github.com/zaach/jsonlint
-        jsonlint = {},
-        -- A tool for linting and static analysis of Lua code.
-        --
-        -- https://github.com/lunarmodules/luacheck
-        luacheck = {},
-        -- Markdown style and syntax checker.
-        --
-        -- https://github.com/DavidAnson/markdownlint
-        markdownlint = {},
-        -- A shell script static analysis tool.
-        --
-        -- https://www.shellcheck.net/
-        shellcheck = {},
-        -- Linter for Vimscript.
-        --
-        -- https://github.com/Vimjas/vint
-        vint = {},
-        -- A linter for YAML files.
-        --
-        -- https://github.com/adrienverge/yamllint
-        yamllint = {},
-      }
+      local linters = require("my.mason.linters")
+      local linters_manual = require("my.mason.linters_manual")
+
+      local all_linters =
+        vim.tbl_deep_extend("error", {}, linters.configuration, linters_manual.configuration)
+      local all_by_filetypes =
+        vim.tbl_deep_extend("error", {}, linters.by_filetype, linters_manual.by_filetype)
+
+      opts.linters_by_ft = all_by_filetypes
+      opts.linters = all_linters
 
       local M = {}
 
