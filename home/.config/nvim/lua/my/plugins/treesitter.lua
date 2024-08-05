@@ -35,6 +35,7 @@ local parsers = {
   "luadoc",
   "make",
   "markdown",
+  "ninja",
   "nix",
   "perl",
   "php",
