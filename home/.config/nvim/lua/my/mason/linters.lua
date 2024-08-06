@@ -73,6 +73,13 @@ local by_filetype = {
   yaml = { "yamllint" },
 }
 
+-- If `luarocks` program is not available then `luacheck` cannot be installed
+if vim.fn.executable("luarocks") ~= 1 then
+  configuration["luacheck"] = nil
+
+  by_filetype["lua"] = nil
+end
+
 M.configuration = configuration
 M.by_filetype = by_filetype
 

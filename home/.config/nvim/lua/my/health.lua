@@ -5,6 +5,14 @@
 --
 --]]
 
+local programs = {
+  "git",
+  "luarocks",
+  "make",
+  "rg",
+  "unzip",
+}
+
 local check_version = function()
   local verstr = tostring(vim.version())
   if not vim.version.ge then
@@ -25,7 +33,7 @@ end
 
 local check_external_reqs = function()
   -- Basic utils: `git`, `make`, `unzip`
-  for _, exe in ipairs({ "git", "make", "unzip", "rg" }) do
+  for _, exe in ipairs(programs) do
     local is_executable = vim.fn.executable(exe) == 1
     if is_executable then
       vim.health.ok(string.format("Found executable: '%s'", exe))
