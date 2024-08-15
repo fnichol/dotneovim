@@ -13,6 +13,13 @@ return {
         -- NOTE: Must be loaded before dependants
         config = true,
       },
+      -- Lockfile suppport for mason.nvim
+      --
+      -- https://github.com/zapling/mason-lock.nvim
+      {
+        "zapling/mason-lock.nvim",
+        config = true,
+      },
       { "williamboman/mason-lspconfig.nvim" },
       { "jay-babu/mason-nvim-dap.nvim" },
     },
