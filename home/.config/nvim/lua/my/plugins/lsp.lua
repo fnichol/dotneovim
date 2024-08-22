@@ -196,7 +196,7 @@ return {
               vim.cmd.RustLsp("openCargo")
             end, "Open Rust Cargo.toml")
 
-            keymap("n", "gP", function()
+            keymap("n", "gp", function()
               vim.cmd.RustLsp("parentModule")
             end, "Goto Rust Parent Module")
 
