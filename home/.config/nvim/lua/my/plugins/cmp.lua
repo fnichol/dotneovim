@@ -58,7 +58,7 @@ return {
       -- A Neovim plugin that helps managing crates.io dependencies
       --
       -- https://github.com/Saecki/crates.nvim
-{
+      {
         "Saecki/crates.nvim",
         event = { "BufRead Cargo.toml" },
         opts = {

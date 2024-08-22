@@ -334,7 +334,8 @@ return {
 
       local lsps = require("my.mason.lsps")
       local lsps_manual = require("my.mason.lsps_manual")
-      local all_lsp_servers = vim.tbl_deep_extend("error", {}, lsps.configuration, lsps_manual.configuration)
+      local all_lsp_servers =
+        vim.tbl_deep_extend("error", {}, lsps.configuration, lsps_manual.configuration)
 
       require("mason-lspconfig").setup({
         handlers = {
