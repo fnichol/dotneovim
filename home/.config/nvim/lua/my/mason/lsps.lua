@@ -155,7 +155,7 @@ local configuration = {
 -- supported
 if vim.uv.os_uname().sysname == "OpenBSD" then
   configuration["lua_ls"] = nil
-  configuration["rust-analyzer"] = nil
+  configuration["rust_analyzer"] = nil
   configuration["taplo"] = nil
 end
 
