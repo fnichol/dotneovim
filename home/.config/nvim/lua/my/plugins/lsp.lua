@@ -11,7 +11,7 @@
 --   the server. For example, to see the options for `lua_ls`, you could go to:
 --   https://luals.github.io/wiki/settings/
 
--- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#rust_analyzer
+-- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#rust_analyzer
 local rust_analyzer_settings = {
   ["rust-analyzer"] = {
     checkOnSave = {
@@ -26,6 +26,7 @@ local rust_analyzer_settings = {
         "--profile",
         "rust-analyzer",
       },
+      features = "all",
     },
   },
 }
