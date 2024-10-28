@@ -338,26 +338,21 @@ return {
       local all_lsp_servers =
         vim.tbl_deep_extend("error", {}, lsps.configuration, lsps_manual.configuration)
 
-      require("mason-lspconfig").setup({
-        handlers = {
-          function(server_name)
-            local server = all_lsp_servers[server_name] or {}
-            -- This handles overriding only values explicitly passed by the
-            -- server configuration above. Useful when disabling certain
-            -- features of an LSP (for example, turning off formatting for
-            -- tsserver)
-            server.capabilities =
-              vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
+      for server_name, server_config in pairs(all_lsp_servers) do
+        -- This handles overriding only values explicitly passed by the
+        -- server configuration above. Useful when disabling certain
+        -- features of an LSP (for example, turning off formatting for
+        -- tsserver)
+        server_config.capabilities =
+          vim.tbl_deep_extend("force", {}, capabilities, server_config.capabilities or {})
 
-            -- Rust Analyzer is configured via `rustaceanvim` so the client's
-            -- `setup` function should not be called.
-            -- See `:help rustaceanvim.mason` for more details
-            if server_name ~= "rust_analyzer" then
-              require("lspconfig")[server_name].setup(server)
-            end
-          end,
-        },
-      })
+        -- Rust Analyzer is configured via `rustaceanvim` so the client's
+        -- `setup` function should not be called.
+        -- See `:help rustaceanvim.mason` for more details
+        if server_name ~= "rust_analyzer" then
+          require("lspconfig")[server_name].setup(server_config)
+        end
+      end
     end,
   },
   -- Supercharge your Rust experience in Neovim!
