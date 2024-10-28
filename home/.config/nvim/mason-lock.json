@@ -8,7 +8,6 @@
   "codelldb": "v1.10.0",
   "commitlint": "19.5.0",
   "css-lsp": "4.10.0",
-  "debugpy": "1.8.6",
   "delve": "v1.23.1",
   "docker-compose-language-service": "0.2.0",
   "dockerfile-language-server": "0.13.0",
@@ -20,14 +19,14 @@
   "html-lsp": "4.10.0",
   "json-lsp": "4.10.0",
   "jsonlint": "1.6.3",
-  "lua-language-server": "3.11.0",
+  "lua-language-server": "3.11.1",
   "luacheck": "1.1.0",
   "markdownlint": "0.42.0",
   "nil": "2024-08-06",
   "powershell-editor-services": "v3.20.1",
   "prettier": "3.3.3",
   "pyright": "1.1.383",
-  "rust-analyzer": "2024-09-30",
+  "rust-analyzer": "2024-10-07",
   "shellcheck": "v0.10.0",
   "shfmt": "v3.9.0",
   "sqlls": "1.7.0",
@@ -38,5 +37,6 @@
   "vint": "0.3.21",
   "yaml-language-server": "1.15.0",
   "yamllint": "1.35.1",
-  "yapf": "0.40.2"
+  "yapf": "0.40.2",
+
 }
