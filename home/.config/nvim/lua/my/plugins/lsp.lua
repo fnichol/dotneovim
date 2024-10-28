@@ -174,13 +174,7 @@ return {
 
           -- Execute a code action, usually your cursor needs to be on top of
           -- an error or a suggestion from your LSP for this to activate.
-          if rust_ft then
-            keymap({ "n", "v" }, "<leader>la", function()
-              vim.cmd.RustLsp("codeAction")
-            end, "Code Action")
-          else
-            keymap({ "n", "v" }, "<leader>la", vim.lsp.buf.code_action, "Code Action")
-          end
+          keymap({ "n", "v" }, "<leader>la", vim.lsp.buf.code_action, "Code Action")
 
           keymap({ "n", "v" }, "<leader>lc", vim.lsp.codelens.run, "Run CodeLens")
 
