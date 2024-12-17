@@ -4,7 +4,8 @@ return {
   -- Fake directory plugin to contain all colorscheme plugins and trigger the
   -- current colorscheme
   {
-    dir = "my-colorschemes",
+    "my-colorschemes",
+    virtual = true,
     dependencies = {
       -- Soothing pastel theme for (Neo)vim
       --
