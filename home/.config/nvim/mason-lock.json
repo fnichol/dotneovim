@@ -27,7 +27,7 @@
   "powershell-editor-services": "v4.1.0",
   "prettier": "3.4.2",
   "pyright": "1.1.391",
-  "rust-analyzer": "2024-12-23",
+  "rust-analyzer": "2024-12-30",
   "shellcheck": "v0.10.0",
   "shfmt": "v3.10.0",
   "sqlls": "1.7.1",
