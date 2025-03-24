@@ -22,6 +22,13 @@ local configuration = {
     -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#cssls
     settings = {},
   },
+  -- Deno's built-in language server
+  --
+  -- https://github.com/denoland/deno
+  denols = {
+    -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#denols
+    settings = {},
+  },
   -- Language service for Docker Compose documents
   --
   -- https://github.com/microsoft/compose-language-service
