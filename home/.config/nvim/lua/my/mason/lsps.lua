@@ -161,6 +161,7 @@ local configuration = {
 -- If running on OpenBSD, remove language servers and tools that aren't yet
 -- supported
 if vim.uv.os_uname().sysname == "OpenBSD" then
+  configuration["denols"] = nil
   configuration["lua_ls"] = nil
   configuration["rust_analyzer"] = nil
   configuration["taplo"] = nil
