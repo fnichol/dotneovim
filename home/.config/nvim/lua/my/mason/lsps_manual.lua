@@ -5,7 +5,7 @@ local packages = {
   --
   -- https://github.com/facebook/buck2
   buck2 = {
-    -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#buck2
+    -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#buck2
     --
     -- Use a seperate isolation dir (default: `v2`) for the Buck2 LSP. That
     -- way, cleaning/killing the buckd on the commandline won't kill the
@@ -22,7 +22,7 @@ local packages = {
   --
   -- https://github.com/tilt-dev/tilt
   tilt_ls = {
-    -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#tilt_ls
+    -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#tilt_ls
     settings = {},
   },
 }
