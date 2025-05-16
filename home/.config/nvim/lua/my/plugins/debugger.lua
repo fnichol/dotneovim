@@ -242,13 +242,7 @@ return {
       },
     },
     config = function()
-      local has_mason, mason_registry = pcall(require, "mason-registry")
-      if not has_mason then
-        require("my.util.notify").error("Mason could not not be loaded")
-        return
-      end
-      local mason_pkg = mason_registry.get_package("debugpy")
-      local path_prefix = vim.fs.joinpath(mason_pkg:get_install_path(), "venv")
+      local path_prefix = vim.fs.joinpath(vim.fn.expand("$MASON"), "packages", "debugpy", "venv")
 
       if vim.fn.has("win32") == 1 then
         require("dap-python").setup(vim.fs.joinpath(path_prefix, "Scripts", "pythonw.exe"))

@@ -9,8 +9,8 @@ local configuration = {
   -- https://github.com/rogalmic/vscode-bash-debug
   bash = {
     -- https://github.com/mfussenegger/nvim-dap/wiki/Debug-Adapter-installation#bash
-    adapters = function(mason_registry)
-      local pkg_path = mason_registry.get_package("bash-debug-adapter"):get_install_path()
+    adapters = function(_)
+      local pkg_path = vim.fs.joinpath(vim.fn.expand("$MASON"), "packages", "bash-debug-adapter")
 
       return {
         bashdb = {
@@ -20,8 +20,8 @@ local configuration = {
         },
       }
     end,
-    configurations = function(mason_registry)
-      local pkg_path = mason_registry.get_package("bash-debug-adapter"):get_install_path()
+    configurations = function(_)
+      local pkg_path = vim.fs.joinpath(vim.fn.expand("$MASON"), "packages", "bash-debug-adapter")
 
       return {
         sh = {
@@ -54,8 +54,8 @@ local configuration = {
   codelldb = {
     -- https://github.com/mfussenegger/nvim-dap/wiki/Debug-Adapter-installation#ccrust-via-codelldb
     -- https://github.com/mfussenegger/nvim-dap/wiki/C-C---Rust-(via--codelldb)
-    adapters = function(mason_registry)
-      local pkg_path = mason_registry.get_package("codelldb"):get_install_path()
+    adapters = function(_)
+      local pkg_path = vim.fs.joinpath(vim.fn.expand("$MASON"), "packages", "codelldb")
 
       return {
         codelldb = {

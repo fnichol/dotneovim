@@ -7,9 +7,9 @@ return {
     dependencies = {
       -- Portable package manager for Neovim that runs everywhere Neovim runs.
       --
-      -- https://github.com/williamboman/mason.nvim
+      -- https://github.com/mason-org/mason.nvim
       {
-        "williamboman/mason.nvim",
+        "mason-org/mason.nvim",
         -- NOTE: Must be loaded before dependants
         config = true,
       },
