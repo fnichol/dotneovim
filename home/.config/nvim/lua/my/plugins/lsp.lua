@@ -315,11 +315,7 @@ return {
         "package:install:success",
         vim.schedule_wrap(function(pkg, _)
           if pkg.name == "rust-analyzer" then
-            local bin_symlink = vim.fs.joinpath(
-              vim.fs.dirname(vim.fs.dirname(pkg:get_install_path())),
-              "bin",
-              "rust-analyzer"
-            )
+            local bin_symlink = vim.fs.joinpath(vim.fn.expand("$MASON"), "bin", "rust-analyzer")
             if vim.fn.exists(bin_symlink) == 0 then
               vim.uv.fs_unlink(bin_symlink)
             end
@@ -385,9 +381,10 @@ return {
 
         local has_mason, mason_registry = pcall(require, "mason-registry")
         if not use_local and has_mason and mason_registry.is_installed(binary) then
-          local ra_package = mason_registry.get_package(binary)
           local ra_bin_candidates = vim.split(
-            vim.fn.glob(vim.fs.joinpath(ra_package:get_install_path(), "rust-analyzer-*")),
+            vim.fn.glob(
+              vim.fs.joinpath(vim.fn.expand("$MASON"), "packages", binary, "rust-analyzer-*")
+            ),
             "\n",
             { trimempty = true }
           )
