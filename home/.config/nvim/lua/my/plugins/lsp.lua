@@ -14,7 +14,7 @@
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#rust_analyzer
 local rust_analyzer_settings = {
   ["rust-analyzer"] = {
-    checkOnSave = {
+    check = {
       -- Favor `cargo clippy` to `cargo check` for diagnostics
       command = "clippy",
     },
