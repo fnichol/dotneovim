@@ -31,13 +31,6 @@ local rust_analyzer_settings = {
   },
 }
 
-local diagnostic_signs = {
-  { name = "DiagnosticSignError", text = "" },
-  { name = "DiagnosticSignWarn", text = "" },
-  { name = "DiagnosticSignHint", text = "" },
-  { name = "DiagnosticSignInfo", text = "" },
-}
-
 local diagnostic_config = {
   -- Options for floating diagnostic windows
   float = {
@@ -55,7 +48,20 @@ local diagnostic_config = {
     style = "minimal",
   },
   -- Use signs for diagnostics
-  signs = { active = diagnostic_signs },
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = " ",
+      [vim.diagnostic.severity.WARN] = " ",
+      [vim.diagnostic.severity.INFO] = "󰠠 ",
+      [vim.diagnostic.severity.HINT] = " ",
+    },
+    numhl = {
+      [vim.diagnostic.severity.ERROR] = "DiagnosticSignError",
+      [vim.diagnostic.severity.WARN] = "DiagnosticSignWarn",
+      [vim.diagnostic.severity.INFO] = "DiagnosticSignInfo",
+      [vim.diagnostic.severity.HINT] = "DiagnosticSignHint",
+    },
+  },
   -- Use underline for diagnostics [default: true]
   underline = true,
   -- Update diagnostics in Insert mode [default: false]
@@ -223,6 +229,15 @@ return {
             end, "Explain Current Rust Error")
           end
 
+          local client = vim.lsp.get_client_by_id(event.data.client_id)
+          local function client_supports_method(method, bufnr)
+            if vim.version().major == 0 and vim.version().minor < 11 then
+              return client.supports_method(method, { bufnr = bufnr })
+            else
+              return client:supports_method(method, bufnr)
+            end
+          end
+
           -- The following two autocommands are used to highlight references of
           -- the word under your cursor when your cursor rests there for a
           -- little while.
@@ -231,10 +246,9 @@ return {
           --
           -- When you move your cursor, the highlights will be cleared (the
           -- second autocommand).
-          local client = vim.lsp.get_client_by_id(event.data.client_id)
           if
             client
-            and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight)
+            and client_supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight)
           then
             local highlight_augroup =
               vim.api.nvim_create_augroup("my-lsp-highlight", { clear = false })
@@ -264,7 +278,7 @@ return {
           -- code, if the language server you are using supports them
           --
           -- This may be unwanted, since they displace some of your code
-          if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
+          if client and client_supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
             keymap("n", "<leader>th", function()
               vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
             end, "Toggle Inlay Hints")
@@ -272,9 +286,6 @@ return {
         end,
       })
 
-      for _, sign in pairs(diagnostic_signs) do
-        vim.fn.sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = "" })
-      end
       vim.diagnostic.config(diagnostic_config)
       -- Set rounded corners on hover windows
       vim.lsp.handlers["textDocument/hover"] =
