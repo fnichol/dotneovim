@@ -39,6 +39,7 @@ local parsers = {
   "nix",
   "perl",
   "php",
+  "pip_requirements",
   "powershell",
   "proto",
   "python",
