@@ -350,7 +350,7 @@ return {
   -- https://github.com/mrcjkb/rustaceanvim
   {
     "mrcjkb/rustaceanvim",
-    version = "^5",
+    version = "^6",
     ft = { "rust" },
     opts = {
       tools = {
