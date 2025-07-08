@@ -96,9 +96,11 @@ return {
         require("telescope.builtin").colorscheme({ enable_preview = true })
       end, { desc = "Colorscheme" })
       vim.keymap.set("n", "<leader>sd", builtin.diagnostics, { desc = "Diagnostic" })
+      vim.keymap.set("n", "<leader>sg", builtin.grep_string, { desc = "String Under Cursor" })
       vim.keymap.set("n", "<leader>sh", builtin.help_tags, { desc = "Help" })
       vim.keymap.set("n", "<leader>sk", builtin.keymaps, { desc = "Keymap" })
       vim.keymap.set("n", "<leader>sm", builtin.man_pages, { desc = "Man Page" })
+      vim.keymap.set("n", "<leader>sq", builtin.quickfix, { desc = "Quickfix List" })
       vim.keymap.set("n", "<leader>sr", builtin.oldfiles, { desc = "Recent File" })
       vim.keymap.set("n", "<leader>st", builtin.live_grep, { desc = "Text" })
 

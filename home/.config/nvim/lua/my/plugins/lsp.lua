@@ -153,8 +153,7 @@ return {
           -- Jump to the implementation of the word under your cursor.
           -- Useful when your language has ways of declaring types without an
           -- actual implementation.
-          -- keymap("n", "gI", builtin.lsp_implementations, "Goto Implementation")
-          keymap("n", "gI", vim.lsp.buf.implementation, "Goto Implementation")
+          keymap("n", "gI", builtin.lsp_implementations, "Goto Implementation")
 
           -- Signature help represents the signature of something callable.
           -- There can be multiple signature but only one active and only one
@@ -163,8 +162,7 @@ return {
           keymap("i", "<c-k>", vim.lsp.buf.signature_help, "Signature Help")
 
           -- Find references for the word under your cursor.
-          -- keymap("n", "gr", builtin.lsp_references, "Goto References")
-          keymap("n", "gr", vim.lsp.buf.references, "Goto References")
+          keymap("n", "gr", builtin.lsp_references, "Goto References")
 
           keymap("n", "gy", vim.lsp.buf.type_definition, "Goto Type Definition")
 
