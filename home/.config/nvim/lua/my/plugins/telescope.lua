@@ -31,6 +31,14 @@ return {
       --
       -- https://github.com/nvim-telescope/telescope-ui-select.nvim
       { "nvim-telescope/telescope-ui-select.nvim" },
+      -- Live grep args picker for telescope.nvim
+      --
+      -- https://github.com/nvim-telescope/telescope-live-grep-args.nvim
+      {
+        "nvim-telescope/telescope-live-grep-args.nvim",
+        version = "^1",
+      },
+      --
       -- Lua fork of vim-web-devicons for NeoVim
       --
       -- https://github.com/nvim-tree/nvim-web-devicons
@@ -79,11 +87,16 @@ return {
         }
       end
 
-      require("telescope").setup(telescope_setup)
+      local telescope = require("telescope")
+
+      telescope.setup(telescope_setup)
 
       -- Enable Telescope extensions if they are installed
-      pcall(require("telescope").load_extension, "fzf")
-      pcall(require("telescope").load_extension, "ui-select")
+      pcall(telescope.load_extension, "fzf")
+      pcall(telescope.load_extension, "ui-select")
+      pcall(telescope.load_extension, "live_grep_args")
+
+      local lga_shortcuts = require("telescope-live-grep-args.shortcuts")
 
       -- See: `:help telescope.builtin`
       local builtin = require("telescope.builtin")
@@ -93,16 +106,26 @@ return {
       vim.keymap.set("n", "<leader>gc", builtin.git_commits, { desc = "Checkout Commit (Git)" })
       vim.keymap.set("n", "<leader>go", builtin.git_status, { desc = "Open Changed File (Git)" })
       vim.keymap.set("n", "<leader>sc", function()
-        require("telescope.builtin").colorscheme({ enable_preview = true })
+        builtin.colorscheme({ enable_preview = true })
       end, { desc = "Colorscheme" })
       vim.keymap.set("n", "<leader>sd", builtin.diagnostics, { desc = "Diagnostic" })
-      vim.keymap.set("n", "<leader>sg", builtin.grep_string, { desc = "String Under Cursor" })
+      vim.keymap.set(
+        "n",
+        "<leader>sg",
+        lga_shortcuts.grep_word_under_cursor,
+        { desc = "String Under Cursor" }
+      )
       vim.keymap.set("n", "<leader>sh", builtin.help_tags, { desc = "Help" })
       vim.keymap.set("n", "<leader>sk", builtin.keymaps, { desc = "Keymap" })
       vim.keymap.set("n", "<leader>sm", builtin.man_pages, { desc = "Man Page" })
       vim.keymap.set("n", "<leader>sq", builtin.quickfix, { desc = "Quickfix List" })
       vim.keymap.set("n", "<leader>sr", builtin.oldfiles, { desc = "Recent File" })
-      vim.keymap.set("n", "<leader>st", builtin.live_grep, { desc = "Text" })
+      vim.keymap.set(
+        "n",
+        "<leader>st",
+        telescope.extensions.live_grep_args.live_grep_args,
+        { desc = "Text" }
+      )
 
       vim.keymap.set("n", "<leader>/", function()
         builtin.current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
