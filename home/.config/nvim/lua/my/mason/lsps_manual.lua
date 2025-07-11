@@ -1,5 +1,6 @@
 M = {}
 
+---@type table<string, vim.lsp.Config>
 local packages = {
   -- Build system, successor to Buck
   --

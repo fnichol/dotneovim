@@ -81,17 +81,17 @@ return {
     dependencies = {
       -- Portable package manager for Neovim that runs everywhere Neovim runs.
       --
-      -- https://github.com/williamboman/mason.nvim
+      -- https://github.com/mason-org/mason.nvim
       {
-        "williamboman/mason.nvim",
+        "mason-org/mason.nvim",
         -- NOTE: Must be loaded before dependants
         config = true,
       },
       -- Extension to mason.nvim that makes it easier to use lspconfig with
       -- mason.nvim.
       --
-      -- https://github.com/williamboman/mason-lspconfig.nvim
-      { "williamboman/mason-lspconfig.nvim" },
+      -- https://github.com/mason-org/mason-lspconfig.nvim
+      { "mason-org/mason-lspconfig.nvim" },
       -- Install and upgrade third party tools automatically
       --
       -- https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim
@@ -332,25 +332,40 @@ return {
         end)
       )
 
-      local lsps = require("my.mason.lsps")
-      local lsps_manual = require("my.mason.lsps_manual")
-      local all_lsp_servers =
-        vim.tbl_deep_extend("error", {}, lsps.configuration, lsps_manual.configuration)
+      local mason_lsps = require("my.mason.lsps").configuration
+      local manual_lsps = require("my.mason.lsps_manual").configuration
 
-      for server_name, server_config in pairs(all_lsp_servers) do
+      for server, config in pairs(vim.tbl_deep_extend("error", {}, mason_lsps, manual_lsps)) do
+        config = config or {}
+
         -- This handles overriding only values explicitly passed by the
         -- server configuration above. Useful when disabling certain
         -- features of an LSP (for example, turning off formatting for
         -- tsserver)
-        server_config.capabilities =
-          vim.tbl_deep_extend("force", {}, capabilities, server_config.capabilities or {})
+        config.capabilities =
+          vim.tbl_deep_extend("force", {}, capabilities, config.capabilities or {})
 
         -- Rust Analyzer is configured via `rustaceanvim` so the client's
         -- `setup` function should not be called.
         -- See `:help rustaceanvim.mason` for more details
-        if server_name ~= "rust_analyzer" then
-          require("lspconfig")[server_name].setup(server_config)
+        if server ~= "rust_analyzer" then
+          vim.lsp.config(server, config)
         end
+      end
+
+      require("mason-lspconfig").setup({
+        -- Explicitly set to empty table (above populates installs via
+        -- mason-tool-installer)
+        ensure_installed = {},
+        -- Automatically run `vim.lsp.enable()` for all servers that are
+        -- installed via Mason
+        automatic_enable = vim.tbl_keys(mason_lsps),
+      })
+
+      -- Manually run `vim.lsp.enable()` for all language servers that are
+      -- *not* installed via Mason
+      if not vim.tbl_isempty(manual_lsps) then
+        vim.lsp.enable(vim.tbl_keys(manual_lsps))
       end
     end,
   },

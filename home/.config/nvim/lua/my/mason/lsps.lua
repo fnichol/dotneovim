@@ -1,5 +1,19 @@
 M = {}
 
+local vue_language_server_path = vim.fs.joinpath(
+  vim.fn.expand("$MASON"),
+  "packages",
+  "vue-language-server",
+  "node_modules",
+  "@vue",
+  "language-server"
+)
+
+local file_exists = function(path)
+  return (vim.uv.fs_stat(path) or {}).type == "file"
+end
+
+---@type table<string, vim.lsp.Config>
 local configuration = {
   -- Language Server for AWK and associated VSCode client extension
   --
@@ -26,8 +40,54 @@ local configuration = {
   --
   -- https://github.com/denoland/deno
   denols = {
+    workspace_required = true,
+    -- Determine if a language server should be attached to each buffer based
+    -- on project marker files
+    root_dir = function(bufnr, on_dir)
+      local ts_markers = { "package.json", "tsconfig.json" }
+      local deno_markers = { "deno.json", "deno.jsonc" }
+
+      local bufname = vim.api.nvim_buf_get_name(bufnr)
+
+      for dir in vim.fs.parents(bufname) do
+        -- Deno project marker files signifies a Deno project path which supersede a TS project
+        for _, deno_marker in pairs(deno_markers) do
+          if file_exists(vim.fs.joinpath(dir, deno_marker)) then
+            -- Found a Deno project marker file, attaching language server
+            on_dir(dir)
+            return
+          end
+        end
+
+        -- Now finding a TS project marker file signifies a TS project
+        for _, ts_marker in pairs(ts_markers) do
+          local candidate = vim.fs.joinpath(dir, ts_marker)
+          if file_exists(candidate) then
+            -- Found a TS project marker file, skipping language server
+            return
+          end
+        end
+
+        if vim.fn.isdirectory(vim.fs.joinpath(dir, ".git")) == 1 then
+          -- Failed to find a marker file before finding Git repo root, skipping language server
+          return
+        end
+      end
+    end,
     -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#denols
-    settings = {},
+    settings = {
+      typscript = {
+        inlayHints = {
+          includeInlayEnumMemberValueHints = true,
+          includeInlayFunctionLikeReturnTypeHints = true,
+          includeInlayFunctionParameterTypeHints = true,
+          includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
+          includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+          includeInlayPropertyDeclarationTypeHints = true,
+          includeInlayVariableTypeHints = false,
+        },
+      },
+    },
   },
   -- Language service for Docker Compose documents
   --
@@ -107,13 +167,6 @@ local configuration = {
     -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#pyright
     settings = {},
   },
-  -- A Rust compiler front-end for IDEs
-  --
-  -- NOTE: this configuration only ensures that the binary is installed via
-  -- Mason. Configuration is provided via the `rustaceanvim` plugin.
-  --
-  -- https://github.com/rust-lang/rust-analyzer
-  rust_analyzer = {},
   -- SQL Language Server
   --
   -- https://github.com/joe-re/sql-language-server
@@ -135,6 +188,88 @@ local configuration = {
     -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#taplo
     settings = {},
   },
+  -- Language server for TypeScript that wraps `tsserver`
+  --
+  -- https://github.com/typescript-language-server/typescript-language-server
+  ts_ls = {
+    init_options = {
+      plugins = {
+        {
+          name = "@vue/typescript-plugin",
+          location = vue_language_server_path,
+          languages = { "javascript", "typescript", "vue" },
+        },
+      },
+    },
+    workspace_required = true,
+    -- Determine if a language server should be attached to each buffer based
+    -- on project marker files
+    root_dir = function(bufnr, on_dir)
+      local ts_markers = { "package.json", "tsconfig.json" }
+      local deno_markers = { "deno.json", "deno.jsonc" }
+
+      local bufname = vim.api.nvim_buf_get_name(bufnr)
+
+      for dir in vim.fs.parents(bufname) do
+        -- Deno project marker files signifies a Deno project path which supersede a TS project
+        for _, deno_marker in pairs(deno_markers) do
+          if file_exists(vim.fs.joinpath(dir, deno_marker)) then
+            -- Found a Deno project marker file, skipping language server
+            return
+          end
+        end
+
+        -- Now finding a TS project marker file signifies a TS project
+        for _, ts_marker in pairs(ts_markers) do
+          if file_exists(vim.fs.joinpath(dir, ts_marker)) then
+            -- Found a TS project marker file, attaching language server
+            on_dir(dir)
+            return
+          end
+        end
+
+        if vim.fn.isdirectory(vim.fs.joinpath(dir, ".git")) == 1 then
+          -- Failed to find a marker file before finding Git repo root, skipping language server
+          return
+        end
+      end
+    end,
+    filetypes = {
+      "javascript",
+      "javascript.jsx",
+      "javascriptreact",
+      "typescript",
+      "typescript.tsx",
+      "typescriptreact",
+      "vue",
+    },
+    -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#ts_ls
+    settings = {
+      javascript = {
+        inlayHints = {
+          includeInlayEnumMemberValueHints = true,
+          includeInlayFunctionLikeReturnTypeHints = true,
+          includeInlayFunctionParameterTypeHints = true,
+          includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
+          includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+          includeInlayPropertyDeclarationTypeHints = true,
+          includeInlayVariableTypeHints = false,
+        },
+      },
+
+      typescript = {
+        inlayHints = {
+          includeInlayEnumMemberValueHints = true,
+          includeInlayFunctionLikeReturnTypeHints = true,
+          includeInlayFunctionParameterTypeHints = true,
+          includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
+          includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+          includeInlayPropertyDeclarationTypeHints = true,
+          includeInlayVariableTypeHints = false,
+        },
+      },
+    },
+  },
   -- VImScript language server, LSP for vim script
   --
   -- https://github.com/iamcco/vim-language-server
@@ -142,13 +277,6 @@ local configuration = {
     -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#vimls
     settings = {},
   },
-  -- -- High-performance Vue language tooling based-on Volar.js
-  -- --
-  -- -- https://github.com/vuejs/language-tools
-  -- volar = {
-  --   -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#volar
-  --   settings = {},
-  -- },
   -- Language Server for YAML Files
   --
   -- https://github.com/redhat-developer/yaml-language-server
