@@ -6,7 +6,7 @@
   "buf": "v1.57.2",
   "buildifier": "v8.2.1",
   "codelldb": "v1.11.5",
-  "commitlint": "20.0.0",
+  "commitlint": "20.1.0",
   "css-lsp": "4.10.0",
   "debugpy": "1.8.17",
   "delve": "v1.25.2",
