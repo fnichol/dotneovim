@@ -3,7 +3,7 @@
   "awk-language-server": "0.10.6",
   "bash-debug-adapter": "untagged-438733f35feb8659d939",
   "bash-language-server": "5.6.0",
-  "buf": "v1.58.0",
+  "buf": "v1.59.0",
   "buildifier": "v8.2.1",
   "codelldb": "v1.11.7",
   "commitlint": "20.1.0",
