@@ -24,6 +24,9 @@ return {
       opts.linters_by_ft = all_by_filetypes
       opts.linters = all_linters
 
+      -- Apply the configuration to nvim-lint
+      lint.linters_by_ft = all_by_filetypes
+
       local M = {}
 
       -- See: https://github.com/LazyVim/LazyVim/blob/12818a6cb499456f4903c5d8e68af43753ebc869/lua/lazyvim/plugins/linting.lua#L47-L56
