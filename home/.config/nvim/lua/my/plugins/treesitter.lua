@@ -67,6 +67,7 @@ return {
   -- https://github.com/nvim-treesitter/nvim-treesitter
   {
     "nvim-treesitter/nvim-treesitter",
+    lazy = false,
     build = function()
       require("nvim-treesitter.install").update({ with_sync = true })
     end,
@@ -84,13 +85,7 @@ return {
         -- for indent.
         additional_vim_regex_highlighting = { "ruby" },
       },
-      indent = { enable = true, diable = { "ruby" } },
+      indent = { enable = true, disable = { "ruby" } },
     },
-    config = function(_, opts)
-      -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
-
-      ---@diagnostic disable-next-line: missing-fields
-      require("nvim-treesitter.configs").setup(opts)
-    end,
   },
 }
