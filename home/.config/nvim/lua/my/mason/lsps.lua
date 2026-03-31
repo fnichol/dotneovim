@@ -300,6 +300,11 @@ if vim.fn.executable("nix") ~= 1 then
   configuration["nil_ls"] = nil
 end
 
+-- If `go` is not present, don't install & activate the gopls LSP
+if vim.fn.executable("go") ~= 1 then
+  configuration["gopls"] = nil
+end
+
 M.configuration = configuration
 
 return M

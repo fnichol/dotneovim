@@ -107,6 +107,11 @@ local configuration = {
   },
 }
 
+-- If `go` is not present, then prevent dap from activating
+if vim.fn.executable("go") ~= 1 then
+  configuration["delve"] = nil
+end
+
 M.configuration = configuration
 
 return M
