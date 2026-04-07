@@ -158,8 +158,12 @@ return {
           -- Signature help represents the signature of something callable.
           -- There can be multiple signature but only one active and only one
           -- active parameter
-          keymap("n", "gK", vim.lsp.buf.signature_help, "Signature Help")
-          keymap("i", "<c-k>", vim.lsp.buf.signature_help, "Signature Help")
+          keymap("n", "gK", function()
+            vim.lsp.buf.signature_help({ border = "rounded" })
+          end, "Signature Help")
+          keymap("i", "<c-k>", function()
+            vim.lsp.buf.signature_help({ border = "rounded" })
+          end, "Signature Help")
 
           -- Find references for the word under your cursor.
           keymap("n", "gr", builtin.lsp_references, "Goto References")
@@ -173,7 +177,9 @@ return {
               require("crates").show_popup()
             end, "Hover Crate Documentation")
           else
-            keymap("n", "K", vim.lsp.buf.hover, "Hover Documentation")
+            keymap("n", "K", function()
+              vim.lsp.buf.hover({ border = "rounded" })
+            end, "Hover Documentation")
           end
 
           -- Execute a code action, usually your cursor needs to be on top of
@@ -285,12 +291,6 @@ return {
       })
 
       vim.diagnostic.config(diagnostic_config)
-      -- Set rounded corners on hover windows
-      vim.lsp.handlers["textDocument/hover"] =
-        vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
-      -- Set rounded corners on signature help windows
-      vim.lsp.handlers["textDocument/signatureHelp"] =
-        vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" })
 
       -- LSP servers and clients are able to communicate to each other what
       -- features they support.
