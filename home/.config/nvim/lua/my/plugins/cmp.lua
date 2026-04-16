@@ -62,8 +62,9 @@ return {
         "Saecki/crates.nvim",
         event = { "BufRead Cargo.toml" },
         opts = {
-          completion = {
-            cmp = { enabled = true },
+          lsp = {
+            enabled = true,
+            completion = true,
           },
         },
       },
@@ -133,7 +134,6 @@ return {
             group_index = 0,
           },
           { name = "nvim_lsp" },
-          { name = "crates" },
           { name = "nvim_lua" },
           { name = "vim-dadbod-completion" },
           { name = "luasnip" },
