@@ -62,30 +62,24 @@ local parsers = {
 }
 
 return {
-  -- Neovim Treesitter configurations and abstraction layer
+  -- A lightweight Tree-sitter parser manager for Neovim
   --
-  -- https://github.com/nvim-treesitter/nvim-treesitter
+  -- https://github.com/romus204/tree-sitter-manager.nvim
   {
-    "nvim-treesitter/nvim-treesitter",
-    lazy = false,
-    build = function()
-      require("nvim-treesitter.install").update({ with_sync = true })
-    end,
-    opts = {
-      ensure_installed = parsers,
-      -- Autoinstall languages that are not installed
-      auto_install = true,
-      highlight = {
-        enable = true,
+    "romus204/tree-sitter-manager.nvim",
+    dependencies = {}, -- `tree-sitter` CLI must be installed system wide
+    config = function()
+      require("tree-sitter-manager").setup({
+        ensure_installed = parsers,
+        -- Autoinstall languages that are not installed
+        auto_install = true,
         -- Note: Some languages depend on vim's regex highlighting system (such
         -- as Ruby) for indent rules.
         --
         -- If you are experiencing weird indenting issues, add the language to
-        -- the list of additional_vim_regex_highlighting and disabled languages
-        -- for indent.
-        additional_vim_regex_highlighting = { "ruby" },
-      },
-      indent = { enable = true, disable = { "ruby" } },
-    },
+        -- the list of nohighlight languages for indent.
+        nohighlight = { "ruby" },
+      })
+    end,
   },
 }
