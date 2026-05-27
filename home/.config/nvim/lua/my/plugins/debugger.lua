@@ -90,21 +90,21 @@ return {
         require("my.util.notify").error("Mason could not not be loaded")
         return
       end
-      local daps = require("my.mason.daps")
+      local daps = require("my.mason.daps").configuration()
 
       dap.adapters = vim.tbl_deep_extend(
         "force",
         {},
         dap.adapters,
-        daps.configuration.bash.adapters(mason_registry),
-        daps.configuration.codelldb.adapters(mason_registry)
+        daps.bash.adapters(mason_registry),
+        daps.codelldb.adapters(mason_registry)
       )
       dap.configurations = vim.tbl_deep_extend(
         "force",
         {},
         dap.configurations,
-        daps.configuration.bash.configurations(mason_registry),
-        daps.configuration.codelldb.configurations(mason_registry)
+        daps.bash.configurations(mason_registry),
+        daps.codelldb.configurations(mason_registry)
       )
     end,
     keys = {

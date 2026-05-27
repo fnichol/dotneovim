@@ -1,5 +1,7 @@
 M = {}
 
+local sys = require("my.util.sys")
+
 local configuration = {
   -- Catch insensitive, inconsiderate writing.
   --
@@ -8,8 +10,12 @@ local configuration = {
   -- A new way of working with Protocol Buffers.
   --
   -- https://github.com/bufbuild/buf
-  buf = {},
-  -- buf_lint = {},
+  buf = {
+    -- Mason package and system package not available on OpenBSD
+    install_and_use_condition = function()
+      return not sys.on_openbsd()
+    end,
+  },
   -- commitlint checks if your commit messages meet the conventional
   -- commit format.
   --
@@ -28,7 +34,12 @@ local configuration = {
   -- Docker images.
   --
   -- https://github.com/hadolint/hadolint
-  hadolint = {},
+  hadolint = {
+    -- Mason package and system package not available on OpenBSD
+    install_and_use_condition = function()
+      return not sys.on_openbsd()
+    end,
+  },
   -- A pure JavaScript version of the service provided at jsonlint.com.
   --
   -- https://github.com/zaach/jsonlint
@@ -36,7 +47,13 @@ local configuration = {
   -- A tool for linting and static analysis of Lua code.
   --
   -- https://github.com/lunarmodules/luacheck
-  luacheck = {},
+  luacheck = {
+    -- If `luarocks` executable is not present, then `luacheck` cannot be
+    -- installed
+    install_and_use_condition = function()
+      return sys.has_executable("luarocks")
+    end,
+  },
   -- Markdown style and syntax checker.
   --
   -- https://github.com/DavidAnson/markdownlint
@@ -44,7 +61,24 @@ local configuration = {
   -- A shell script static analysis tool.
   --
   -- https://www.shellcheck.net/
-  shellcheck = {},
+  shellcheck = {
+    -- Mason package not available on OpenBSD
+    install_condition = function()
+      return not sys.on_openbsd()
+    end,
+    -- Use executatble from system if present on OpenBSD
+    use_condition = function()
+      if sys.on_openbsd() then
+        if sys.has_executable("shellcheck") then
+          return true
+        else
+          return false
+        end
+      else
+        return true
+      end
+    end,
+  },
   -- Linter for Vimscript.
   --
   -- https://github.com/Vimjas/vint
@@ -56,16 +90,49 @@ local configuration = {
 }
 
 local by_filetype = {
-  dockerfile = { "hadolint" },
+  dockerfile = {
+    "hadolint",
+    -- Mason package and system package not available on OpenBSD
+    install_and_use_condition = function()
+      return not sys.on_openbsd()
+    end,
+  },
   gitcommit = { "commitlint" },
   javascript = { "eslint" },
   javascriptreact = { "eslint" },
   json = { "jsonlint" },
-  lua = { "luacheck" },
+  lua = {
+    "luacheck",
+    -- If `luarocks` executable is not present, then `luacheck` cannot be
+    -- installed
+    install_and_use_condition = function()
+      return sys.has_executable("luarocks")
+    end,
+  },
   markdown = { "alex", "markdownlint" },
-  proto = { "buf_lint" },
+  proto = {
+    "buf",
+    -- Mason package and system package not available on OpenBSD
+    install_and_use_condition = function()
+      return not sys.on_openbsd()
+    end,
+  },
   python = { "flake8" },
-  sh = { "shellcheck" },
+  sh = {
+    "shellcheck",
+    -- Use executatble from system if present on OpenBSD
+    use_condition = function()
+      if sys.on_openbsd() then
+        if sys.has_executable("shellcheck") then
+          return true
+        else
+          return false
+        end
+      else
+        return true
+      end
+    end,
+  },
   typescript = { "eslint" },
   typescriptreact = { "eslint" },
   vim = { "vint" },
@@ -73,14 +140,16 @@ local by_filetype = {
   yaml = { "yamllint" },
 }
 
--- If `luarocks` program is not available then `luacheck` cannot be installed
-if vim.fn.executable("luarocks") ~= 1 then
-  configuration["luacheck"] = nil
+local table = require("my.util.table")
 
-  by_filetype["lua"] = nil
+M.configuration = function()
+  return table.filter_use_table(configuration)
 end
-
-M.configuration = configuration
-M.by_filetype = by_filetype
+M.install = function()
+  return table.filter_install_list(configuration)
+end
+M.by_filetype = function()
+  return table.filter_use_table(by_filetype)
+end
 
 return M

@@ -1,5 +1,7 @@
 M = {}
 
+local sys = require("my.util.sys")
+
 local vue_language_server_path = vim.fs.joinpath(
   vim.fn.expand("$MASON"),
   "packages",
@@ -8,10 +10,6 @@ local vue_language_server_path = vim.fs.joinpath(
   "@vue",
   "language-server"
 )
-
-local file_exists = function(path)
-  return (vim.uv.fs_stat(path) or {}).type == "file"
-end
 
 ---@type table<string, vim.lsp.Config>
 local configuration = {
@@ -40,6 +38,22 @@ local configuration = {
   --
   -- https://github.com/denoland/deno
   denols = {
+    -- Mason package not available on OpenBSD
+    install_condition = function()
+      return not sys.on_openbsd()
+    end,
+    -- Use executatble from system if present on OpenBSD
+    use_condition = function()
+      if sys.on_openbsd() then
+        if sys.has_executable("deno") then
+          return true
+        else
+          return false
+        end
+      else
+        return true
+      end
+    end,
     workspace_required = true,
     -- Determine if a language server should be attached to each buffer based
     -- on project marker files
@@ -52,7 +66,7 @@ local configuration = {
       for dir in vim.fs.parents(bufname) do
         -- Deno project marker files signifies a Deno project path which supersede a TS project
         for _, deno_marker in pairs(deno_markers) do
-          if file_exists(vim.fs.joinpath(dir, deno_marker)) then
+          if sys.file_exists(vim.fs.joinpath(dir, deno_marker)) then
             -- Found a Deno project marker file, attaching language server
             on_dir(dir)
             return
@@ -62,7 +76,7 @@ local configuration = {
         -- Now finding a TS project marker file signifies a TS project
         for _, ts_marker in pairs(ts_markers) do
           local candidate = vim.fs.joinpath(dir, ts_marker)
-          if file_exists(candidate) then
+          if sys.file_exists(candidate) then
             -- Found a TS project marker file, skipping language server
             return
           end
@@ -115,6 +129,10 @@ local configuration = {
   --
   -- https://github.com/golang/tools/tree/master/gopls
   gopls = {
+    -- If executable is not present, prevent the lsp from activating
+    install_and_use_condition = function()
+      return sys.has_executable("go")
+    end,
     -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#gopls
     settings = {},
   },
@@ -149,6 +167,10 @@ local configuration = {
   --
   -- https://github.com/oxalica/nil
   nil_ls = {
+    -- If executable is not present, prevent the lsp from activating
+    install_and_use_condition = function()
+      return sys.has_executable("nix")
+    end,
     -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#nil_ls
     settings = {},
   },
@@ -171,6 +193,10 @@ local configuration = {
   --
   -- https://github.com/joe-re/sql-language-server
   sqlls = {
+    -- Mason package (npm-based) doesn't build on OpenBSD
+    install_and_use_condition = function()
+      return not sys.on_openbsd()
+    end,
     -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#sqlls
     settings = {},
   },
@@ -185,6 +211,10 @@ local configuration = {
   --
   -- https://taplo.tamasfe.dev/cli/usage/language-server.html
   taplo = {
+    -- Mason package not available on OpenBSD
+    install_and_use_condition = function()
+      return not sys.on_openbsd()
+    end,
     -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#taplo
     settings = {},
   },
@@ -213,7 +243,7 @@ local configuration = {
       for dir in vim.fs.parents(bufname) do
         -- Deno project marker files signifies a Deno project path which supersede a TS project
         for _, deno_marker in pairs(deno_markers) do
-          if file_exists(vim.fs.joinpath(dir, deno_marker)) then
+          if sys.file_exists(vim.fs.joinpath(dir, deno_marker)) then
             -- Found a Deno project marker file, skipping language server
             return
           end
@@ -221,7 +251,7 @@ local configuration = {
 
         -- Now finding a TS project marker file signifies a TS project
         for _, ts_marker in pairs(ts_markers) do
-          if file_exists(vim.fs.joinpath(dir, ts_marker)) then
+          if sys.file_exists(vim.fs.joinpath(dir, ts_marker)) then
             -- Found a TS project marker file, attaching language server
             on_dir(dir)
             return
@@ -286,25 +316,13 @@ local configuration = {
   },
 }
 
--- If running on OpenBSD, remove language servers and tools that aren't yet
--- supported
-if vim.uv.os_uname().sysname == "OpenBSD" then
-  configuration["denols"] = nil
-  configuration["lua_ls"] = nil
-  configuration["rust_analyzer"] = nil
-  configuration["taplo"] = nil
-end
+local table = require("my.util.table")
 
--- If `nix` is not present, don't install & activate the nil LSP
-if vim.fn.executable("nix") ~= 1 then
-  configuration["nil_ls"] = nil
+M.configuration = function()
+  return table.filter_use_table(configuration)
 end
-
--- If `go` is not present, don't install & activate the gopls LSP
-if vim.fn.executable("go") ~= 1 then
-  configuration["gopls"] = nil
+M.install = function()
+  return table.filter_install_list(configuration)
 end
-
-M.configuration = configuration
 
 return M

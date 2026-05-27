@@ -17,9 +17,9 @@ return {
       local linters_manual = require("my.mason.linters_manual")
 
       local all_linters =
-        vim.tbl_deep_extend("error", {}, linters.configuration, linters_manual.configuration)
+        vim.tbl_deep_extend("error", {}, linters.configuration(), linters_manual.configuration())
       local all_by_filetypes =
-        vim.tbl_deep_extend("error", {}, linters.by_filetype, linters_manual.by_filetype)
+        vim.tbl_deep_extend("error", {}, linters.by_filetype(), linters_manual.by_filetype())
 
       opts.linters_by_ft = all_by_filetypes
       opts.linters = all_linters

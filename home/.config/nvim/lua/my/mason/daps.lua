@@ -1,5 +1,7 @@
 M = {}
 
+local sys = require("my.util.sys")
+
 -- https://mason-registry.dev/registry/list?search=category%3Adap
 -- https://github.com/jay-babu/mason-nvim-dap.nvim/blob/main/lua/mason-nvim-dap/mappings/source.lua
 
@@ -52,6 +54,10 @@ local configuration = {
   --
   -- https://github.com/vadimcn/vscode-lldb
   codelldb = {
+    -- Mason package and system package not available on OpenBSD
+    install_and_use_condition = function()
+      return not sys.on_openbsd()
+    end,
     -- https://github.com/mfussenegger/nvim-dap/wiki/Debug-Adapter-installation#ccrust-via-codelldb
     -- https://github.com/mfussenegger/nvim-dap/wiki/C-C---Rust-(via--codelldb)
     adapters = function(_)
@@ -93,6 +99,10 @@ local configuration = {
   --
   -- https://github.com/go-delve/delve
   delve = {
+    -- If `go` executable is not present, prevent the dap from activating
+    install_and_use_condition = function()
+      return sys.has_executable("go")
+    end,
     -- Managed via `nvim-dap-go`
     --
     -- https://github.com/mfussenegger/nvim-dap/wiki/Debug-Adapter-installation#go-using-delve-directly
@@ -107,11 +117,13 @@ local configuration = {
   },
 }
 
--- If `go` is not present, then prevent dap from activating
-if vim.fn.executable("go") ~= 1 then
-  configuration["delve"] = nil
-end
+local table = require("my.util.table")
 
-M.configuration = configuration
+M.configuration = function()
+  return table.filter_use_table(configuration)
+end
+M.install = function()
+  return table.filter_install_list(configuration)
+end
 
 return M

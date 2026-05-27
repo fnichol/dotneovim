@@ -1,11 +1,18 @@
 M = {}
 
+local sys = require("my.util.sys")
+
 local configuration = {
   -- A tool for formatting Bazel BUILD, Buck2 BUCK, and .bzl files with a
   -- standard convention.
   --
   -- https://github.com/bazelbuild/buildtools/tree/master/buildifier
-  buildifier = {},
+  buildifier = {
+    -- Mason package and system package not available on OpenBSD
+    install_and_use_condition = function()
+      return not sys.on_openbsd()
+    end,
+  },
   -- Prettier is an opinionated code formatter.
   --
   -- https://github.com/prettier/prettier
@@ -14,6 +21,22 @@ local configuration = {
   --
   -- https://github.com/mvdan/sh
   shfmt = {
+    -- Mason package not available on OpenBSD
+    install_condition = function()
+      return not sys.on_openbsd()
+    end,
+    -- Use executatble from system if present on OpenBSD
+    use_condition = function()
+      if sys.on_openbsd() then
+        if sys.has_executable("shfmt") then
+          return true
+        else
+          return false
+        end
+      else
+        return true
+      end
+    end,
     args = function(self, ctx)
       local util = require("conform.util")
 
@@ -42,6 +65,22 @@ local configuration = {
   --
   -- https://github.com/JohnnyMorganz/StyLua
   stylua = {
+    -- Mason package not available on OpenBSD
+    install_condition = function()
+      return not sys.on_openbsd()
+    end,
+    -- Use executatble from system if present on OpenBSD
+    use_condition = function()
+      if sys.on_openbsd() then
+        if sys.has_executable("stylua") then
+          return true
+        else
+          return false
+        end
+      else
+        return true
+      end
+    end,
     -- Only format Lua code that have a StyLua or Editorconfig
     -- configuration
     condition = function(self, ctx)
@@ -65,7 +104,13 @@ local configuration = {
 }
 
 local by_filetype = {
-  bzl = { "buildifier" },
+  bzl = {
+    "buildifier",
+    -- Mason package and system package not available on OpenBSD
+    install_and_use_condition = function()
+      return not sys.on_openbsd()
+    end,
+  },
   css = { "prettier" },
   graphql = { "prettier" },
   handlebars = { "prettier" },
@@ -75,30 +120,55 @@ local by_filetype = {
   json = { "prettier" },
   jsonc = { "prettier" },
   less = { "prettier" },
-  lua = { "stylua" },
+  lua = {
+    "stylua",
+    -- Use executatble from system if present on OpenBSD
+    use_condition = function()
+      if sys.on_openbsd() then
+        if sys.has_executable("stylua") then
+          return true
+        else
+          return false
+        end
+      else
+        return true
+      end
+    end,
+  },
   markdown = { "prettier" },
   python = { "yapf" },
   scss = { "prettier" },
-  sh = { "shfmt" },
+  sh = {
+    "shfmt",
+    -- Use executatble from system if present on OpenBSD
+    use_condition = function()
+      if sys.on_openbsd() then
+        if sys.has_executable("shfmt") then
+          return true
+        else
+          return false
+        end
+      else
+        return true
+      end
+    end,
+  },
   typescript = { "prettier" },
   typescriptreact = { "prettier" },
   vue = { "prettier" },
   yaml = { "prettier" },
 }
 
--- If running on OpenBSD, remove language servers and tools that aren't yet
--- supported
-if vim.uv.os_uname().sysname == "OpenBSD" then
-  configuration["buildifier"] = nil
-  configuration["shfmt"] = nil
-  configuration["stylua"] = nil
+local table = require("my.util.table")
 
-  by_filetype["bzl"] = nil
-  by_filetype["sh"] = nil
-  by_filetype["lua"] = nil
+M.configuration = function()
+  return table.filter_use_table(configuration)
 end
-
-M.configuration = configuration
-M.by_filetype = by_filetype
+M.install = function()
+  return table.filter_install_list(configuration)
+end
+M.by_filetype = function()
+  return table.filter_use_table(by_filetype)
+end
 
 return M

@@ -1,14 +1,26 @@
 M = {}
 
+local sys = require("my.util.sys")
+
 local configuration = {
   -- The Uncompromising Nix Code Formatter.
   --
   -- https://kamadorueda.com/alejandra/
-  alejandra = {},
+  alejandra = {
+    -- If executable is not present, prevent the formatter from activating
+    use_condition = function()
+      return sys.has_executable("alejandra")
+    end,
+  },
   -- Formats HCL2 configuration files to a canonical format and style.
   --
   -- https://developer.hashicorp.com/packer/docs/commands/fmt
-  packer = {},
+  packer = {
+    -- If executable is not present, prevent the formatter from activating
+    use_condition = function()
+      return sys.has_executable("packer")
+    end,
+  },
   -- A tool for formatting rust code according to style guidelines.
   --
   -- https://github.com/rust-lang/rustfmt
@@ -16,26 +28,30 @@ local configuration = {
 }
 
 local by_filetype = {
-  nix = { "alejandra" },
-  hcl = { "packer_fmt" },
+  nix = {
+    "alejandra",
+    -- If executable is not present, prevent the formatter from activating
+    use_condition = function()
+      return sys.has_executable("alejandra")
+    end,
+  },
+  hcl = {
+    "packer_fmt",
+    -- If executable is not present, prevent the formatter from activating
+    use_condition = function()
+      return sys.has_executable("packer")
+    end,
+  },
   rust = { "rustfmt" },
 }
 
--- If `alejandra` is not present, prevent the formatter from activating
-if vim.fn.executable("alejandra") ~= 1 then
-  configuration["alejandra"] = nil
+local table = require("my.util.table")
 
-  by_filetype["nix"] = nil
+M.configuration = function()
+  return table.filter_use_table(configuration)
 end
-
--- If `packer` is not present, prevent the formatter from activating
-if vim.fn.executable("packer") ~= 1 then
-  configuration["packer"] = nil
-
-  by_filetype["hcl"] = nil
+M.by_filetype = function()
+  return table.filter_use_table(by_filetype)
 end
-
-M.configuration = configuration
-M.by_filetype = by_filetype
 
 return M

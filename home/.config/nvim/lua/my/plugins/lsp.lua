@@ -332,8 +332,8 @@ return {
         end)
       )
 
-      local mason_lsps = require("my.mason.lsps").configuration
-      local manual_lsps = require("my.mason.lsps_manual").configuration
+      local mason_lsps = require("my.mason.lsps").configuration()
+      local manual_lsps = require("my.mason.lsps_manual").configuration()
 
       for server, config in pairs(vim.tbl_deep_extend("error", {}, mason_lsps, manual_lsps)) do
         config = config or {}
