@@ -92,20 +92,24 @@ return {
       end
       local daps = require("my.mason.daps").configuration()
 
-      dap.adapters = vim.tbl_deep_extend(
-        "force",
-        {},
-        dap.adapters,
-        daps.bash.adapters(mason_registry),
-        daps.codelldb.adapters(mason_registry)
-      )
-      dap.configurations = vim.tbl_deep_extend(
+      local adapters =
+        vim.tbl_deep_extend("force", {}, dap.adapters, daps.bash.adapters(mason_registry))
+      if daps["codelldb"] ~= nil then
+        adapters = vim.tbl_deep_extend("force", adapters, daps.codelldb.adapters(mason_registry))
+      end
+      dap.adapters = adapters
+
+      local configurations = vim.tbl_deep_extend(
         "force",
         {},
         dap.configurations,
-        daps.bash.configurations(mason_registry),
-        daps.codelldb.configurations(mason_registry)
+        daps.bash.configurations(mason_registry)
       )
+      if daps["codelldb"] ~= nil then
+        configurations =
+          vim.tbl_deep_extend("force", configurations, daps.codelldb.configurations(mason_registry))
+      end
+      dap.configurations = configurations
     end,
     keys = {
       {
