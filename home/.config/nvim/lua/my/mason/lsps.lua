@@ -154,6 +154,10 @@ local configuration = {
   --
   -- https://github.com/luals/lua-language-server
   lua_ls = {
+    -- Mason package (npm-based) doesn't build on OpenBSD
+    install_and_use_condition = function()
+      return not sys.on_openbsd()
+    end,
     -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#lua_ls
     settings = {
       Lua = {
