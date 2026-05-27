@@ -99,9 +99,10 @@ local configuration = {
   --
   -- https://github.com/go-delve/delve
   delve = {
-    -- If `go` executable is not present, prevent the dap from activating
+    -- If `go` executable is not present, or on OpenBSD prevent the dap from
+    -- activating
     install_and_use_condition = function()
-      return sys.has_executable("go")
+      return not sys.on_openbsd() and sys.has_executable("go")
     end,
     -- Managed via `nvim-dap-go`
     --
