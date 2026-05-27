@@ -17,6 +17,10 @@ local configuration = {
   --
   -- https://github.com/Beaglefoot/awk-language-server/
   awk_ls = {
+    -- Mason package doesn't build on OpenBSD
+    install_and_use_condition = function()
+      return not sys.on_openbsd()
+    end,
     -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#awk_ls
     settings = {},
   },
