@@ -18,11 +18,20 @@ local function restore_mason_from_lockfile()
   local lockfile_path = vim.fs.joinpath(vim.fn.stdpath("config"), "mason-lock.json")
   local lockfile = vim.fn.json_decode(vim.fn.readfile(lockfile_path))
 
+  local ensure_installed = require("my.util.mason").ensure_installed_list()
+
   local packages_to_install = {}
 
   -- Refresh registry to ensure we have latest info
   registry.refresh(function()
-    for pkg_name, locked_version in pairs(lockfile) do
+    -- Iterate over computed pacakges that should be installed to make use of
+    -- `install_condition` and `instal_and_use_condition` keys in the list of
+    -- packages. Otherwise iterating through the lock file would attempt to
+    -- unconditionally add all tools, whether or not they are supposed to be
+    -- installed.
+    for _, pkg_name in pairs(ensure_installed) do
+      local locked_version = lockfile[pkg_name]
+
       local ok, pkg = pcall(registry.get_package, pkg_name)
 
       if ok then
