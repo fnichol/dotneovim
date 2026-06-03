@@ -14,10 +14,8 @@ return {
         config = true,
       },
       -- Lockfile suppport for mason.nvim
-      --
-      -- https://github.com/zapling/mason-lock.nvim
       {
-        "zapling/mason-lock.nvim",
+        dir = vim.fs.joinpath(vim.fn.stdpath("data"), "my", "mason-lock.nvim"),
         config = true,
       },
       { "mason-org/mason-lspconfig.nvim" },
@@ -32,9 +30,20 @@ return {
       --  You can press `g?` for help in this menu.
       require("mason").setup()
 
-      local ensure_installed = require("my.util.mason").ensure_installed_list()
+      local lock = require("mason-lock")
+      local ensure_installed_list = require("my.util.mason").ensure_installed_list()
 
-      require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
+      if lock.lockfile_exists() then
+        -- Set `ensure_installed` so later calls to mason-tool-installer will have populated list
+        require("mason-tool-installer").setup({
+          ensure_installed = ensure_installed_list,
+          run_on_start = false,
+        })
+        -- Install or update packages using lockfile
+        require("mason-lock").restore(ensure_installed_list, false)
+      else
+        require("mason-tool-installer").setup({ ensure_installed = ensure_installed_list })
+      end
     end,
   },
 }

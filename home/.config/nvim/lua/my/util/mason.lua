@@ -17,7 +17,6 @@ local ensure_installed_list = function()
 
   return ensure_installed
 end
-
 M.ensure_installed_list = ensure_installed_list
 
 return M
