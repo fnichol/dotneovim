@@ -28,7 +28,12 @@ return {
       -- other tools, you can run `:Mason`
       --
       --  You can press `g?` for help in this menu.
-      require("mason").setup()
+      require("mason").setup({
+        -- Limit for the maximum amount of packages to be installed at the same
+        -- time. Once this limit is reached, any further packages that are
+        -- requested to be installed will be put in a queue.
+        max_concurrent_installers = 4,
+      })
 
       local lock = require("mason-lock")
       local ensure_installed_list = require("my.util.mason").ensure_installed_list()

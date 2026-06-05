@@ -25,8 +25,19 @@ require("lazy").setup({
   checker = {
     -- Automatically check for plugin updates
     enabled = true,
+    -- Limit the number of concurrent checks on systems with low open file handles ulimit
+    concurrency = 24,
     -- Check for updates once a day
     frequency = 60 * 60 * 24,
+  },
+  git = {
+    throttle = {
+      enabled = true,
+      -- Set max `$rate` ops per `$duration` ms
+      rate = 24,
+      -- Duration in ms
+      duration = 1000,
+    },
   },
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
