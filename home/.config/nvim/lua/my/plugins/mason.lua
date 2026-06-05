@@ -33,6 +33,10 @@ return {
         -- time. Once this limit is reached, any further packages that are
         -- requested to be installed will be put in a queue.
         max_concurrent_installers = 4,
+        firewall = {
+          -- Enable the socket.dev firewall (sfw) for supported packages
+          enabled = true,
+        },
       })
 
       local lock = require("mason-lock")
