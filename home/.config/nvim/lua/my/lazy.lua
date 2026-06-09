@@ -26,7 +26,7 @@ require("lazy").setup({
     -- Automatically check for plugin updates
     enabled = true,
     -- Limit the number of concurrent checks on systems with low open file handles ulimit
-    concurrency = 12,
+    concurrency = 6,
     -- Check for updates once a day
     frequency = 60 * 60 * 24,
   },
@@ -34,7 +34,7 @@ require("lazy").setup({
     throttle = {
       enabled = true,
       -- Set max `$rate` ops per `$duration` ms
-      rate = 12,
+      rate = 6,
       -- Duration in ms
       duration = 1000,
     },
