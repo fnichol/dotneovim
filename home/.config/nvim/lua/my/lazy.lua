@@ -18,6 +18,13 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
+local sys = require("my.util.sys")
+
+local concurrency = nil
+if sys.on_openbsd() then
+  concurrency = 6
+end
+
 require("lazy").setup({
   spec = {
     { import = "my.plugins" },
@@ -26,7 +33,7 @@ require("lazy").setup({
     -- Automatically check for plugin updates
     enabled = true,
     -- Limit the number of concurrent checks on systems with low open file handles ulimit
-    concurrency = 6,
+    concurrency = concurrency,
     -- Check for updates once a day
     frequency = 60 * 60 * 24,
   },
