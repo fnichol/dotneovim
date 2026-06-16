@@ -2,14 +2,28 @@ local M = {}
 
 local table_ext = require("my.util.table")
 local registry = require("mason-registry")
+local Terminal = require("lazy.terminal")
 
 ---@param msg string
-local info = vim.schedule_wrap(function(msg)
-  vim.notify(msg, vim.log.levels.INFO, { title = "mason-lock" })
+---@param interactive boolean
+local info = vim.schedule_wrap(function(msg, interactive)
+  if interactive then
+    vim.notify(msg, vim.log.levels.INFO, { title = "mason-lock" })
+  else
+    io.write(Terminal.prefix(msg, Terminal.magenta("[mason-lock]") .. Terminal.bright_black(" | ")))
+    io.write("\n")
+  end
 end)
 
-local error = vim.schedule_wrap(function(msg)
-  vim.notify(msg, vim.log.levels.ERROR, { title = "mason-lock" })
+---@param msg string
+---@param interactive boolean
+local error = vim.schedule_wrap(function(msg, interactive)
+  if interactive then
+    vim.notify(msg, vim.log.levels.ERROR, { title = "mason-lock" })
+  else
+    io.write(Terminal.prefix(msg, Terminal.magenta("[mason-lock]") .. Terminal.bright_black(" | ")))
+    io.write("\n")
+  end
 end)
 
 local close_ui = function()
@@ -127,22 +141,40 @@ local write_lockfile = function(lockfile_path)
 end
 M.write_lockfile = write_lockfile
 
+---@class (exact) RestoreOpts
+---@field verbose? boolean Whether or not to display notifications
+---@field interactive? boolean Whether editor is interactive or headless
+---@field lockfile_path? string Path to the lockfile
+
 ---Installs packages using version information from the lockfile
 ---@param ensure_installed_list? string[] Optional list of package names to ensure are installed
----@param verbose? boolean Whether or not to display notifications
----@param lockfile_path? string Optional path to the lockfile
-local restore = function(ensure_installed_list, verbose, lockfile_path)
-  if lockfile_path == nil then
+---@param opts? RestoreOpts
+local restore = function(ensure_installed_list, opts)
+  if opts == nil then
+    opts = {}
+  end
+
+  local lockfile_path
+  if opts.lockfile_path == nil then
     lockfile_path = M.lockfile_path
   end
-  if verbose == nil then
+  local verbose
+  if opts.verbose == nil then
     verbose = true
+  else
+    verbose = opts.verbose
+  end
+  local interactive
+  if opts.interactive == nil then
+    interactive = true
+  else
+    interactive = opts.interactive
   end
 
   -- If there is no lockfile, then early return
   if not lockfile_exists(lockfile_path) then
     if verbose then
-      error("No lockfile found, no packages installed")
+      error("No lockfile found, no packages installed", interactive)
     end
     return
   end
@@ -194,11 +226,14 @@ local restore = function(ensure_installed_list, verbose, lockfile_path)
 
   -- Install/update packages that need aren't in sync with the lock file
   if #packages_to_install > 0 then
-    if verbose then
+    if verbose and interactive then
       require("mason.ui").open()
     end
 
-    info(string.format("Installing or updating %d Mason packages", #packages_to_install))
+    info(
+      string.format("Installing or updating %d Mason packages", #packages_to_install),
+      interactive
+    )
 
     local handles = {}
     for _, item in ipairs(packages_to_install) do
@@ -213,16 +248,20 @@ local restore = function(ensure_installed_list, verbose, lockfile_path)
         completed = completed + 1
         if completed == #handles then
           if verbose then
-            info("Mason packages restored to lockfile versions")
-            close_ui()
+            info("Mason packages restored to lockfile versions", interactive)
+            if interactive then
+              close_ui()
+            end
           end
         end
       end)
     end
   else
     if verbose then
-      info("All installed package versions set from lockfile")
-      close_ui()
+      info("All installed package versions set from lockfile", interactive)
+      if interactive then
+        close_ui()
+      end
     end
   end
 end

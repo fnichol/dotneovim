@@ -1,15 +1,24 @@
-local install_plugins = function()
+---Restores plugins and packages from lock files
+---@param cmd vim.api.keyset.create_user_command.command_args
+local install_plugins = function(cmd)
+  local interactive = cmd.bang ~= true
+
   -- Lazy.nvim plugins
   --
-
   require("lazy").restore({ wait = true })
-  require("lazy.view").view:close()
+  if interactive then
+    require("lazy.view").view:close()
+  end
 
   --- Mason packages
   ---
-
-  require("mason.ui").open()
-  require("mason-lock").restore(require("my.util.mason").ensure_installed_list())
+  if interactive then
+    require("mason.ui").open()
+  end
+  require("mason-lock").restore(
+    require("my.util.mason").ensure_installed_list(),
+    { interactive = interactive }
+  )
 end
 
 local update_plugins = function()
@@ -40,12 +49,12 @@ end
 return {
   name = "plugin-commands",
   dir = vim.fn.stdpath("config"),
-  event = "VeryLazy",
   config = function()
+    -- Can be used with `nvim --headless +PluginInstall! +qall`
     vim.api.nvim_create_user_command(
       "PluginInstall",
       install_plugins,
-      { desc = "Restore plugins and packages from lock files" }
+      { desc = "Restore plugins and packages from lock files", bang = true }
     )
 
     vim.api.nvim_create_user_command(

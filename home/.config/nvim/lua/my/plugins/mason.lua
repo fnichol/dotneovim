@@ -49,7 +49,7 @@ return {
           run_on_start = false,
         })
         -- Install or update packages using lockfile
-        require("mason-lock").restore(ensure_installed_list, false)
+        require("mason-lock").restore(ensure_installed_list, { verbose = false })
       else
         require("mason-tool-installer").setup({ ensure_installed = ensure_installed_list })
       end
