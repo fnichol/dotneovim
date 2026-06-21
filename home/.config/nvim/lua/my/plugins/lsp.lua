@@ -467,4 +467,20 @@ return {
       })
     end,
   },
+  -- Provides lsp features, including code completion, for code embedded in
+  -- other documents
+  --
+  -- https://github.com/jmbuhr/otter.nvim
+  {
+    "jmbuhr/otter.nvim",
+    config = function()
+      vim.api.nvim_create_autocmd({ "FileType" }, {
+        pattern = { "markdown", "toml" },
+        group = vim.api.nvim_create_augroup("ActivateOtter", {}),
+        callback = function()
+          require("otter").activate()
+        end,
+      })
+    end,
+  },
 }
