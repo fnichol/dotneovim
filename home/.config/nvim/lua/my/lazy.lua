@@ -20,7 +20,7 @@ vim.opt.rtp:prepend(lazypath)
 
 local sys = require("my.util.sys")
 
-local concurrency = nil
+local concurrency = 24
 if sys.on_openbsd() then
   concurrency = 6
 end
