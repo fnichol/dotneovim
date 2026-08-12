@@ -2,6 +2,8 @@ local M = {}
 
 local table_ext = require("my.util.table")
 local registry = require("mason-registry")
+local mlsp = require("mason-lspconfig")
+local mdap = require("mason-nvim-dap.mappings.source")
 local Terminal = require("lazy.terminal")
 
 ---@param msg string
@@ -141,6 +143,22 @@ local write_lockfile = function(lockfile_path)
 end
 M.write_lockfile = write_lockfile
 
+local lspconfig_mappings_cache
+
+---Normalizes an lspconfig/dap tool or Mason package name to a Mason registry package name
+---@param name string Packge name which could be an lspconfig name, a DAP name, or a Mason name
+---@return string
+local to_mason_registry_name = function(name)
+  if not lspconfig_mappings_cache then
+    lspconfig_mappings_cache = mlsp.get_mappings()
+  end
+
+  name = lspconfig_mappings_cache.lspconfig_to_package[name] or name
+  name = mdap.nvim_dap_to_package[name] or name
+
+  return name
+end
+
 ---@class (exact) RestoreOpts
 ---@field verbose? boolean Whether or not to display notifications
 ---@field interactive? boolean Whether editor is interactive or headless
@@ -188,8 +206,11 @@ local restore = function(ensure_installed_list, opts)
       return key
     end)
   else
-    -- If a custom list of packages is provided, use it
-    pkgs_to_check = ensure_installed_list
+    -- If a custom list of packages is provided, use it, ensuring that all
+    -- names are Mason registry package names
+    pkgs_to_check = table_ext.map_list_to_list(ensure_installed_list, function(name)
+      return to_mason_registry_name(name)
+    end)
   end
 
   -- Packages that need to be installed

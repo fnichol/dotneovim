@@ -66,6 +66,24 @@ local map_to_list = function(tbl, map_fn)
 end
 M.map_to_list = map_to_list
 
+---Returns a new list that is mapped from the given list.
+---@generic V: unknown
+---@generic R: unknown
+---@param list V[]
+---@param map_fn fun(val: V): R
+---@return R[]
+local map_list_to_list = function(list, map_fn)
+  local result = {}
+
+  for _, val in ipairs(list) do
+    local element = map_fn(val)
+    table.insert(result, element)
+  end
+
+  return result
+end
+M.map_list_to_list = map_list_to_list
+
 ---Returns a new table which rejects values containing condition functions
 ---that return `false`.
 ---@param tbl table<unknown, unknown>
