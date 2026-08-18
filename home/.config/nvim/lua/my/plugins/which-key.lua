@@ -31,6 +31,8 @@ return {
         { "<leader>il", group = "Lazy" },
         { "<leader>r", group = "Trouble" },
         { "<leader>s", group = "Search" },
+        { "<leader>t", group = "Toggle" },
+        { "<leader>td", group = "Diagnostic" },
         { "<leader>w", group = "VimWiki" },
       })
     end,

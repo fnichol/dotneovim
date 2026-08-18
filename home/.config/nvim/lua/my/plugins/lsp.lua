@@ -292,6 +292,13 @@ return {
 
       vim.diagnostic.config(diagnostic_config)
 
+      -- When reading buffers such as upstream Markdown documents, you may not
+      -- wish to remediate linting diagnostics, so it may be easier to read if
+      -- the virtual text for diagnostics are disabled.
+      vim.keymap.set("n", "<leader>tdt", function()
+        vim.diagnostic.config({ virtual_text = not vim.diagnostic.config().virtual_text })
+      end, { desc = "Toggle diagnostic virtual text" })
+
       -- LSP servers and clients are able to communicate to each other what
       -- features they support.
       --
