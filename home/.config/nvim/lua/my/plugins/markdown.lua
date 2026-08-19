@@ -1,16 +1,24 @@
 return {
-  -- An asynchronous markdown preview plugin for Vim and Neovim.
+  -- Live Markdown preview for Neovim.
   --
-  -- https://github.com/euclio/vim-markdown-composer
+  -- https://github.com/selimacerbas/markdown-preview.nvim
   {
-    "euclio/vim-markdown-composer",
-    enabled = function()
-      return vim.fn.executable("cargo") == 1
-    end,
-    build = "cargo build --release --locked",
-    init = function()
-      -- Prevent vim-markdown-composer from auto-starting
-      vim.g.markdown_composer_autostart = "0"
+    "selimacerbas/markdown-preview.nvim",
+    dependencies = {
+      -- A tiny, zero-dependency local web server for Neovim.
+      --
+      -- https://github.com/selimacerbas/live-server.nvim
+      { "selimacerbas/live-server.nvim" },
+    },
+    config = function()
+      require("markdown_preview").setup({
+        default_theme = "light",
+        hooks = {
+          on_start = function(url)
+            vim.notify("Preview started: " .. url, vim.log.levels.INFO)
+          end,
+        },
+      })
     end,
   },
 }
