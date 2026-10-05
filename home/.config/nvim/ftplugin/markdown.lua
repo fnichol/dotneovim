@@ -6,13 +6,13 @@ wk.add({
 })
 
 vim.keymap.set("n", "<leader>ms", function()
-  require("markdown_preview").start()
+  require("mdkite").start()
 end, { desc = "Start preview" })
 
 vim.keymap.set("n", "<leader>mS", function()
-  require("markdown_preview").stop()
+  require("mdkite").stop()
 end, { desc = "Stop preview" })
 
 vim.keymap.set("n", "<leader>mr", function()
-  require("markdown_preview").refresh()
+  require("mdkite").refresh()
 end, { desc = "Refresh preview" })
