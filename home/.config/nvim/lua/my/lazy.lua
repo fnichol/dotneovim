@@ -1,7 +1,7 @@
 -- [[ Install `lazy.nvim` plugin manager ]]
 --
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+local lazypath = vim.fs.joinpath(vim.fn.stdpath("data"), "lazy/lazy.nvim")
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
   local lazyrepo = "https://github.com/folke/lazy.nvim.git"
   local out =
@@ -14,6 +14,17 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
     }, true, {})
     vim.fn.getchar()
     os.exit(1)
+  end
+
+  -- Ensure the Git checkout for Lazy.nvim respects the lockfile
+  local lockfile_path = vim.fs.joinpath(vim.fn.stdpath("config"), "lazy-lock.json")
+  local f = io.open(lockfile_path, "r")
+  if f then
+    local ok, lock = pcall(vim.json.decode, f:read("*a"))
+    f:close()
+    if ok and lock["lazy.nvim"] then
+      vim.fn.system({ "git", "-C", lazypath, "checkout", lock["lazy.nvim"].commit })
+    end
   end
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
