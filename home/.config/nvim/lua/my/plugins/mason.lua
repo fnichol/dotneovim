@@ -42,6 +42,10 @@ return {
       local lock = require("mason-lock")
       local ensure_installed_list = require("my.util.mason").ensure_installed_list()
 
+      -- When headless (e.g. `PluginInstall!`), installs are driven and awaited
+      -- by the command itself so skip the automatic restore on startup
+      local headless = #vim.api.nvim_list_uis() == 0
+
       if lock.lockfile_exists() then
         -- Set `ensure_installed` so later calls to mason-tool-installer will have populated list
         require("mason-tool-installer").setup({
@@ -49,7 +53,9 @@ return {
           run_on_start = false,
         })
         -- Install or update packages using lockfile
-        require("mason-lock").restore(ensure_installed_list, { verbose = false })
+        if not headless then
+          require("mason-lock").restore(ensure_installed_list, { verbose = false })
+        end
       else
         require("mason-tool-installer").setup({ ensure_installed = ensure_installed_list })
       end

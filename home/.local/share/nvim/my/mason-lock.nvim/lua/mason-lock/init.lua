@@ -159,41 +159,39 @@ local to_mason_registry_name = function(name)
   return name
 end
 
+---@class (exact) RestoreResult
+---@field installed string[] Names of packages installed or updated
+---@field failed string[] Names of packages that failed to install
+
 ---@class (exact) RestoreOpts
 ---@field verbose? boolean Whether or not to display notifications
 ---@field interactive? boolean Whether editor is interactive or headless
 ---@field lockfile_path? string Path to the lockfile
+---@field on_done? fun(result: RestoreResult) Called once all installs have
+---finished
 
 ---Installs packages using version information from the lockfile
----@param ensure_installed_list? string[] Optional list of package names to ensure are installed
+---@param ensure_installed_list? string[] Optional list of package names to
+---ensure are installed
 ---@param opts? RestoreOpts
 local restore = function(ensure_installed_list, opts)
-  if opts == nil then
-    opts = {}
-  end
+  opts = opts or {}
 
-  local lockfile_path
-  if opts.lockfile_path == nil then
-    lockfile_path = M.lockfile_path
-  end
-  local verbose
-  if opts.verbose == nil then
-    verbose = true
-  else
-    verbose = opts.verbose
-  end
-  local interactive
-  if opts.interactive == nil then
-    interactive = true
-  else
-    interactive = opts.interactive
-  end
+  local lockfile_path = opts.lockfile_path or M.lockfile_path
+  local verbose = opts.verbose ~= false
+  local interactive = opts.interactive ~= false
+  -- Scheduled so that it runs after any already-scheduled log output
+  local on_done = vim.schedule_wrap(opts.on_done or function() end)
+
+  ---@type RestoreResult
+  local result = { installed = {}, failed = {} }
 
   -- If there is no lockfile, then early return
   if not lockfile_exists(lockfile_path) then
     if verbose then
       error("No lockfile found, no packages installed", interactive)
     end
+    on_done(result)
     return
   end
 
@@ -213,11 +211,74 @@ local restore = function(ensure_installed_list, opts)
     end)
   end
 
-  -- Packages that need to be installed
-  local packages_to_install = {}
+  ---Installs the given packages, then reports the result
+  ---@param packages_to_install { pkg: Package, version: string?, name: string }[]
+  local install_packages = function(packages_to_install)
+    if #packages_to_install == 0 then
+      if verbose and #result.failed == 0 then
+        info("All installed package versions set from lockfile", interactive)
+        if interactive then
+          close_ui()
+        end
+      end
+      on_done(result)
+      return
+    end
 
-  -- Refresh registry to ensure we have latest info
-  registry.refresh(function()
+    if verbose and interactive then
+      require("mason.ui").open()
+    end
+
+    info(
+      string.format("Installing or updating %d Mason packages", #packages_to_install),
+      interactive
+    )
+
+    local remaining = #packages_to_install
+    local finish = function(item, success, err)
+      if success then
+        table.insert(result.installed, item.name)
+        if verbose then
+          info(("Installed %s@%s"):format(item.name, item.version or "latest"), interactive)
+        end
+      else
+        table.insert(result.failed, item.name)
+        error(("Failed to install %s: %s"):format(item.name, tostring(err)), interactive)
+      end
+
+      remaining = remaining - 1
+      if remaining == 0 then
+        if verbose then
+          if #result.failed == 0 then
+            info("Mason packages restored to lockfile versions", interactive)
+          end
+          if interactive then
+            close_ui()
+          end
+        end
+        on_done(result)
+      end
+    end
+
+    for _, item in ipairs(packages_to_install) do
+      -- `install` asserts if the package is already installing
+      local started, install_err = pcall(function()
+        item.pkg:install({ version = item.version }, function(success, err)
+          finish(item, success, err)
+        end)
+      end)
+      if not started then
+        finish(item, false, install_err)
+      end
+    end
+  end
+
+  -- Refresh registry to ensure we have latest info. This may complete
+  -- asynchronously, so all further work happens in the callback.
+  registry.refresh(function(refreshed, refresh_err)
+    local packages_to_install = {}
+    local unknown_pkgs = {}
+
     for _, pkg_name in pairs(pkgs_to_check) do
       local locked_version = lockfile[pkg_name]
 
@@ -241,50 +302,24 @@ local restore = function(ensure_installed_list, opts)
             )
           end
         end
+      else
+        table.insert(unknown_pkgs, pkg_name)
       end
     end
+
+    -- Registry callbacks may run in a fast event context
+    vim.schedule(function()
+      if not refreshed then
+        error("Failed to refresh Mason registry: " .. tostring(refresh_err), interactive)
+      end
+      -- Packages missing from the registry can never be installed, so fail rather than skip them
+      for _, pkg_name in ipairs(unknown_pkgs) do
+        table.insert(result.failed, pkg_name)
+        error(("Package %s not found in Mason registry"):format(pkg_name), interactive)
+      end
+      install_packages(packages_to_install)
+    end)
   end)
-
-  -- Install/update packages that need aren't in sync with the lock file
-  if #packages_to_install > 0 then
-    if verbose and interactive then
-      require("mason.ui").open()
-    end
-
-    info(
-      string.format("Installing or updating %d Mason packages", #packages_to_install),
-      interactive
-    )
-
-    local handles = {}
-    for _, item in ipairs(packages_to_install) do
-      local handle = item.pkg:install({ version = item.version })
-      table.insert(handles, handle)
-    end
-
-    -- Wait for completion then close Mason UI
-    local completed = 0
-    for _, handle in ipairs(handles) do
-      handle:on("closed", function()
-        completed = completed + 1
-        if completed == #handles then
-          if verbose then
-            info("Mason packages restored to lockfile versions", interactive)
-            if interactive then
-              close_ui()
-            end
-          end
-        end
-      end)
-    end
-  else
-    if verbose then
-      info("All installed package versions set from lockfile", interactive)
-      if interactive then
-        close_ui()
-      end
-    end
-  end
 end
 M.restore = restore
 
