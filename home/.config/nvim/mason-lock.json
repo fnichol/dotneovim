@@ -21,7 +21,7 @@
   "html-lsp": "4.10.0",
   "json-lsp": "4.10.0",
   "jsonlint": "1.6.3",
-  "lua-language-server": "3.19.1",
+  "lua-language-server": "3.19.2",
   "markdownlint": "0.49.1",
   "powershell-editor-services": "v4.7.0",
   "prettier": "3.9.10",
@@ -36,7 +36,7 @@
   "typescript-language-server": "6.0.2",
   "vim-language-server": "2.3.1",
   "vint": "0.3.21",
-  "vue-language-server": "3.3.12",
+  "vue-language-server": "3.3.13",
   "yaml-language-server": "1.25.0",
   "yamllint": "1.38.0",
   "yapf": "0.43.0"
