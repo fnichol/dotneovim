@@ -27,6 +27,55 @@ return {
       -- Apply the configuration to nvim-lint
       lint.linters_by_ft = all_by_filetypes
 
+      -- Custom linter definition for Shuck (not built into nvim-lint)
+      --
+      -- https://ewhauser.github.io/shuck/
+      local shuck_severities = {
+        error = vim.diagnostic.severity.ERROR,
+        warning = vim.diagnostic.severity.WARN,
+        info = vim.diagnostic.severity.INFO,
+        style = vim.diagnostic.severity.HINT,
+      }
+      lint.linters.shuck = {
+        cmd = "shuck",
+        stdin = true,
+        args = {
+          "check",
+          "--no-cache",
+          "--output-format",
+          "json",
+          "--stdin-filename",
+          function()
+            return vim.api.nvim_buf_get_name(0)
+          end,
+          "-",
+        },
+        ignore_exitcode = true,
+        parser = function(output)
+          if output == "" then
+            return {}
+          end
+          local ok, decoded = pcall(vim.json.decode, output)
+          if not ok or type(decoded) ~= "table" then
+            return {}
+          end
+          local diagnostics = {}
+          for _, item in ipairs(decoded) do
+            table.insert(diagnostics, {
+              lnum = item.location.row - 1,
+              col = item.location.column - 1,
+              end_lnum = item.end_location.row - 1,
+              end_col = item.end_location.column - 1,
+              code = item.code,
+              source = "shuck",
+              severity = shuck_severities[item.severity] or vim.diagnostic.severity.WARN,
+              message = item.message,
+            })
+          end
+          return diagnostics
+        end,
+      }
+
       local M = {}
 
       -- See: https://github.com/LazyVim/LazyVim/blob/12818a6cb499456f4903c5d8e68af43753ebc869/lua/lazyvim/plugins/linting.lua#L47-L56

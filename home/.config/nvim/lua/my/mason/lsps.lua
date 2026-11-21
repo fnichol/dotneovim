@@ -29,7 +29,13 @@ local configuration = {
   -- https://github.com/bash-lsp/bash-language-server
   bashls = {
     -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#bashls
-    settings = {},
+    settings = {
+      bashIde = {
+        -- Disable ShellCheck integration (linting is done by Shuck via
+        -- nvim-lint)
+        shellcheckPath = "",
+      },
+    },
   },
   -- vscode-langservers bin collection.
   --

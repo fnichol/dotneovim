@@ -58,10 +58,11 @@ local configuration = {
   --
   -- https://github.com/DavidAnson/markdownlint
   markdownlint = {},
-  -- A shell script static analysis tool.
+  -- A lightning fast shell linter, formatter, and LSP server for bash, zsh,
+  -- posix, and mksh dialects
   --
-  -- https://www.shellcheck.net/
-  shellcheck = {
+  -- https://ewhauser.github.io/shuck/
+  shuck = {
     -- Mason package not available on OpenBSD
     install_condition = function()
       return not sys.on_openbsd()
@@ -69,7 +70,7 @@ local configuration = {
     -- Use executatble from system if present on OpenBSD
     use_condition = function()
       if sys.on_openbsd() then
-        if sys.has_executable("shellcheck") then
+        if sys.has_executable("shuck") then
           return true
         else
           return false
@@ -119,11 +120,11 @@ local by_filetype = {
   },
   python = { "flake8" },
   sh = {
-    "shellcheck",
+    "shuck",
     -- Use executatble from system if present on OpenBSD
     use_condition = function()
       if sys.on_openbsd() then
-        if sys.has_executable("shellcheck") then
+        if sys.has_executable("shuck") then
           return true
         else
           return false
