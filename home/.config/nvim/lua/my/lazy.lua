@@ -45,6 +45,14 @@ require("lazy").setup({
   spec = {
     { import = "my.plugins" },
   },
+  -- Limit the number of concurrent tasks (installs, restores, updates, etc.)
+  -- on systems with low open file handles ulimit
+  --
+  -- NOTE: `git.throttle` is intentionally not used. Its implementation has a
+  -- lost-wakeup race: the throttle timer's first tick can resume a queued task
+  -- before that task has suspended itself, after which nothing resumes it and
+  -- the operation (e.g. `:PluginInstall!`) hangs forever.
+  concurrency = concurrency,
   checker = {
     -- Automatically check for plugin updates
     enabled = true,
@@ -52,15 +60,6 @@ require("lazy").setup({
     concurrency = concurrency,
     -- Check for updates once a day
     frequency = 60 * 60 * 24,
-  },
-  git = {
-    throttle = {
-      enabled = true,
-      -- Set max `$rate` ops per `$duration` ms
-      rate = 6,
-      -- Duration in ms
-      duration = 1000,
-    },
   },
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
